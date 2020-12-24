@@ -20,6 +20,8 @@ import MailIcon from '@material-ui/icons/Mail';
 import {BrowserRouter, Route, Routes, Link} from "react-router-dom";
 
 import HomePage from "./pages/homePage";
+import ForumPage from "./pages/forum";
+
 
 const drawerWidth = 240;
 
@@ -52,7 +54,6 @@ const useStyles = makeStyles((theme) => ({
   drawer: {
     width: drawerWidth,
     flexShrink: 0,
-
   },
   drawerPaper: {
     width: drawerWidth,
@@ -137,6 +138,9 @@ export default function App() {
           <Route path="/" element={
             <HomePage/>
           }/>
+          <Route path="/forum" element={
+            <ForumPage/>
+          }/>
         </Routes>
       </main>
 
@@ -156,11 +160,12 @@ export default function App() {
         </div>
         <Divider />
         <List>
-          {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-              <Link to="dashboard">
+          {['עמוד הבית', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
+              <Link to="">
             <ListItem button key={text}>
-              <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
               <ListItemText primary={text} />
+              <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
+
             </ListItem>
                   </Link>
           ))}
@@ -169,8 +174,8 @@ export default function App() {
         <List>
           {['All mail', 'Trash', 'Spam'].map((text, index) => (
             <ListItem button key={text}>
-              <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
               <ListItemText primary={text} />
+              <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
             </ListItem>
           ))}
         </List>
