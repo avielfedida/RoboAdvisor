@@ -6,6 +6,6 @@ def create_app(config_name="development"):
     from app.extensions import cors
     cors.init_app(app)
 
-    from api.demo import api as demo_api
+    from api.form_submit import api as demo_api
     app.register_blueprint(demo_api)
     return app
