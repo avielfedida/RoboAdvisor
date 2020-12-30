@@ -82,7 +82,7 @@ const HomePage = () =>  {
             <CssBaseline />
             <Container fixed  className={classes.center_page}>
                 <Typography className={classes.main_title}  >
-                    OMAN
+                    MONA
                 </Typography>
                 <Typography className={classes.secende_title}  >
                     ROBO ADV- הפתח שלך לעולם חדש
@@ -91,7 +91,7 @@ const HomePage = () =>  {
                     <Button className={classes.button_1} >
                         אני רוצה לדעת יותר
                     </Button>
-                    <Button className={classes.button_2} >
+                    <Button className={classes.button_2} component={RouterLink} to="/mainForm" >
                       בניית תיק השקעות
                     </Button>
                     <Button className={classes.button_3}  component={RouterLink} to="/forum">
