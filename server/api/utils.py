@@ -1,10 +1,13 @@
+import base64
 from collections.abc import Iterable
 import json
 from contextlib import contextmanager
-
+from io import BytesIO
+import matplotlib.pyplot as plt
 from flask import abort, make_response, jsonify
 # https://stackoverflow.com/questions/21638922/custom-error-message-json-object-with-flask-restful
 from werkzeug.exceptions import HTTPException
+from app.extensions import logger
 
 
 
@@ -24,6 +27,14 @@ def exceptions_mapper(status, suffix=''):
     return status, error_mapper[status] + suffix
 
 
+
+def plt_to_src(fig):
+    io = BytesIO()
+    fig.savefig(io, format='png', bbox_inches='tight', pad_inches=0)
+    plt.close()
+    data = base64.encodebytes(io.getvalue()).decode('utf-8')
+    html_img_src = f'data:image/png;base64,{data}'
+    return html_img_src
 
 def json_abort(status_code, message="", exception=None):
     if exception:
