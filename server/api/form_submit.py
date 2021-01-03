@@ -7,7 +7,6 @@ from api.algorithms import get_risk_horizon_score
 from api.markowitz import model
 from api.utils import exceptions_mapper, json_abort, plt_to_src
 
-
 class FormSubmit(MethodView):
     def post(self):
         score = get_risk_horizon_score(request.json)
