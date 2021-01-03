@@ -43,7 +43,7 @@ class Markowitz:
         self.prices_df.to_excel( 'assets_prices.xlsx' )
         pd.DataFrame( self.all_assets ).to_excel( 'assets_list.xlsx' )
 
-    def select_assets(self, risk_score):
+    def get_select_assets(self, risk_score):
         all_std = [self.prices_df[col].std() for col in self.prices_df.columns]
         std_df = pd.DataFrame( index=self.prices_df.columns, columns=['std'] )
         for index, asset in enumerate( self.all_assets ):
@@ -68,7 +68,7 @@ class Markowitz:
         return
 
     def get_optimal_portfolio(self, score):
-        model.selected_assets(score)
+        self.get_select_assets(score)
         selected_prices_value = self.prices_df[self.selected_assets].dropna()
         num_portfolios = 500
         years = len( selected_prices_value ) / 253

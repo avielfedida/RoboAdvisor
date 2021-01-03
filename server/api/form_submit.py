@@ -4,12 +4,15 @@ from flask import Blueprint, request, make_response, jsonify
 from flask.views import MethodView
 
 from api.algorithms import get_risk_horizon_score
-from api.markowitz import model
+from api.markowitz import Markowitz
 from api.utils import exceptions_mapper, json_abort, plt_to_src
 
 class FormSubmit(MethodView):
     def post(self):
-        score = get_risk_horizon_score(request.json)
+        model = Markowitz()
+        dict_variable = {int(key): value for (key, value) in request.json.items()}
+        score = get_risk_horizon_score(dict_variable)
+        print(score)
         fig = model.get_optimal_portfolio(score)
         base64image = plt_to_src(fig)
         #
