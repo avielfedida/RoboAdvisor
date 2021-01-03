@@ -139,3 +139,17 @@ def get_risk_horizon_score(answers_dict):
     hs = sum([horizon_score(q, a) for q, a in horizon_qa.items()])
     rs = sum([risk_score(q, a) for q, a in risk_qa.items()])
     return total_score(hs, rs)
+
+
+def check_if_all_questions_with_answers(dict_variable):
+    all_questions_dict = {}
+    for question_num in dict_variable.keys():
+        if type(dict_variable[question_num]) == int:
+            all_questions_dict[question_num] = True
+        else:
+            all_questions_dict[question_num] = False
+    all_values = all_questions_dict.values()
+    if not any(all_values):
+        return "You didn't answer on one or more questions. Please start again"
+    else:
+        return None
