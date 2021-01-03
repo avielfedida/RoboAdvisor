@@ -170,13 +170,11 @@ class Markowitz:
                 assets.remove(asset)
         self.all_assets = pd.DataFrame(assets, columns=['Symbol'])
 
-    # model = Markowitz()
-    # model.get_all_assets()
-    get_assets_price_data()
-    # model.all_assets = pd.read_excel('stocks_list.xlsx', index_col=0)
-    # model.prices_df = pd.read_excel('assets prices.xlsx', index_col=0)
-    # model.remove_noise_data()
-    # model.get_optimal_portfolio( 2 )
 
-
-
+model = Markowitz()
+#model.get_all_assets()
+model.get_assets_price_data()
+#model.all_assets = pd.read_excel('stocks_list.xlsx', index_col=0)
+#model.prices_df = pd.read_excel('assets prices.xlsx', index_col=0)
+#model.remove_noise_data()
+model.get_optimal_portfolio(2)
