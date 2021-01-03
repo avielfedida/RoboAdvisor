@@ -21,6 +21,8 @@ import {BrowserRouter, Route, Routes, Link} from "react-router-dom";
 
 import HomePage from "./pages/homePage";
 import ForumPage from "./pages/forum";
+import MainForm from "./components/questionAnswersForm";
+
 
 
 const drawerWidth = 240;
@@ -77,7 +79,7 @@ const useStyles = makeStyles((theme) => ({
   },
   content: {
     flexGrow: 1,
-    padding: theme.spacing(3),
+    padding: theme.spacing(2),
     transition: theme.transitions.create('margin', {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
@@ -116,7 +118,7 @@ export default function App() {
           >
           <Toolbar>
             <Typography variant="h6"  noWrap className={classes.title}>
-            OMAN - ROBO ADV
+            MONA - ROBO ADV
             </Typography>
           <IconButton
             color="inherit"
@@ -140,6 +142,9 @@ export default function App() {
           }/>
           <Route path="/forum" element={
             <ForumPage/>
+          }/>
+          <Route path="/mainForm" element={
+            <MainForm/>
           }/>
         </Routes>
       </main>
