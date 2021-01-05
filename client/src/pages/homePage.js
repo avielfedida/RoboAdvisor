@@ -12,7 +12,6 @@ const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => ({
     center_page: {
-        backgroundColor: '#9fa8da',
         height: 545,
         shadowColor: "#000",
         shadowOffset: {
@@ -36,6 +35,7 @@ const useStyles = makeStyles((theme) => ({
     },
      button_list: {
         display: 'flex',
+         marginTop:100,
         justifyContent:'center',
         alignItems:'center',
         left: 50 ,
@@ -53,26 +53,18 @@ const useStyles = makeStyles((theme) => ({
              shadowOpacity: 0.58,
              shadowRadius: 16.00,
              elevation: 24,
+             backgroundColor: '#000',
+            color :'white',
+
+            '&:hover': {
+                backgroundColor: 'white',
+                color :'#000',
+                borderColor: '#000',
+                border: '2px solid'
+            },
          },
      },
-    button_1: {
-        backgroundColor: '#9575cd',
-        '&:hover': {
-          backgroundColor: '#673ab7',
-        },
-    },
-    button_2: {
-        backgroundColor: '#5c6bc0',
-        '&:hover': {
-          backgroundColor: '#3f51b5',
-        },
-    },
-    button_3: {
-        backgroundColor: '#42a5f5',
-        '&:hover': {
-          backgroundColor: '#2196f3',
-        },
-    },
+
 }));
 
 const HomePage = () =>  {
@@ -88,13 +80,13 @@ const HomePage = () =>  {
                     ROBO ADV- הפתח שלך לעולם חדש
                 </Typography>
                 <div className={classes.button_list}>
-                    <Button className={classes.button_1} >
+                    <Button  >
                         אני רוצה לדעת יותר
                     </Button>
-                    <Button className={classes.button_2} component={RouterLink} to="/mainForm" >
+                    <Button  component={RouterLink} to="/mainForm" >
                       בניית תיק השקעות
                     </Button>
-                    <Button className={classes.button_3}  component={RouterLink} to="/forum">
+                    <Button >
                       בואו לדבר על זה
                     </Button>
                 </div>

@@ -26,37 +26,39 @@ const QuestionAnswers=({step,answers, question, using_image_question,image_url_q
   };
 
   let classes = {
-          center_page: {
-              backgroundColor: '#9fa8da',
-              shadowColor: "#303f9f",
-              shadowOffset: {
-                  width: 0,
-                  height: 3,
-              },
-              shadowOpacity: 0.32,
-              shadowRadius: 5.46,
-              elevation: 9,
+      center_page: {
+          minHeight : 450,
+          shadowColor: "#303f9f",
+          shadowOffset: {
+              width: 0,
+              height: 3,
           },
-          question: {
-              color: '#000',
-              fontFamily: 'Suez One',
-              textAlign: "center",
-              fontSize: 20,
-              direction: "rtl"
-          },
-          img_question:{
-            display: 'block',
-            margin: 'auto',
-          },
+          shadowOpacity: 0.32,
+          shadowRadius: 5.47,
+          elevation: 9,
+      },
+      question: {
+          color: '#000',
+          fontFamily: 'Suez One',
+          textAlign: "center",
+          fontSize: 25,
+          direction: "rtl",
+      },
+      img_question:{
+
+          display: 'block',
+          margin: 'auto',
+      },
           form_control_label:{
+
               color: '#000',
               fontFamily: 'Suez One',
               textAlign: "center",
               fontSize: 14,
-              direction: "rtl"
-          }
+              direction: "rtl",
 
-      };
+          }
+  };
     return (
       <div style={classes.center_page} >
           <h1 style={classes.question}>{question}</h1>
@@ -64,7 +66,7 @@ const QuestionAnswers=({step,answers, question, using_image_question,image_url_q
             <img style={classes.img_question} src={require('../Questions_Answers_Images/'+image_url_question)}/>
             ) : null
           }
-              <RadioGroup name={step+"_q"} value={value} onChange={handleChange}>
+              <RadioGroup  name={step+"_q"} value={value} onChange={handleChange}>
                   {list_ans.map((text, index) => {
                       return (<FormControlLabel style={classes.form_control_label} key={index+1} value={index+1} control={<Radio />} label={text}/>);
                   })}
