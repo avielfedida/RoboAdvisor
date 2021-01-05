@@ -29,11 +29,8 @@ class Markowitz:
 
     def get_assets_price_data(self):
         price_data = {}
-        counter = 0
         for asset in self.all_assets:
             print( asset )
-            print( counter + 1 )
-            counter += 1
             try:
                 data_var = pdr.get_data_yahoo( asset, self.start_date, self.end_date )['Adj Close']
                 data_var.to_frame()
@@ -54,7 +51,6 @@ class Markowitz:
         std_df.sort_values( by=['std'], inplace=True )
 
         # return the relevant assets according to the risk level
-        selected_assets = pd.DataFrame()
         size = int(len(std_df) / 5)
         if risk_score == 1:
             self.selected_assets = std_df.iloc[0:size].index.tolist()
@@ -114,10 +110,16 @@ class Markowitz:
         portfolio.columns = portfolio.columns.str.rstrip( ' Weight' )
         labels = portfolio.columns[3:]
         sizes = portfolio.iloc[0][3:].tolist()
-        fig, ax = plt.subplots()
-        ax.pie( sizes, labels=labels, autopct='%0.1f%%', startangle=90 )
-        ax.axis( 'equal' )
-        # plt.show()
+        bonds_list = pd.read_excel('bonds list.xlsx')['Symbol'].tolist()
+        portfolio_build_labels = ['stocks', 'bonds']
+        bonds_size = len(set(labels).intersection(bonds_list))
+        portfolio_build_size = [(len(labels) - bonds_size) / len(labels), bonds_size / len(labels)]
+        fig, (ax1, ax2) = plt.subplots(2, 1)
+        ax1.pie( sizes, labels=labels, autopct='%0.1f%%', startangle=90 )
+        ax1.axis( 'equal' )
+        ax2.pie(portfolio_build_size, labels=portfolio_build_labels, autopct='%0.1f%%', startangle=90)
+        ax2.axis( 'equal' )
+        plt.show()
         return fig
 
     def plot_portfolios(self, df):
@@ -160,22 +162,3 @@ class Markowitz:
                          va='center',
                          wrap=True )
         plt.savefig( 'portfolio.png' )
-
-    def remove_noise_data(self):
-        assets = self.all_assets['Symbol'].tolist()
-        for asset in self.prices_df.columns:
-            if asset not in assets:
-                del self.prices_df[asset]
-        for asset in self.all_assets['Symbol']:
-            if asset not in self.prices_df.columns:
-                assets.remove(asset)
-        self.all_assets = pd.DataFrame(assets, columns=['Symbol'])
-
-
-# model = Markowitz()
-# #model.get_all_assets()
-# model.get_assets_price_data()
-# #model.all_assets = pd.read_excel('stocks_list.xlsx', index_col=0)
-# #model.prices_df = pd.read_excel('assets prices.xlsx', index_col=0)
-# #model.remove_noise_data()
-# # model.get_optimal_portfolio(2)
