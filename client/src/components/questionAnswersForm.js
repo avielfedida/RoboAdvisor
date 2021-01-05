@@ -139,8 +139,11 @@ const MainForm = () => {
     const load_form_submit = async () => {
         try {
             setLoad(true);
-            // const res = await formSubmit.post( "/", allAns );
+            console.log(answers);
+            const res = await formSubmit.post( "/", answers );
+            console.log(res);
             // setLoad(false);
+
         } catch (e) {
             console.log(e);
         }
