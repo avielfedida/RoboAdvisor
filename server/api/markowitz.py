@@ -10,12 +10,12 @@ pd.set_option( 'display.width', None )
 
 
 class Markowitz:
-
     all_assets = ['SHY', 'TLT', 'SHV', 'IEF', 'GOVT', 'AAPL', 'AMZN', 'MSFT', 'GOOG', 'NFLX']
 
     end_date = datetime.now() - timedelta( 1 )
-    start_date = datetime(end_date.year - 1, end_date.month, end_date.day)
-    prices_df = pd.DataFrame()
+    start_date = datetime( end_date.year - 1, end_date.month, end_date.day )
+    # prices_df = pd.DataFrame()
+    prices_df = pd.read_excel( 'C:\\Users\\omers\\Desktop\\assets_prices.xlsx', index_col=0 )
     selected_assets = []
 
     def get_all_assets(self):
@@ -24,8 +24,8 @@ class Markowitz:
         sp500_stocks = pd.read_html( 'https://en.wikipedia.org/wiki/List_of_S%26P_500_companies' )
         sp500_stocks_df = sp500_stocks[0]['Symbol']
         self.all_assets = bonds_df.tolist() + sp500_stocks_df.tolist()
-        bonds_df.to_excel('bonds list.xlsx')
-        sp500_stocks_df.to_excel('stocks list.xlsx')
+        bonds_df.to_excel( 'bonds list.xlsx' )
+        sp500_stocks_df.to_excel( 'stocks list.xlsx' )
 
     def get_assets_price_data(self):
         price_data = {}
@@ -36,38 +36,43 @@ class Markowitz:
                 data_var.to_frame()
                 price_data.update( {asset: data_var} )
             except:
-                self.all_assets.remove(asset)
+                print( "failed" )
+                self.all_assets.remove( asset )
                 continue
         self.prices_df = pd.DataFrame( price_data )
-        self.prices_df.to_excel('assets_prices.xlsx')
+        self.prices_df.to_excel( 'assets_prices.xlsx' )
         pd.DataFrame( self.all_assets ).to_excel( 'assets_list.xlsx' )
 
     def get_selected_assets(self, risk_score):
-        self.get_assets_price_data()
+        # self.get_assets_price_data()
+        print( len( self.prices_df.columns ) )
         all_std = [self.prices_df[col].std() for col in self.prices_df.columns]
-        std_df = pd.DataFrame( index=self.prices_df.columns, columns=['std'])
-        for index, asset in enumerate(self.all_assets):
+        print( len( all_std ) )
+        print( len( self.all_assets ) )
+        std_df = pd.DataFrame( index=self.prices_df.columns, columns=['std'] )
+        for index, asset in enumerate( self.all_assets ):
+            print( asset )
             std_df.loc[asset, 'std'] = all_std[index]
         std_df.sort_values( by=['std'], inplace=True )
 
         # return the relevant assets according to the risk level
-        size = int(len(std_df) / 5)
+        size = int( len( std_df ) / 5 )
         if risk_score == 1:
             self.selected_assets = std_df.iloc[0:size].index.tolist()
         elif risk_score == 2:
-            self.selected_assets = std_df.iloc[size:size*2].index.tolist()
+            self.selected_assets = std_df.iloc[size:size * 2].index.tolist()
         elif risk_score == 3:
-            self.selected_assets = std_df.iloc[size*2:size*3].index.tolist()
+            self.selected_assets = std_df.iloc[size * 2:size * 3].index.tolist()
         elif risk_score == 4:
-            self.selected_assets = std_df.iloc[size*3:size*4].index.tolist()
+            self.selected_assets = std_df.iloc[size * 3:size * 4].index.tolist()
         elif risk_score == 5:
-            self.selected_assets = std_df.iloc[size*4:size*5].index.tolist()
+            self.selected_assets = std_df.iloc[size * 4:size * 5].index.tolist()
         else:
             self.selected_assets = std_df.index.tolist()
         return
 
     def get_optimal_portfolio(self, score):
-        self.get_selected_assets(score)
+        self.get_selected_assets( score )
         selected_prices_value = self.prices_df[self.selected_assets].dropna()
         num_portfolios = 500
         years = len( selected_prices_value ) / 253
@@ -102,7 +107,7 @@ class Markowitz:
         column_order = ['Returns', 'Volatility', 'Sharpe Ratio'] + [stock + ' Weight' for stock in self.selected_assets]
         df = df[column_order]
         sharpe_portfolio = df.loc[df['Sharpe Ratio'] == df['Sharpe Ratio'].max()]
-        fig = self.pie_plot(sharpe_portfolio)
+        fig = self.pie_plot( sharpe_portfolio )
         # self.plot_portfolios( df )
         return fig
 
@@ -162,3 +167,21 @@ class Markowitz:
                          va='center',
                          wrap=True )
         plt.savefig( 'portfolio.png' )
+
+    def remove_noise_data(self):
+        assets = self.all_assets['Symbol'].tolist()
+        for asset in self.prices_df.columns:
+            if asset not in assets:
+                del self.prices_df[asset]
+        for asset in self.all_assets['Symbol']:
+            if asset not in self.prices_df.columns:
+                assets.remove( asset )
+        self.all_assets = pd.DataFrame( assets, columns=['Symbol'] )
+
+# model = Markowitz()
+# #model.get_all_assets()
+# model.get_assets_price_data()
+# #model.all_assets = pd.read_excel('stocks_list.xlsx', index_col=0)
+# #model.prices_df = pd.read_excel('assets prices.xlsx', index_col=0)
+# #model.remove_noise_data()
+# # model.get_optimal_portfolio(2)
