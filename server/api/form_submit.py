@@ -1,4 +1,4 @@
-from operator import itemgetter
+import json
 
 from flask import Blueprint, request, make_response, jsonify
 from flask.views import MethodView
@@ -6,16 +6,27 @@ from flask.views import MethodView
 from api.algorithms import get_risk_horizon_score, check_if_all_questions_with_answers
 from api.markowitz import Markowitz
 from api.utils import exceptions_mapper, json_abort, plt_to_src
+from app.configurations import Config
+from app.extensions import db
+from models.results import Results
 
 
 class FormSubmit(MethodView):
+
+    def get(self):
+        new_result = Results(name='omer', notes=json.dumps({
+            'hi': 3
+        }))
+        db.session.add(new_result)
+        db.session.commit()
+        return 'Ha'
+
     def post(self):
         try:
-            dict_variable = {int(key)+1: value for (key, value) in request.json.items()}
+            dict_variable = {int(key) + 1: value for (key, value) in request.json.items()}
         except Exception as e:
             json_abort(*exceptions_mapper(400, []), e)
         result = check_if_all_questions_with_answers(dict_variable)
-        print(dict_variable)
         if result is not None:
             json_abort(*exceptions_mapper(400, result), e)
         else:
@@ -56,7 +67,6 @@ class FormSubmit(MethodView):
         try:
             model = Markowitz()
             score = get_risk_horizon_score(dict_variable)
-            print(score)
             fig = model.get_optimal_portfolio(score)
             base64image = plt_to_src(fig)
         except Exception as e:
@@ -64,7 +74,6 @@ class FormSubmit(MethodView):
         return make_response(jsonify(message="Porfolio", src=base64image), 200)
 
 
-
-api = Blueprint("api_form_submit", __name__, url_prefix='/api/v1' + '/form_submit')
+api = Blueprint("api_form_submit", __name__, url_prefix=Config.API_PREFIX + '/form_submit')
 form_submit = FormSubmit.as_view('form_submit_api')
-api.add_url_rule('/', methods=['POST'], view_func=form_submit)
+api.add_url_rule('/', methods=['POST', 'GET'], view_func=form_submit)
