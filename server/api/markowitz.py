@@ -114,23 +114,27 @@ class Markowitz:
     def pie_plot(self, portfolio):
         portfolio.columns = portfolio.columns.str.rstrip(' Weight')
         assets_list = portfolio.columns[3:].tolist()
-        bonds_list = pd.read_excel( './resources/bonds_list.xlsx' )['Symbol'].tolist()
-        port_bonds_list = list( set( assets_list ).intersection(set( bonds_list ) ))
-        port_stocks_list = list( set( assets_list ) ^ set( port_bonds_list ) )
+        bonds_list = pd.read_excel('./resources/bonds_list.xlsx')['Symbol'].tolist()
+        port_bonds_list = list(set(assets_list).intersection(set(bonds_list)))
+        port_stocks_list = list(set(assets_list) ^ set(port_bonds_list))
         bonds_weights = portfolio.loc[:, port_bonds_list].iloc[0].tolist()
         stocks_weights = portfolio.loc[:, port_stocks_list].iloc[0].tolist()
-        fig, (ax1, ax2, ax3) = plt.subplots( 1, 3, dpi=100)
+        fig, (ax2, ax1, ax3) = plt.subplots(1, 3, dpi=150, figsize=(20, 12))
+
         # build ratio graph
-        ratio_labels = ['stocks', 'bonds']
-        portfolio_build_size = [len(port_stocks_list), len(port_bonds_list)]
-        ax1.pie( portfolio_build_size, labels=ratio_labels, autopct='%0.1f%%', startangle=90, labeldistance=1.05 )
-        ax1.set_title('portfolio stocks and bonds ratio')
+        ratio_labels = ['bonds', 'stocks']
+        portfolio_build_size = [sum(bonds_weights), sum(stocks_weights)]
+        ax1.pie(portfolio_build_size, labels=ratio_labels, autopct='%0.1f%%', startangle=90, labeldistance=1.05)
+        # ax1.set_title('יחס בין מניות לאיגרות חוב')
         # build bonds graph
-        ax2.pie( bonds_weights, labels=port_bonds_list, autopct='%0.1f%%', startangle=90, labeldistance=1.05 )
-        ax2.set_title( 'portfolio bonds weights' )
+        ax2.pie(bonds_weights, labels=port_bonds_list, autopct='%0.1f%%', startangle=90, labeldistance=1.05)
+        # ax2.set_title('חלוקת איגרות החוב')
         # build stocks graph
-        ax3.pie( stocks_weights, labels=port_stocks_list, autopct='%0.1f%%', startangle=300, labeldistance=1.05 )
-        ax3.set_title( 'portfolio stocks weights' )
+        patches, texts, autotexts = ax3.pie(stocks_weights, labels=port_stocks_list, autopct='%0.1f%%', startangle=330, labeldistance=1.25)
+        for txt in texts:
+            txt.set_fontsize(8)
+        # ax3.set_title('חלוקת המניות')
+        # plt.text(0, 0, (u'תיק ההשקעות המומלץ')[::-1], name='Arial', horizontalalignment='center', verticalalignment='top')
         # results = 'Portfolio Return: ' + str(100) + ' Portfolio Volatility: ' + str(100) + ' Portfolio Sharpe Ratio: ' + str(100)
         # plt.text( 0, 0.5, results )
         # plt.show()

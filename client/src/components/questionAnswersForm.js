@@ -1,4 +1,4 @@
-import React  from 'react';
+import React, { useEffect }  from 'react';
 import {makeStyles} from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
@@ -10,13 +10,13 @@ import formSubmit from '../api/formSubmit';
 import Questions_Answers from './questions_answers';
 import Image from './AnalysisImage';
 import AnalysisImage from "./AnalysisImage";
-
+import Portfolio from "./Portfolio";
 
 const useStyles = makeStyles((theme) => ({
     layout: {
         width: 'auto',
         [theme.breakpoints.up(5 + theme.spacing(2) )]: {
-            width: 1000,
+            width: 1600,
             marginLeft: 'auto',
             marginRight: 'auto',
         },
@@ -128,14 +128,26 @@ const useStyles = makeStyles((theme) => ({
 const steps= Questions_Answers
 
 
+
+
 const MainForm = () => {
     const classes = useStyles();
-    const [activeStep, setActiveStep] = React.useState(0);
-    const [answers, setAnswers ]= React.useState({});
-    const [allAns, setAllAns] = React.useState(false);
+    const [activeStep, setActiveStep] = React.useState(0); // 7
+    const [answers, setAnswers ]= React.useState({})
+    //
+    //     0: 2,
+    //     1: 2,
+    //     2: 2,
+    //     3: 2,
+    //     4: 2,
+    //     5: 2,
+    //     6: 2,
+    //     7: 2
+    // }); // {}
+    const [allAns, setAllAns] = React.useState(false); // true
     const [load, setLoad] = React.useState(false);
     const [showModal, setShowModal] = React.useState(false);
-    const [explanationQuestion, setExplanationQuestion] = React.useState(true);
+    const [explanationQuestion, setExplanationQuestion] = React.useState(true); // false
     const getChooseAns = (step,index) => {
         setAnswers({...answers, [step]: parseInt(index)});
     };
@@ -151,6 +163,10 @@ const MainForm = () => {
             console.log(e);
         }
     };
+
+    // useEffect(() => {
+    //     load_form_submit()
+    // }, [])
 
     const handleEnd = () =>{
         if(Object.keys(answers).length ===  steps.length ) {
@@ -237,7 +253,10 @@ const MainForm = () => {
                         <Button onClick={handleStart} className={classes.button_next}>קדימה בואו נתחיל</Button>
                     </div>
                 ):null}
-                {getPortfolio !== null ? (<AnalysisImage src={getPortfolio}/>): null}
+                {getPortfolio !== null ? (
+                    <Portfolio src={getPortfolio} />
+                    // <AnalysisImage src={getPortfolio}/>
+                    ): null}
             </Paper>
         </main>
     );
