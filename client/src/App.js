@@ -17,6 +17,8 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import InboxIcon from '@material-ui/icons/MoveToInbox';
 import MailIcon from '@material-ui/icons/Mail';
+import SvgIcon from '@material-ui/core/SvgIcon';
+import CreditCardIcon from '@material-ui/icons/CreditCard';
 import {BrowserRouter, Route, Routes, Link} from "react-router-dom";
 
 import HomePage from "./pages/homePage";
@@ -92,6 +94,10 @@ const useStyles = makeStyles((theme) => ({
     }),
     marginRight: 0,
   },
+  drawerList:{
+    direction: "rtl",
+
+  }
 }));
 
 export default function App() {
@@ -117,7 +123,7 @@ export default function App() {
           >
           <Toolbar>
             <Typography variant="h6"  noWrap className={classes.title}>
-            MONA - ROBO ADV
+            MONA - Robo Advisor
             </Typography>
           <IconButton
             color="inherit"
@@ -163,26 +169,27 @@ export default function App() {
           </IconButton>
         </div>
         <Divider />
-        <List>
-          {['עמוד הבית', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-              <Link to="">
-            <ListItem button key={text}>
-              <ListItemText primary={text} />
-              <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-
+        <List >
+          <Link to="/">
+            <ListItem button key={'עמוד הבית'}>
+              <ListItemText primary={'עמוד הבית'} className={classes.drawerList} />
+              <ListItemIcon>
+                <SvgIcon>
+                  <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
+              </SvgIcon>
+              </ListItemIcon>
             </ListItem>
-                  </Link>
-          ))}
+          </Link>
+          <Link to="/mainForm">
+            <ListItem button key={'בניית תיק השקעות'}>
+              <ListItemText primary={'בניית תיק השקעות'} className={classes.drawerList} />
+              <ListItemIcon>
+                <CreditCardIcon/>
+              </ListItemIcon>
+            </ListItem>
+          </Link>
         </List>
         <Divider />
-        <List>
-          {['All mail', 'Trash', 'Spam'].map((text, index) => (
-            <ListItem button key={text}>
-              <ListItemText primary={text} />
-              <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-            </ListItem>
-          ))}
-        </List>
       </Drawer>
     </div>
    </BrowserRouter>

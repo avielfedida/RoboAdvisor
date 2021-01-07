@@ -130,10 +130,10 @@ class Markowitz:
         ax2.set_title( 'portfolio bonds weights' )
         # build stocks graph
         ax3.pie( stocks_weights, labels=port_stocks_list, autopct='%0.1f%%', startangle=300, labeldistance=1.05 )
-        ax3.set_title( 'portfolio bonds weights' )
+        ax3.set_title( 'portfolio stocks weights' )
         # results = 'Portfolio Return: ' + str(100) + ' Portfolio Volatility: ' + str(100) + ' Portfolio Sharpe Ratio: ' + str(100)
         # plt.text( 0, 0.5, results )
-        plt.show()
+        # plt.show()
 
         return fig
 

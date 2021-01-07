@@ -64,7 +64,7 @@ const QuestionAnswers=({step,answers, question, using_image_question,image_url_q
           direction: "rtl",
           }
   };
-  console.log(image_url_question);
+  // console.log(image_url_question);
    return (
       <div style={classes.center_page} >
           <h1 style={classes.question}>שאלה {step+1}:</h1 >

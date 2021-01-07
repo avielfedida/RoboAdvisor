@@ -67,7 +67,7 @@ class FormSubmit(MethodView):
         try:
             model = Markowitz()
             score = get_risk_horizon_score(dict_variable)
-            fig = model.get_optimal_portfolio(score)
+            fig = model.get_optimal_portfolio(0)
             base64image = plt_to_src(fig)
         except Exception as e:
             json_abort(*exceptions_mapper(500), e)

@@ -9,6 +9,7 @@ import QuestionAnswers from './questionAnswers';
 import formSubmit from '../api/formSubmit';
 import Questions_Answers from './questions_answers';
 import Image from './AnalysisImage';
+import AnalysisImage from "./AnalysisImage";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -143,11 +144,9 @@ const MainForm = () => {
     const load_form_submit = async () => {
         try {
             setLoad(true);
-            console.log(answers);
             const res = await formSubmit.post( "/", answers );
-            setGetPortfolio(res.src);
+            setGetPortfolio(res.data.src);
             setLoad(false);
-            console.log(res);
         } catch (e) {
             console.log(e);
         }
@@ -155,7 +154,9 @@ const MainForm = () => {
 
     const handleEnd = () =>{
         if(Object.keys(answers).length ===  steps.length ) {
-            setAllAns(true);
+            // setAllAns(true);
+            // console.log(answers)
+            load_form_submit()
         }
         else {
             setShowModal(true);
@@ -189,9 +190,7 @@ const MainForm = () => {
                         </div>
                     </Modal>
                 ): null}
-
-                {load ?(<LinearProgress className={classes.linear_progress}/>) : null}
-
+                {load ? (<LinearProgress className={classes.linear_progress}/>) : null}
                 {activeStep !== steps.length && !load && !explanationQuestion && getPortfolio ==null &&
                     <div>
                         <QuestionAnswers
@@ -222,7 +221,6 @@ const MainForm = () => {
                         </div>
                     </div>
                 }
-                {allAns && !load && !explanationQuestion && getPortfolio==null ? ( load_form_submit() ) : null}
                 {explanationQuestion && !load ? (
                     <div >
                         <p className={classes.title}>8 שאלות קצרות ויש לך תיק השקעות מותאם אישית</p>
@@ -239,7 +237,7 @@ const MainForm = () => {
                         <Button onClick={handleStart} className={classes.button_next}>קדימה בואו נתחיל</Button>
                     </div>
                 ):null}
-                {getPortfolio!=null ?(<Image src={getPortfolio}/>): null}
+                {getPortfolio !== null ? (<AnalysisImage src={getPortfolio}/>): null}
             </Paper>
         </main>
     );
