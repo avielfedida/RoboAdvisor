@@ -113,18 +113,28 @@ class Markowitz:
 
     def pie_plot(self, portfolio):
         portfolio.columns = portfolio.columns.str.rstrip(' Weight')
-        labels = portfolio.columns[3:]
-        sizes = portfolio.iloc[0][3:].tolist()
-        bonds_list = pd.read_excel('./resources/bonds_list.xlsx')['Symbol'].tolist()
-        portfolio_build_labels = ['stocks', 'bonds']
-        bonds_size = len(set(labels).intersection(bonds_list))
-        portfolio_build_size = [(len(labels) - bonds_size) / len(labels), bonds_size / len(labels)]
-        fig, (ax1, ax2) = plt.subplots(2, 1)
-        ax1.pie(sizes, labels=labels, autopct='%0.1f%%', startangle=90)
-        ax1.axis('equal')
-        ax2.pie(portfolio_build_size, labels=portfolio_build_labels, autopct='%0.1f%%', startangle=90)
-        ax2.axis('equal')
-        # plt.show()
+        assets_list = portfolio.columns[3:].tolist()
+        bonds_list = pd.read_excel( './resources/bonds_list.xlsx' )['Symbol'].tolist()
+        port_bonds_list = list( set( assets_list ).intersection(set( bonds_list ) ))
+        port_stocks_list = list( set( assets_list ) ^ set( port_bonds_list ) )
+        bonds_weights = portfolio.loc[:, port_bonds_list].iloc[0].tolist()
+        stocks_weights = portfolio.loc[:, port_stocks_list].iloc[0].tolist()
+        fig, (ax1, ax2, ax3) = plt.subplots( 1, 3, dpi=100)
+        # build ratio graph
+        ratio_labels = ['stocks', 'bonds']
+        portfolio_build_size = [len(port_stocks_list), len(port_bonds_list)]
+        ax1.pie( portfolio_build_size, labels=ratio_labels, autopct='%0.1f%%', startangle=90, labeldistance=1.05 )
+        ax1.set_title('portfolio stocks and bonds ratio')
+        # build bonds graph
+        ax2.pie( bonds_weights, labels=port_bonds_list, autopct='%0.1f%%', startangle=90, labeldistance=1.05 )
+        ax2.set_title( 'portfolio bonds weights' )
+        # build stocks graph
+        ax3.pie( stocks_weights, labels=port_stocks_list, autopct='%0.1f%%', startangle=300, labeldistance=1.05 )
+        ax3.set_title( 'portfolio bonds weights' )
+        # results = 'Portfolio Return: ' + str(100) + ' Portfolio Volatility: ' + str(100) + ' Portfolio Sharpe Ratio: ' + str(100)
+        # plt.text( 0, 0.5, results )
+        plt.show()
+
         return fig
 
     def plot_portfolios(self, df):
@@ -177,11 +187,3 @@ class Markowitz:
             if asset not in self.prices_df.columns:
                 assets.remove(asset)
         self.all_assets = pd.DataFrame(assets, columns=['Symbol'])
-
-# model = Markowitz()
-# #model.get_all_assets()
-# model.get_assets_price_data()
-# #model.all_assets = pd.read_excel('stocks_list.xlsx', index_col=0)
-# #model.prices_df = pd.read_excel('assets prices.xlsx', index_col=0)
-# #model.remove_noise_data()
-# # model.get_optimal_portfolio(2)
