@@ -3,13 +3,12 @@ import {makeStyles} from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
 import Modal from '@material-ui/core/Modal';
+import Typography from '@material-ui/core/Typography';
 import LinearProgress from '@material-ui/core/LinearProgress';
 
 import QuestionAnswers from './questionAnswers';
 import formSubmit from '../api/formSubmit';
 import Questions_Answers from './questions_answers';
-import Image from './AnalysisImage';
-
 
 const useStyles = makeStyles((theme) => ({
     layout: {
@@ -116,12 +115,10 @@ const useStyles = makeStyles((theme) => ({
         '& > * + *': {
             marginTop: theme.spacing(2),
         },
-
-        background: '#2196f3',
-        display: 'flex',
-        justifyContent: 'center',
     },
     question_answers:{
+
+
     },
 }));
 const steps= Questions_Answers
@@ -138,21 +135,22 @@ const MainForm = () => {
     const getChooseAns = (step,index) => {
         setAnswers({...answers, [step]: parseInt(index)});
     };
-    const [getPortfolio, setGetPortfolio] = React.useState(null);
 
     const load_form_submit = async () => {
         try {
             setLoad(true);
             console.log(answers);
             const res = await formSubmit.post( "/", answers );
-            setGetPortfolio(res.src);
-            setLoad(false);
             console.log(res);
+            // setLoad(false);
+
         } catch (e) {
             console.log(e);
         }
     };
-
+    // React.useEffect(() => {
+    //     load_form_submit();
+    // }, []);
     const handleEnd = () =>{
         if(Object.keys(answers).length ===  steps.length ) {
             setAllAns(true);
@@ -192,7 +190,7 @@ const MainForm = () => {
 
                 {load ?(<LinearProgress className={classes.linear_progress}/>) : null}
 
-                {activeStep !== steps.length && !load && !explanationQuestion && getPortfolio ==null &&
+                {activeStep !== steps.length && !load && !explanationQuestion &&
                     <div>
                         <QuestionAnswers
                             answers={answers}
@@ -200,7 +198,6 @@ const MainForm = () => {
                             question={steps[activeStep].question}
                             using_image_question={steps[activeStep].using_image_question}
                             image_url_question={steps[activeStep].image_url_question}
-                            example={steps[activeStep].example}
                             list_ans={steps[activeStep].list_ans}
                             using_image_ans={steps[activeStep].using_image_ans}
                             getchooseans={getChooseAns}
@@ -222,10 +219,10 @@ const MainForm = () => {
                         </div>
                     </div>
                 }
-                {allAns && !load && !explanationQuestion && getPortfolio==null ? ( load_form_submit() ) : null}
+                {allAns && !load && !explanationQuestion ? ( load_form_submit() ) : null}
                 {explanationQuestion && !load ? (
                     <div >
-                        <p className={classes.title}>8 שאלות קצרות ויש לך תיק השקעות מותאם אישית</p>
+                        <p className={classes.title}>10 שאלות קצרות ויש לך תיק השקעות מותאם אישית</p>
 
                         <p className={classes.body}>
                             כדי לתכנן את תיק ההשקעות המתאים ביותר עבורך נשאל כמה שאלות לגבי ההעדפות שלך
@@ -239,7 +236,6 @@ const MainForm = () => {
                         <Button onClick={handleStart} className={classes.button_next}>קדימה בואו נתחיל</Button>
                     </div>
                 ):null}
-                {getPortfolio!=null ?(<Image src={getPortfolio}/>): null}
             </Paper>
         </main>
     );
