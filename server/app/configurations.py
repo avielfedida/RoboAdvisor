@@ -25,5 +25,5 @@ class Config(object):
 
     # Database
     SQLALCHEMY_ECHO = True
-    SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://postgres:16941694@127.0.0.1:5432/moran'
+    SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://postgres:16941694@127.0.0.1:5432/radb'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
