@@ -227,7 +227,6 @@ psycopg2-binary==2.8.3
 purl==1.5
 pyasn1==0.4.7
 pyasn1-modules==0.2.7
-PyAudio @ file:///C:/Users/aviel/pipwin/PyAudio-0.2.11-cp38-cp38-win_amd64.whl
 pycodestyle==2.6.0
 pycountry==19.7.15
 pycparser==2.20
