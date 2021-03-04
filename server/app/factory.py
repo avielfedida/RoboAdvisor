@@ -1,7 +1,7 @@
 from flask import Flask
 
-from app.configurations import Config
-from app.extensions import db
+from .configurations import Config
+from .extensions import db
 
 def create_app():
     app = Flask(__name__)
@@ -14,8 +14,8 @@ def create_app():
     # Set up database
     db.init_app(app)
 
-    from api.form_submit import api as sumbit_form
-    from api.celery_demo import api as celery_demo_api
+    from server.api.form_submit import api as sumbit_form
+    from server.api.celery_demo import api as celery_demo_api
     app.register_blueprint(sumbit_form)
     app.register_blueprint(celery_demo_api)
 

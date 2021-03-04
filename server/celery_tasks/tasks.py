@@ -2,10 +2,10 @@ import json
 import random
 import time
 from datetime import datetime
-from app.extensions import celery
+from server.app.extensions import celery
 from sqlalchemy import func
-from app.extensions import db
-from models.number_addition import NumberAddition
+from server.app.extensions import db
+from server.models.number_addition import NumberAddition
 
 @celery.task(name='tasks.execute_analysis', bind=True)
 def execute_analysis(self, numA, numB):

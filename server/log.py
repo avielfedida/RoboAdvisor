@@ -14,7 +14,7 @@ import os
 LOG_FORMAT = '%(asctime)s|%(levelname)s|%(message)s|'
 LOG_COLORED_FORMAT = '%(cyan)s[%(asctime)s]%(reset)s%(yellow)s[%(levelname)s]%(reset)s%(red)s[%(message)s]'
 DT_FORMAT = '%m/%d/%Y %I:%M:%S %p'
-LOG_DIR = "logs"
+LOG_DIR = "./logs"
 
 
 class OneLineExceptionFormatter(logging.Formatter):

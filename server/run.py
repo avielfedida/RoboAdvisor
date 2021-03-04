@@ -1,9 +1,9 @@
 import eventlet
 # This second import is due to: https://github.com/miguelgrinberg/flask-socketio/issues/309
 import eventlet.wsgi
-from celery_tasks.celery import configure_celery
+from server.celery_tasks.celery import configure_celery
 
-from app.factory import create_app
+from server.app.factory import create_app
 
 
 def run():

@@ -2,7 +2,7 @@ import datetime
 
 from sqlalchemy import inspect
 
-from app.extensions import db
+from server.app.extensions import db
 
 class Results(db.Model):
     __tablename__ = 'results'

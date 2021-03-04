@@ -15,7 +15,8 @@ class Markowitz:
     end_date = datetime.now() - timedelta(1)
     start_date = datetime(end_date.year - 1, end_date.month, end_date.day)
     # prices_df = pd.DataFrame()
-    prices_df = pd.read_excel('./resources/assets_prices.xlsx', index_col=0)
+    #TODO: FIX HERE, FIX PATHS
+    # prices_df = pd.read_excel('./resources/assets_prices.xlsx', index_col=0)
     selected_assets = []
 
     def get_all_assets(self):
