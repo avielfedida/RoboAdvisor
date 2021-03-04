@@ -15,7 +15,9 @@ def create_app():
     db.init_app(app)
 
     from api.form_submit import api as demo_api
+    from api.celery_demo import api as celery_demo_api
     app.register_blueprint(demo_api)
+    app.register_blueprint(celery_demo_api)
 
     # Create tables
     with app.app_context():

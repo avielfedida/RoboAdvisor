@@ -4,7 +4,7 @@ import sys
 from logging.handlers import TimedRotatingFileHandler
 from uuid import uuid4
 from colorlog import ColoredFormatter
-import os
+import os   
 
 # From the following links:
 # https://stackoverflow.com/questions/28180159/how-do-i-can-format-exception-stacktraces-in-python-logging
