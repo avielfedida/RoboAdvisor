@@ -23,7 +23,8 @@ class FormSubmit(MethodView):
 
     def post(self):
         try:
-            dict_variable = {int(key) + 1: value for (key, value) in request.json.items()}
+            dict_variable = {int(key) + 1: value+1 for (key, value) in request.json.items()}
+            print('Answers', dict_variable)
         except Exception as e:
             json_abort(*exceptions_mapper(400, []), e)
         result = check_if_all_questions_with_answers(dict_variable)
