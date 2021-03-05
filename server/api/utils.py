@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 from flask import abort, make_response, jsonify
 # https://stackoverflow.com/questions/21638922/custom-error-message-json-object-with-flask-restful
 from werkzeug.exceptions import HTTPException
-from server.app.extensions import logger
+from app.extensions import logger
 
 
 

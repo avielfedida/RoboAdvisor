@@ -2,7 +2,7 @@ import datetime
 
 from sqlalchemy import inspect
 
-from server.app.extensions import db
+from app.extensions import db
 
 class NumberAddition(db.Model):
     __tablename__ = 'number_addition'

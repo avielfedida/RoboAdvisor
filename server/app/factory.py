@@ -14,8 +14,8 @@ def create_app():
     # Set up database
     db.init_app(app)
 
-    from server.api.form_submit import api as sumbit_form
-    from server.api.celery_demo import api as celery_demo_api
+    from api.form_submit import api as sumbit_form
+    from api.celery_demo import api as celery_demo_api
     app.register_blueprint(sumbit_form)
     app.register_blueprint(celery_demo_api)
 

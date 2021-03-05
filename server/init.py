@@ -1,7 +1,7 @@
 from subprocess import Popen
 
 redis_init = ["redis-server.exe", "redis.windows.conf"]
-celery_init = ["celery", "worker", "-A", "server.celery_tasks.worker.celery", "--loglevel=info", "--pool=eventlet"]
+celery_init = ["celery", "worker", "-A", "celery_tasks.worker.celery", "--loglevel=info", "--pool=eventlet"]
 # -P solo --without-gossip --without-mingle --without-heartbeat
 # celery_init = ["celery", "worker", "-A", "celery_tasks.worker.celery", "--loglevel=info", "-P", "solo",
 #                "--without-gossip", "--without-mingle", "--without-heartbeat"]

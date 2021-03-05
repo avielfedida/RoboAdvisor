@@ -3,12 +3,12 @@ import json
 from flask import Blueprint, request, make_response, jsonify
 from flask.views import MethodView
 
-from server.api.algorithms import get_risk_horizon_score, check_if_all_questions_with_answers
-from server.api.markowitz import Markowitz
-from server.api.utils import exceptions_mapper, json_abort, plt_to_src
-from server.app.configurations import Config
-from server.app.extensions import db
-from server.models.results import Results
+from api.algorithms import get_risk_horizon_score, check_if_all_questions_with_answers
+from api.markowitz import Markowitz
+from api.utils import exceptions_mapper, json_abort, plt_to_src
+from app.configurations import Config
+from app.extensions import db
+from models.results import Results
 
 
 class FormSubmit(MethodView):

@@ -1,6 +1,6 @@
 from celery.app import Celery
 from flask import Flask
-from server.app.extensions import celery
+from app.extensions import celery
 
 
 def configure_celery(app: Flask) -> Celery:
