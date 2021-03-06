@@ -16,8 +16,10 @@ def create_app():
 
     from api.form_submit import api as sumbit_form
     from api.celery_demo import api as celery_demo_api
+    from api.users_api import  api as users_api
     app.register_blueprint(sumbit_form)
     app.register_blueprint(celery_demo_api)
+    app.register_blueprint(users_api)
 
     # Create tables
     with app.app_context():
