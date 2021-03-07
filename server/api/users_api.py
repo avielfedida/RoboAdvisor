@@ -1,6 +1,5 @@
 from flask import Blueprint, request, make_response, jsonify
 from flask.views import MethodView
-from sqlalchemy.exc import IntegrityError
 from app.configurations import Config
 from app.extensions import db
 from models.users import User
