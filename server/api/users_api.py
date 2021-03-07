@@ -10,10 +10,8 @@ class UsersApi(MethodView):
 
     # add new user
     def post(self):
-
-        # TODO - Check if when not 'risk' is entered in the user table, is it set to undefined
         try:
-            if request.form['latest_portfolio_risk']:
+            if request.form.get("latest_portfolio_risk"):
                 new_user = User(email=request.form['email'], password=request.form['password'], first_name=request.form['first_name'],
                                 last_name=request.form['last_name'], age=request.form['age'], sex=request.form['sex'],
                                 latest_portfolio_risk=request.form['latest_portfolio_risk'])

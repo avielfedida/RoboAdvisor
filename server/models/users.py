@@ -1,5 +1,5 @@
 from app.extensions import db
-from models.enums.sex import Sex
+from models.enums.gender import Gender
 from models.enums.risk import Risk
 
 
@@ -13,7 +13,7 @@ class User(db.Model):
     first_name = db.Column('first_name', db.String)
     last_name = db.Column('last_name', db.String)
     age = db.Column('age', db.Numeric)
-    sex = db.Column('sex', db.Enum(Sex))
+    sex = db.Column('sex', db.Enum(Gender))
     latest_portfolio_risk = db.Column('latest_portfolio_risk', db.Enum(Risk), default='undefined')
 
     def as_dict(self):

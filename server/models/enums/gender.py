@@ -1,7 +1,7 @@
 import enum
 
 
-class Sex(enum.Enum):
+class Gender(enum.Enum):
     male = 'Male'
     female = 'Female'
     other = 'Other'
