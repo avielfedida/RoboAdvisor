@@ -4,7 +4,7 @@ redis_init = ["redis-server.exe", "redis.windows.conf"]
 celery_init = ["celery", "worker", "-A", "celery_tasks.worker.celery", "--loglevel=info", "--pool=eventlet"]
 # celery_init = ["celery", "-A", "celery_tasks.worker.celery", "worker"]
 
-pc_user = "omers"
+pc_user = "aviel"
 
 to_run = [
     (redis_init, '/redis-celery/',),
