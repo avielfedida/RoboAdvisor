@@ -12,7 +12,7 @@ pd.set_option('display.width', None)
 class Markowitz:
     all_assets = ['SHY', 'TLT', 'SHV', 'IEF', 'GOVT', 'AAPL', 'AMZN', 'MSFT', 'GOOG', 'NFLX']
 
-    # todo remove sdfsdfsdfsdf
+    # todo remove sdfsdfsdfsdfsdfsdf
 
     end_date = datetime.now() - timedelta(1)
     start_date = datetime(end_date.year - 1, end_date.month, end_date.day)
