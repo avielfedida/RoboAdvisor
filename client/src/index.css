@@ -1,10 +1,11 @@
+/*
 @font-face {
   font-family: "Alef";
   src: local("Alef"),
     url("./fonts/Alef-Webfont/Alef-Bold.ttf") format("truetype");
 }
 
-/* The not is to allow font-awsome fonts to work */
+ The not is to allow font-awsome fonts to work 
 
 header,
 footer,
@@ -93,3 +94,5 @@ footer,
 .portfolio_image {
   width: 120% !important;
 }
+
+*/

@@ -22,7 +22,7 @@ const Questionnaire = ({
   const q_number = parseInt(q_num);
   const [disabledBtns, setDisabledBtns] = useState(false);
   return (
-    <Card>
+    <Card border="0">
       <Row>
         <Col xs={6}>
           {data.using_image_question ? (

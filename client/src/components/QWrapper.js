@@ -15,7 +15,7 @@ import Questions_Answers from "./questions_answers";
 import { Breadcrumb, Spinner, Row, Col, Card } from "react-bootstrap";
 import QExplanation from "./QExplanation";
 import Portfolio from "./Portfolio";
-import SpinnerCard from "./reusable/SpinnerCard";
+import Loader from "./reusables/Loader";
 
 const QWrapper = () => {
   const location = useLocation();
@@ -63,27 +63,34 @@ const QWrapper = () => {
   };
 
   return (
-    <div id="q_wrapper">
+    <div className="rtl offset_nav" id="q_wrapper">
       <Row>
         <Col xs={12}>
-          <Breadcrumb>
+          {/* <Breadcrumb> */}
+          <ol className="breadcrumb">
             {_.range(Questions_Answers.length, 0).map((i) => {
               return (
-                <Breadcrumb.Item
+                <li
+                  key={i}
                   onClick={() => jumpToQuestion(i)}
-                  active={i == question}
+                  className={i == question ? "active" : ""}
                 >
                   שאלה {i}
-                </Breadcrumb.Item>
+                </li>
               );
             })}
-            <Breadcrumb.Item
-              onClick={() => navigate("explanation")}
-              active={location.pathname.indexOf("explanation") !== -1}
+            <li
+              onClick={() => {
+                setQuestion(0);
+                navigate("/questionnaire/explanation");
+              }}
+              className={
+                location.pathname.indexOf("explanation") !== -1 ? "active" : ""
+              }
             >
               הסבר קצר
-            </Breadcrumb.Item>
-          </Breadcrumb>
+            </li>
+          </ol>
         </Col>
       </Row>
       <Row>
@@ -93,7 +100,7 @@ const QWrapper = () => {
               path="question/:q_num"
               element={
                 load ? (
-                  <SpinnerCard />
+                  <Loader />
                 ) : (
                   <Questionnaire
                     answers_state={answersState}
