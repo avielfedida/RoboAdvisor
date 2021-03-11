@@ -1,0 +1,372 @@
+// By: https://bootswatch.com/, template: Lumen
+@import "./custom";
+
+@font-face {
+  font-family: "Alef";
+  src: local("Alef"),
+    url("./fonts/Alef-Webfont/Alef-Bold.ttf") format("truetype");
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+//--------------UP HERE ARE THE GLOBALS
+
+//---------------FROM HERE REUSABLES
+.offset_nav {
+  margin-top: 10vh;
+}
+
+.rtl {
+  direction: rtl;
+}
+
+#login_screen {
+  max-width: 50vh;
+}
+
+// Navbar
+#main_navbar {
+  background-color: $white;
+  height: 10vh;
+
+  .input-group {
+    width: 30rem;
+  }
+
+  // To reset react-bootstrap drop arrow
+  .dropdown a::after {
+    border: 0;
+  }
+
+  .nav_link_custom {
+    display: flex;
+    align-items: flex-start;
+  }
+
+  .navbar-nav a {
+    display: flex;
+    align-items: center;
+    margin-left: 1rem;
+    width: 16vh;
+    justify-content: space-around;
+  }
+
+  .lnr {
+    font-size: 1.5rem;
+  }
+
+  #basic-navbar-nav {
+    direction: rtl;
+    justify-content: flex-start;
+  }
+}
+
+#q_wrapper {
+  direction: ltr;
+  text-align: right;
+
+  ol {
+    justify-content: flex-end;
+  }
+
+  .breadcrumb {
+    li {
+      flex-grow: 1;
+      flex-basis: auto;
+      text-align: center;
+      border-left: 1px solid #ccc;
+      color: $primary;
+      text-decoration: underline;
+      cursor: pointer;
+
+      &.active {
+        color: $secondary;
+        text-decoration: none;
+      }
+    }
+  }
+}
+
+.question_text {
+  direction: rtl;
+}
+
+#top_banner {
+  height: 75vh;
+  background-image: url("/images/backgrounds/5.jpg");
+  background-position: 50% 50%;
+  background-size: cover;
+  color: black;
+  display: flex;
+  line-height: 0.5rem;
+  justify-content: center;
+  align-items: center;
+  text-align: right;
+  direction: rtl;
+  // background-color: rgba(0, 0, 0, 0.5);
+}
+
+*:not(span, i) {
+  font-family: "Alef", sans-serif !important;
+}
+
+.center_block {
+  justify-content: center;
+  display: flex;
+  align-items: center;
+  min-height: 70vh;
+}
+
+// /* The not is to allow font-awsome fonts to work */
+// header,
+// footer,
+// .product_card,
+// .footer_upper,
+// .nav_link_custom,
+// p,
+// #products_grid *:not(i),
+// #product_view_container .card,
+// #product_details,
+// .alert_box,
+// #shopping_cart_view,
+// #login_container,
+// #profile_container,
+// #place_order_container,
+// #user_list_container .price_quantity_mul {
+//   direction: rtl !important;
+//   font-family: "Alef", sans-serif !important;
+//   scroll-behavior: smooth;
+// }
+
+// #username,
+// #admin {
+//   &::after {
+//     margin-right: 1rem !important;
+//     margin-left: 1rem !important;
+//   }
+// }
+
+// .price_quantity_mul {
+//   text-align: left;
+//   direction: ltr !important;
+// }
+
+// .alert_box,
+// #shopping_cart_view,
+// #login_container,
+// #profile_container,
+// #place_order_container,
+// #user_list_container {
+//   text-align: right;
+// }
+
+// #checkout_steps {
+//   ol {
+//     justify-content: center;
+//     direction: ltr;
+//   }
+// }
+
+// #shopping_cart_view {
+//   a {
+//     font-size: 1.1rem;
+//   }
+// }
+
+// #product_details {
+//   .list-group-item {
+//     padding-right: 0;
+//   }
+//   p {
+//     margin: 0;
+//   }
+// }
+
+// #stripe_over_navbar {
+//   background-color: #e7eaec;
+//   min-height: 3vh;
+// }
+
+// /* Both 7vh should match */
+// #main_navbar {
+//   height: 10vh;
+//   border: 0;
+//   background-color: rgba(255, 255, 255, 0.4) !important;
+// }
+
+// #main_bg_card {
+//   border: 0;
+// }
+
+// #cart_count {
+//   border-radius: 50%;
+//   background-color: white;
+//   color: $primary;
+//   height: 25px;
+//   vertical-align: middle;
+//   text-align: center;
+//   width: 25px;
+//   position: absolute;
+//   right: 13px;
+//   top: 10px;
+// }
+
+// .nav_link_custom {
+//   display: flex;
+//   align-items: center;
+//   transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
+//     border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+//   height: 8vh;
+//   // border-radius: 40% 0 40% 0;
+//   p {
+//     font-size: 1.4rem;
+//     padding-right: 0.5rem;
+//     margin: 0;
+//   }
+//   // margin-top: 1rem;
+//   padding: 1.5rem !important;
+//   margin-left: 1.5rem;
+//   margin-right: 1.5rem;
+//   background-color: $primary;
+//   color: white !important;
+//   position: relative;
+//   text-align: center;
+//   border: 2px solid white;
+
+//   &:hover {
+//     background-color: #226be8 !important;
+//     // color: $primary !important;
+//     // background-color: white !important;
+//     // border: 2px solid #1863e6;
+//     #cart_count {
+//       background-color: $primary;
+//       color: white;
+//     }
+//   }
+// }
+
+// #nav_link_login,
+// #nav_link_register {
+//   * {
+//     font-size: 0.975rem;
+//   }
+//   height: auto;
+//   border: none !important;
+//   background-color: transparent;
+//   color: $primary !important;
+//   &:hover {
+//     background-color: transparent !important;
+//     text-decoration: underline;
+//   }
+// }
+
+// #search_box {
+//   font-size: 1.2rem;
+//   border-radius: 0;
+//   border-style: solid;
+// }
+
+// .carousel-container {
+//   margin-bottom: 10vh;
+// }
+
+// .carousel-container img {
+//   height: 35vh;
+// }
+
+// .product_card {
+//   text-align: right;
+// }
+
+// .product_card strong {
+//   font-size: 1.5rem;
+// }
+
+// .footer_upper {
+//   text-align: right;
+//   height: 30vh;
+//   border-bottom: 50px !important;
+//   border-color: #eee !important;
+// }
+
+// .footer_upper .col-3 {
+//   padding: 0;
+// }
+
+// .footer_upper .card-header {
+//   /* background-image: linear-gradient(#e72510, #d9230f 6%, #cb210e); */
+//   background-color: $primary;
+//   color: white;
+// }
+
+// #products_grid {
+//   display: flex;
+//   flex-wrap: wrap;
+//   margin: 0 10rem;
+
+//   .card {
+//     padding: 5vh;
+//     text-align: right;
+//     border: 0;
+//     flex-grow: 0;
+//     flex-shrink: 0;
+//     flex-basis: 25%;
+
+//     @media only screen and (max-width: 1280px) {
+//       & {
+//         flex-basis: 33.33%;
+//       }
+//     }
+
+//     @media only screen and (max-width: 1024px) {
+//       & {
+//         flex-basis: 50%;
+//       }
+//     }
+//     @media only screen and (max-width: 768px) {
+//       & {
+//         flex-basis: 100%;
+//       }
+//     }
+
+//     .card-title {
+//       text-align: center;
+//     }
+//     .card-footer {
+//       background: none;
+//       flex-direction: row;
+//       margin: 0;
+//       padding: 0;
+//       display: flex;
+//       button {
+//         height: 9vh;
+//         flex-basis: 50%;
+//         flex-grow: 1;
+//         i {
+//           margin-left: 0.2rem;
+//         }
+//       }
+//     }
+//     // flex: 1 0 21%; /* explanation below */
+//     // max-height: 10vh;
+//   }
+// }
+
+// .card .rating {
+//   text-align: center;
+// }
+
+// /* main { */
+// /* min-height: ; */
+// /* } */
+
+// main {
+//   margin-top: 10vh;
+// }
+
+// #product_view_container {
+//   border: 0;
+//   text-align: right;
+// }
