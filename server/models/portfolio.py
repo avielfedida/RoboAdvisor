@@ -1,7 +1,8 @@
 from app.extensions import db
 from models.enums.risk import Risk
 from models.enums.algorithm import Algorithm
-from models.portfolio_stocks import PortfolioStocks
+from sqlalchemy.orm import relationship
+
 
 class Portfolio(db.Model):
 
@@ -11,7 +12,8 @@ class Portfolio(db.Model):
     algorithm = db.Column('algorithm', db.Enum(Algorithm), primary_key=True)
     risk = db.Column('risk', db.Enum(Risk), primary_key=True)
     link = db.Column('link', db.String)
-    stocks_prices = db.relationship("StockPrice", secondary=PortfolioStocks)
+    port_user_answers_set = relationship("PortUserAnswersSet", backref='portfolio')
+    portfolio_stocks = relationship("PortfolioStocks", backref='portfolio')
 
     def as_dict(self):
         portfolio_as_dict = {

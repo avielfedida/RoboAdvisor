@@ -1,5 +1,8 @@
 from app.extensions import db
 from models.enums.risk import Risk
+from sqlalchemy.orm import relationship
+from sqlalchemy.orm import validates
+import re
 
 
 class AnswersSet(db.Model):
@@ -15,6 +18,7 @@ class AnswersSet(db.Model):
     ans_7 = db.Column('ans_7', db.String)
     ans_8 = db.Column('ans_8', db.String)
     risk = db.Column('risk', db.Enum(Risk))
+    port_user_answers_set = relationship("PortUserAnswersSet", backref='ans_set')
 
     def as_dict(self):
         answers_set_as_dict = {
@@ -29,3 +33,9 @@ class AnswersSet(db.Model):
             'risk': self.risk.name
         }
         return answers_set_as_dict
+
+    @validates('ans_set_val')
+    def validate_ans_set_val(self, key, ans_set_val):
+        r = re.compile('.,.,.,.,.,.,.,.')
+        if r.match(ans_set_val):
+            return ans_set_val

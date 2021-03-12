@@ -1,7 +1,6 @@
-from re import error
-
 from app.extensions import db
 from sqlalchemy.ext.hybrid import hybrid_property
+from sqlalchemy.orm import relationship
 
 
 class User(db.Model):
@@ -11,6 +10,7 @@ class User(db.Model):
     # Set columns for the table
     _id = db.Column(db.String, primary_key=True)
     member = db.relationship('Member', backref='user', uselist=False)
+    port_user_answers_set = relationship("PortUserAnswersSet", backref='user')
 
     def as_dict(self):
         user_as_dict = {

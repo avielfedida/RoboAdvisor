@@ -21,15 +21,16 @@ class Member(db.Model):
     def as_dict(self):
         member_as_dict = {
             'email': self.email,
-            'first_name' : self.first_name,
+            'first_name': self.first_name,
             'last_name': self.last_name,
             'age': str(self.age),
             'gender': self.gender.name,
-            'latest_portfolio_risk': self.latest_portfolio_risk.name
+            'latest_portfolio_risk': self.latest_portfolio_risk.name,
+            'user_id': self.user_id
         }
         return member_as_dict
 
     @validates('email')
-    def validate_email(self, key,email):
+    def validate_email(self, key, email):
         assert '@' in email
         return email

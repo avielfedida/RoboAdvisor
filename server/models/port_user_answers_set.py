@@ -7,7 +7,7 @@ class PortUserAnswersSet(db.Model):
     __tablename__ = 'port_user_answers_set'
 
     user_id = db.Column(db.String, primary_key=True)
-    ans_set_val = db.Column(db.String, primary_key=True)  # like "1,1,1,1,1,1,1,1"
+    ans_set_val = db.Column(db.String, primary_key=True)
     portfolios_date_time = db.Column(db.DateTime, primary_key=True)
     portfolios_algorithm = db.Column(db.Enum(Algorithm), primary_key=True)
     portfolios_risk = db.Column(db.Enum(Risk), primary_key=True)
@@ -26,5 +26,3 @@ class PortUserAnswersSet(db.Model):
             ['portfolios.date_time', 'portfolios.algorithm', 'portfolios.risk'],
         ),
     )
-
-

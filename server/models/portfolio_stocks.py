@@ -13,7 +13,6 @@ class PortfolioStocks(db.Model):
     portfolios_risk = db.Column(db.Enum(Risk), primary_key=True)
     weight = db.Column(db.Numeric)
 
-
     __table_args__ = (
         db.ForeignKeyConstraint(
             ['stock_price_ticker', 'stock_price_date_time'],
@@ -24,5 +23,3 @@ class PortfolioStocks(db.Model):
             ['portfolios.date_time', 'portfolios.algorithm', 'portfolios.risk'],
         ),
     )
-
-
