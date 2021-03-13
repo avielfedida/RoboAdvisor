@@ -11,7 +11,7 @@ class User(db.Model):
     # Set columns for the table
     _id = db.Column(db.String, primary_key=True)
     member = db.relationship('Member', backref='user', uselist=False)
-    port_user_answers_set = relationship("PortUserAnswersSet", backref='user')
+    port_user_answers_set = db.relationship("PortUserAnswersSet", backref='user')
 
     def __init__(self, email, password):
         self.email = email

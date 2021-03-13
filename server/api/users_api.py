@@ -58,17 +58,19 @@ class UserLogin(MethodView):
 class RegisterUser(MethodView):
     def post(self):
         data = request.get_json()
-        user = User(**data)
+        user_mail = data.get("email")
+        user_pass = data.get("password")
+        user = User(user_mail, user_pass)
         db.session.add(user)
         db.session.commit()
         return user.to_dict(), 201
 
 
 api = Blueprint('users_api', __name__, url_prefix=Config.API_PREFIX + '/users')
-users = UsersApi.as_view('api_users')
+# users = UsersApi.as_view('api_users')
 user_login_api = UserLogin.as_view('user_login_api')
 user_register_api = RegisterUser.as_view('user_register_api')
-api.add_url_rule('/add_user/', methods=['POST'], view_func=users)
-api.add_url_rule('/set_user_id/', methods=['PUT'], view_func=users)
+# api.add_url_rule('/add_user/', methods=['POST'], view_func=users)
+# api.add_url_rule('/set_user_id/', methods=['PUT'], view_func=users)
 api.add_url_rule('/login', methods=['POST'], view_func=user_login_api)
 api.add_url_rule('/register', methods=['POST'], view_func=user_register_api)
