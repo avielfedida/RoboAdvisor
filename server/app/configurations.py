@@ -1,4 +1,6 @@
 import os
+from datetime import timedelta
+
 
 class Config(object):
     # Flask
@@ -18,8 +20,12 @@ class Config(object):
     CELERY_RESULT_SERIALIZER = 'json'
     CELERY_TIMEZONE = 'Asia/Jerusalem'
     CELERY_ENABLE_UTC = True
-
-
+    CELERYBEAT_SCHEDULE = {
+        'print hello': {
+            'task': 'print_hello',
+            'schedule': timedelta( seconds=1 ),
+        },
+    }
     # API
     API_PREFIX = '/api/v1'
 
