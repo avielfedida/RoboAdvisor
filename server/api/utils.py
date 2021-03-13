@@ -14,6 +14,7 @@ from app.extensions import logger
 error_mapper = {
     500: 'Unexpected server exception',
     400: 'Missing on or more fields',
+    401: 'Unauthorized',
 }
 
 

@@ -6,7 +6,7 @@ celery_init = ["celery", "worker", "-A", "celery_tasks.worker.celery", "--loglev
 # celery_init = ["celery", "worker", "-A", "celery_tasks.worker.celery", "--loglevel=info", "-P", "solo",
 #                "--without-gossip", "--without-mingle", "--without-heartbeat"]
 
-pc_user = "user"
+pc_user = "Noa"
 
 to_run = [
     (redis_init, '/redis-celery/',),
