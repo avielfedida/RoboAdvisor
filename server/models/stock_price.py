@@ -1,5 +1,6 @@
 from app.extensions import db
 from models.enums.asset_type import AssetType
+from sqlalchemy.orm import relationship
 
 
 class StockPrice(db.Model):
@@ -11,6 +12,7 @@ class StockPrice(db.Model):
     date_time = db.Column('date_time', db.DateTime, primary_key=True)
     price = db.Column('price', db.Numeric)
     asset_type = db.Column('asset_type', db.Enum(AssetType))
+    portfolio_stocks = relationship("PortfolioStocks", backref='stock_price')
 
     def as_dict(self):
         stock_price_as_dict = {
