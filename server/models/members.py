@@ -18,6 +18,15 @@ class Member(db.Model):
     latest_portfolio_risk = db.Column('latest_portfolio_risk', db.Enum(Risk), default='undefined')
     user_id = db.Column('user_id', db.String, db.ForeignKey('users._id'))
 
+    def __init__(self, email, password, first_name, last_name, age, gender, user_id):
+        self.email = email
+        self.password = password
+        self.first_name = first_name
+        self.last_name = last_name
+        self.age = age
+        self.gender = gender
+        self.user_id = user_id
+
     def as_dict(self):
         member_as_dict = {
             'email': self.email,
