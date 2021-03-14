@@ -48,6 +48,8 @@ class Markowitz:
 
     def get_selected_assets(self, risk_score):
         # self.get_assets_price_data()
+        self.prices_df = pd.read_excel('./api/resources/assets_prices.xlsx')
+        self.all_assets = pd.read_excel('./api/resources/assets_list.xlsx')
         print(len(self.prices_df.columns))
         all_std = [self.prices_df[col].std() for col in self.prices_df.columns]
         print(len(all_std))
