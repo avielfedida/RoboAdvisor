@@ -13,7 +13,7 @@ def get_tokens(user_id, app):
     _access_token = jwt.encode({'uid': user_id,
                                 'exp': datetime.utcnow() + timedelta(minutes=720),
                                 'iat': datetime.utcnow()},
-                               app.config['SECRET_KEY']).decode('utf-8')
+                               app.config['SECRET_KEY'], algorithm='HS256').decode('utf-8')
     return _access_token
 
 
@@ -60,7 +60,6 @@ class MemberLogin(MethodView):
     def post(self):
         data = request.get_json()
         member = Member.authenticate(**data)
-        print("vbjh")
         if not member:
             json_abort(401, "Incorrect username or password")
         return make_response(jsonify({'access_token': get_tokens(member.email, current_app)}), 200)
