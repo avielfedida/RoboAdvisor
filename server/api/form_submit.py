@@ -9,21 +9,25 @@ from api.utils import exceptions_mapper, json_abort, plt_to_src
 from app.configurations import Config
 from app.extensions import db
 from models.results import Results
-
+from models.users import User
+import uuid
 
 class FormSubmit(MethodView):
 
-    def get(self):
-        new_result = Results(name='omer', notes=json.dumps({
-            'hi': 3
-        }))
-        db.session.add(new_result)
-        db.session.commit()
-        return 'Ha'
-
     def post(self):
+        data = request.get_json()
+        answers = data['answers']
+        uid = data['uid']
+        user = None
+        if uid and len(uid) > 0:
+            user = User.query.get(uid)
+            if not current_user:
+                json_abort(*exceptions_mapper(400, "Invalid uid given"))
+        else:
+            uid = str(uuid.uuid4())
+            user = User()
         try:
-            dict_variable = {int(key) + 1: value+1 for (key, value) in request.json.items()}
+            dict_variable = {int(key) + 1: value + 1 for (key, value) in answers.items()}
             print('Answers', dict_variable)
         except Exception as e:
             json_abort(*exceptions_mapper(400, []), e)
@@ -68,11 +72,11 @@ class FormSubmit(MethodView):
         try:
             model = Markowitz()
             score = get_risk_horizon_score(dict_variable)
-            fig = model.get_optimal_portfolio(0)
-            base64image = plt_to_src(fig)
+            json_res = model.get_optimal_portfolio(0)
+            # base64image = plt_to_src(fig)
         except Exception as e:
             json_abort(*exceptions_mapper(500), e)
-        return make_response(jsonify(message="Porfolio", src=base64image), 200)
+        return make_response(jsonify(message="Porfolio", data=json_res), 200)
 
 
 api = Blueprint("api_form_submit", __name__, url_prefix=Config.API_PREFIX + '/form_submit')

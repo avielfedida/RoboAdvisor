@@ -110,9 +110,10 @@ class Markowitz:
         column_order = ['Returns', 'Volatility', 'Sharpe Ratio'] + [stock + ' Weight' for stock in self.selected_assets]
         df = df[column_order]
         sharpe_portfolio = df.loc[df['Sharpe Ratio'] == df['Sharpe Ratio'].max()]
-        fig = self.pie_plot(sharpe_portfolio)
+        # fig = self.pie_plot(sharpe_portfolio)
         # self.plot_portfolios( df )
-        return fig
+        # return fig
+        return sharpe_portfolio.to_json()
 
     def pie_plot(self, portfolio):
         portfolio.columns = portfolio.columns.str.rstrip(' Weight')
