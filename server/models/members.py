@@ -2,7 +2,7 @@ from app.extensions import db
 from models.enums.gender import Gender
 from models.enums.risk import Risk
 from sqlalchemy.orm import validates
-
+from werkzeug.security import generate_password_hash, check_password_hash
 
 class Member(db.Model):
     # Define the table name
@@ -20,12 +20,27 @@ class Member(db.Model):
 
     def __init__(self, email, password, first_name, last_name, age, gender, user_id):
         self.email = email
-        self.password = password
+        self.password = generate_password_hash(password, method='sha256')
         self.first_name = first_name
         self.last_name = last_name
         self.age = age
         self.gender = gender
         self.user_id = user_id
+
+    # def __init__(self, email, password):
+    #     self.email = email
+    #     self.password = generate_password_hash(password, method='sha256')
+
+    @classmethod
+    def authenticate(cls, **kwargs):
+        email = kwargs.get('email')
+        password = kwargs.get('password')
+        if not email or not password:
+            return None
+        member = cls.query.filter_by(email=email).first()
+        if not member or not check_password_hash(member.password, password):
+            return None
+        return member
 
     def as_dict(self):
         member_as_dict = {
