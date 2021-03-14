@@ -10,7 +10,7 @@ class PortfolioStocks(db.Model):
     stock_price_date_time = db.Column(db.DateTime)
     portfolios_date_time = db.Column(db.DateTime, primary_key=True)
     portfolios_algorithm = db.Column(db.Enum(Algorithm), primary_key=True)
-    portfolios_risk = db.Column(db.Enum(Risk), primary_key=True)
+    portfolios_risk = db.Column(db.Integer, primary_key=True)
     weight = db.Column(db.Numeric)
 
     __table_args__ = (

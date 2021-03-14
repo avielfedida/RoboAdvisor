@@ -15,7 +15,7 @@ class Member(db.Model):
     last_name = db.Column('last_name', db.String)
     age = db.Column('age', db.Numeric)
     gender = db.Column('gender', db.Enum(Gender))
-    latest_portfolio_risk = db.Column('latest_portfolio_risk', db.Enum(Risk), default='undefined')
+    latest_portfolio_risk = db.Column('latest_portfolio_risk', db.Integer, default='undefined')
     user_id = db.Column('user_id', db.String, db.ForeignKey('users._id'))
 
     def __init__(self, email, password, first_name, last_name, age, gender, user_id):

@@ -23,7 +23,7 @@ const QWrapper = () => {
   const [load, setLoad] = useState(false);
   const [portfolioResult, setPortfolioResult] = useState(null);
   const [answersState, setAnswersState] = useState(
-    Array(Questions_Answers.length).fill(0)
+    Array(Questions_Answers.length).fill(1)
   );
   const [question, setQuestion] = useState(
     parseInt(params["*"].substr(params["*"].lastIndexOf("/") + 1))
@@ -34,12 +34,12 @@ const QWrapper = () => {
   const submitForm = async () => {
     try {
       setLoad(true);
-      const res = await formSubmit.post(
-        "/",
-        _.fromPairs(answersState.map((x, i) => [i, x]))
-      );
-      setPortfolioResult(res.data);
-      navigate("portfolio_view");
+      const res = await formSubmit.post("/", {
+        answers: _.fromPairs(answersState.map((x, i) => [i, x])),
+      });
+      console.log("Res", res);
+      // setPortfolioResult(res.data);
+      // navigate("portfolio_view");
       setLoad(false);
     } catch (e) {
       console.log(e);
