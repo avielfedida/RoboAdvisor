@@ -9,7 +9,7 @@ import celery_tasks.tasks as tasks
 class CeleryDemo(MethodView):
 
     def post(self):
-        tasks.print_hello()
+        tasks.insert_price_data()
         return make_response(jsonify(message="OK"), 200)
 
 
