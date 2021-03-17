@@ -52,13 +52,17 @@ class RegisterUser(MethodView):
             user_mail = data.get("email")
             user_from_db = db.session.query(User).filter_by(_id=user_id).first()
             user_from_db._id = user_mail
-            self.createMember(data)
-            response = make_response(jsonify(message="User successfully added to database"), 200)
+            member_in_db = db.session.query(Member).filter_by(_id=user_mail).first()
+            if member_in_db is None:
+                self.createMember(data)
+                response = make_response(jsonify(message="User successfully added to database"), 200)
+            else:
+                json_abort(409, "Member already exist")
+
         return response
 
     def createMember(self, data):
         user_email = data.get("email")
-        print(user_email)
         user_password = data.get("password")
         user_first_name = data.get("first_name")
         user_last_name = data.get("last_name")

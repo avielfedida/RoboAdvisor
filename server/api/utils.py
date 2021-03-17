@@ -16,6 +16,8 @@ error_mapper = {
     500: 'Unexpected server exception',
     400: 'Missing on or more fields',
     401: 'Unauthorized',
+    404: 'Not found',
+    409: 'Already exists'
 }
 
 
@@ -83,6 +85,7 @@ def token_required(f):
     wrapper.__doc__ = f.__doc__
     wrapper.__name__ = f.__name__
     return wrapper
+
 
 def get_tokens(user_id, app):
     _access_token = jwt.encode({'uid': user_id,

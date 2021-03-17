@@ -55,9 +55,55 @@ class MemberLogin(MethodView):
         return make_response(jsonify({'access_token': get_tokens(member.email, current_app)}), 200)
 
 
+class MemberUpdateNames(MethodView):
+    def put(self):
+        data = request.get_json()
+        member_email = data.get("email")
+        member = db.session.query(Member).filter_by(email=member_email).first()
+        if member is None:
+            json_abort(404, "Member not found")
+        new_first_name = data.get("first_name")
+        new_last_name = data.get("last_name")
+        if new_first_name and new_last_name:
+            self.updateFirstName(member, new_first_name)
+            self.updateLastName(member, new_last_name)
+            response = make_response(jsonify(message='Names updated successfully'), 200)
+            return response
+        # only first name
+        elif new_first_name and not new_last_name:
+            self.updateFirstName(member, new_first_name)
+            response = make_response(jsonify(message='First name updated successfully'), 200)
+            return response
+        # only last name
+        elif new_last_name and not new_first_name:
+            self.updateLastName(member, new_last_name)
+            response = make_response(jsonify(message='Last name updated successfully'), 200)
+            return response
+        else:
+            json_abort(400, "Missing fields please try again")
+
+    def updateFirstName(self, member, new_first_name):
+        old_name = member.first_name
+        if old_name == new_first_name:
+            json_abort(409, "This name already updated in this member")
+        else:
+            member.first_name = new_first_name
+            db.session.commit()
+
+    def updateLastName(self, member, new_last_name):
+        old_name = member.last_name
+        if old_name == new_last_name:
+            json_abort(409, "This name already updated in this member")
+        else:
+            member.last_name = new_last_name
+            db.session.commit()
+
+
 api = Blueprint('members_api', __name__, url_prefix=Config.API_PREFIX + '/members')
 members = MembersApi.as_view('api_members')
 member_login_api = MemberLogin.as_view('member_login_api')
+member_update_name = MemberUpdateNames.as_view('member_update_name')
 api.add_url_rule('/add_member/', methods=['POST'], view_func=members)
 api.add_url_rule('/get_member_by_email/', methods=['GET'], view_func=members)
 api.add_url_rule('/login', methods=['POST'], view_func=member_login_api)
+api.add_url_rule('/update_name', methods=['PUT'], view_func=member_update_name)
