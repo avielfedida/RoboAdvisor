@@ -1,20 +1,10 @@
 from flask import Blueprint, request, make_response, jsonify
 from flask.views import MethodView
 from flask import Blueprint, request, make_response, jsonify, current_app
-from api.utils import json_abort
+from api.utils import json_abort, get_tokens
 from app.configurations import Config
 from app.extensions import db
 from models.members import Member
-import jwt
-from datetime import datetime, timedelta
-
-
-def get_tokens(user_id, app):
-    _access_token = jwt.encode({'uid': user_id,
-                                'exp': datetime.utcnow() + timedelta(minutes=720),
-                                'iat': datetime.utcnow()},
-                               app.config['SECRET_KEY'], algorithm='HS256').decode('utf-8')
-    return _access_token
 
 
 class MembersApi(MethodView):
