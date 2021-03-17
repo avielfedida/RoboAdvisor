@@ -1,7 +1,7 @@
 from flask import Blueprint, request, make_response, jsonify
 from flask.views import MethodView
 from flask import Blueprint, request, make_response, jsonify, current_app
-from api.utils import json_abort, get_tokens
+from api.utils import json_abort, get_tokens, token_required
 from app.configurations import Config
 from app.extensions import db
 from models.members import Member
@@ -56,12 +56,12 @@ class MemberLogin(MethodView):
 
 
 class MemberUpdateNames(MethodView):
-    def put(self):
+    @token_required
+    def put(self, curr_user):
         data = request.get_json()
-        member_email = data.get("email")
-        member = db.session.query(Member).filter_by(email=member_email).first()
-        if member is None:
+        if curr_user is None:
             json_abort(404, "Member not found")
+        member = curr_user.member
         new_first_name = data.get("first_name")
         new_last_name = data.get("last_name")
         if new_first_name and new_last_name:
@@ -97,6 +97,13 @@ class MemberUpdateNames(MethodView):
         else:
             member.last_name = new_last_name
             db.session.commit()
+
+# class Member_update_password(MethodView):
+#     @token_required
+#     def put(self, curr_user):
+#         data = request.get_json()
+
+
 
 
 api = Blueprint('members_api', __name__, url_prefix=Config.API_PREFIX + '/members')
