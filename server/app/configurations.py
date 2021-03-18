@@ -21,11 +21,14 @@ class Config(object):
     CELERY_TIMEZONE = 'Asia/Jerusalem'
     CELERY_ENABLE_UTC = True
     CELERYBEAT_SCHEDULE = {
-        'print hello': {
-            'task': 'print_hello',
-            'schedule': timedelta( seconds=1 ),
+        'print-hello-every-2-seconds': {
+            'task': 'print_hello',  # notice that the complete name is needed
+            'schedule': timedelta(seconds=2),
+            # 'args': (16000, 42) # If needed, commented out for now
         },
     }
+
+
     # API
     API_PREFIX = '/api/v1'
 
