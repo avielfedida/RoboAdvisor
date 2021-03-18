@@ -40,6 +40,5 @@ trading-calendars==2.1.1
 urllib3==1.26.3
 vine==1.3.0
 Werkzeug
-jwt
-pyjwt
-xlrd==1.2.0
+pyjwt==1.5.3
+
