@@ -38,10 +38,18 @@ class Markowitz:
         # self.prices_df.to_excel('./resources/assets_prices.xlsx')
         # pd.DataFrame(self.all_assets).to_excel('./resources/assets_list.xlsx')
 
-    # def get_assets_price_data(self):
-    #     engine = create_engine( 'postgresql+psycopg2://postgres:123@127.0.0.1:5432/radb' )
-    #     self.prices_df = pd.read_sql_table('stocks_prices', engine)
-    #     print('done')
+    def get_assets_price_data_from_db(self):
+        data = pd.read_sql_table( 'stocks_prices', db.engine )
+        columns_names = data['ticker'].unique()
+        dates = data['date'].unique()
+        prices_df = pd.DataFrame( index=dates, columns=columns_names )
+        for ticker in prices_df.columns:
+            try:
+                prices_df[ticker] = [p for p in data.loc[data['ticker'] == ticker]['price']]
+            except:
+                print( 'there is not enough data for this asset' )
+        prices_df.dropna( axis=1, inplace=True )
+        self.prices_df = prices_df
 
     def get_selected_assets(self, risk_score):
         # self.get_assets_price_data()

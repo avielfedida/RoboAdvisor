@@ -1,3 +1,6 @@
+from flask import current_app
+from sqlalchemy import create_engine
+
 from app.extensions import celery
 from app.extensions import db
 from models.number_addition import NumberAddition
@@ -28,14 +31,18 @@ def insert_price_data(self):
     bonds = ['SHY', 'TLT', 'SHV', 'IEF', 'GOVT', 'BIL', 'IEI', 'VGSH', 'SCHO', 'VGIT', 'SCHR', 'SPTS', 'SPTL',
              'GBIL', 'SPTI', 'VGLT', 'TLH', 'EDV', 'USFR', 'SGOV', 'CLTL', 'BSJK', 'FLGV', 'ZROZ', 'TFLO']
     bonds_df = pdr.get_data_yahoo( bonds, start_date, end_date )['Adj Close']
-    data_to_insert = pd.DataFrame( columns=['date', 'price', 'ticker', 'type', 'market_cap'] )
+    data_to_insert = pd.DataFrame( columns=['ticker', 'date', 'price', 'type', 'market_cap'] )
     for bond in bonds_df.columns:
         bond_data = pd.DataFrame()
         bond_data['date'] = bonds_df.index
         bond_data['price'] = bonds_df[bond].values
         bond_data['ticker'] = bond
         bond_data['type'] = 'bond'
-        bond_data['market_cap'] = BalanceSheet( bond )
+        try:
+            marketCap = pdr.get_quote_yahoo( bond )['marketCap'][0]
+        except:
+            marketCap = int(0)
+        bond_data['market_cap'] = [int(marketCap) for i in range( len( bond_data ) )]
         data_to_insert = data_to_insert.append( bond_data, ignore_index=True )
 
     # getting stocks price data
@@ -47,9 +54,14 @@ def insert_price_data(self):
         stock_data['price'] = stocks_df[stock].values
         stock_data['ticker'] = stock
         stock_data['type'] = 'stock'
+        try:
+            marketCap = pdr.get_quote_yahoo( stock )['marketCap'][0]
+        except:
+            marketCap = int(0)
+        stock_data['market_cap'] = [int(marketCap) for i in range( len( stock_data ) )]
         data_to_insert = data_to_insert.append( stock_data, ignore_index=True )
 
     # insert price data to sql table
     data_to_insert.dropna( inplace=True )
-    # engine = create_engine( 'postgresql+psycopg2://postgres:123@127.0.0.1:5432/radb' )
-    data_to_insert.to_sql( 'stocks_prices', db, if_exists='replace', index=False )
+    data_to_insert.to_sql( 'stocks_prices', db.engine, if_exists='replace', index=False )
+    print('done')

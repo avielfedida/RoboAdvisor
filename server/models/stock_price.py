@@ -13,7 +13,7 @@ class StockPrice(db.Model):
     price = db.Column('price', db.Numeric)
     asset_type = db.Column('asset_type', db.Enum(AssetType))
     portfolio_stocks = relationship("PortfolioStocks", backref='stock_price')
-    market_cap = db.Column('price', db.Numeric)
+    market_cap = db.Column('market_cap', db.Numeric)
 
     def as_dict(self):
         stock_price_as_dict = {
