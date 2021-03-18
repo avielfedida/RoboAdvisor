@@ -109,25 +109,20 @@ class Member_update_password(MethodView):
             json_abort(404, "Member not found")
         member = curr_user.member
         old_password = data.get("password")
-        # old_password_encoded = generate_password_hash(old_password, method='sha256')
-        print("password in db: " + member.password)
         print(old_password)
+        # old_password_encoded = generate_password_hash(old_password, method='sha256')
         new_password = data.get("new_password")
-        # new_password_encoded = generate_password_hash(new_password, method='sha256')
-        print(new_password)
-        # member_encode_password = generate_password_hash(member.password, method='sha256')
-        if member.password == old_password:
-        # if check_password_hash(member_encode_password, old_password_encoded):
-        #     if not check_password_hash(member_encode_password, new_password_encoded):
-            member.password = new_password
-            db.session.commit()
-            # new password is the same as the old password that in the db
-            # else:
-            #     json_abort(409, "This password already updated in this member")
+        if check_password_hash(member.password, old_password):
+            if check_password_hash(member.password, new_password):
+                json_abort(409, "This password already updated in this member")
+            else:
+                new_password_encoded = generate_password_hash(new_password, method='sha256')
+                member.password = new_password_encoded
+                db.session.commit()
+                response = make_response(jsonify(message='Password updated successfully'), 200)
+                return response
         else:
             json_abort(401, "The password is incorrect")
-        response = make_response(jsonify(message='Password updated successfully'), 200)
-        return response
 
 
 api = Blueprint('members_api', __name__, url_prefix=Config.API_PREFIX + '/members')
