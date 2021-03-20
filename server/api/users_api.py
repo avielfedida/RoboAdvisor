@@ -4,7 +4,7 @@ from app.configurations import Config
 from app.extensions import db
 from api.utils import json_abort, exceptions_mapper
 import hashlib
-
+from models.enums.gender import Gender
 from models.users import User
 from models.members import Member
 
@@ -42,6 +42,7 @@ class UsersApi(MethodView):
 class RegisterUser(MethodView):
     def post(self):
         data = request.get_json()
+        print('Data: ', data)
         # first time in the system
         if data.get("_id") is None:
             user_email = data.get("email")
@@ -80,8 +81,8 @@ class RegisterUser(MethodView):
         user_password = data.get("password")
         user_first_name = data.get("first_name")
         user_last_name = data.get("last_name")
-        user_age = data.get("age")
-        user_gender = data.get("gender")
+        user_age = 1#data.get("age")
+        user_gender = Gender.other#data.get("gender")
         user_id = user_email
         if not user_email or not user_password or not user_first_name or not user_last_name or not user_age or not user_gender:
             json_abort(400, "Missing on or more fields")
@@ -91,7 +92,7 @@ class RegisterUser(MethodView):
 
     def createNewUser(self, data):
         user_email = data.get("email")
-        new_user = User(user_email)
+        new_user = User(_id=user_email)
         db.session.add(new_user)
         db.session.commit()
 

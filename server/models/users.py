@@ -12,8 +12,8 @@ class User(db.Model):
     member = db.relationship('Member', backref='user', uselist=False)
     port_user_answers_set = db.relationship("PortUserAnswersSet", backref='user')
 
-    def __init__(self, _id):
-        self._id = _id
+    # def __init__(self, _id):
+    #     self._id = _id
 
     def as_dict(self):
         user_as_dict = {
