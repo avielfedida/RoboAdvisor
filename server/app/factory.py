@@ -28,6 +28,11 @@ def create_app():
     from api.answers_set_api import api as answers_set_api
     from api.port_user_answers_set_api import api as port_user_answers_set_api
     from api.portfolio_stocks_api import api as portfolio_stocks_api
+    from api.clusters_api import api as clusters_api
+    from api.topics_api import api as topics_api
+    from api.messages_api import api as messages_api
+
+
 
     app.register_blueprint(users_api)
     app.register_blueprint(members_api)
@@ -36,6 +41,9 @@ def create_app():
     app.register_blueprint(answers_set_api)
     app.register_blueprint(port_user_answers_set_api)
     app.register_blueprint(portfolio_stocks_api)
+    app.register_blueprint(clusters_api)
+    app.register_blueprint(topics_api)
+    app.register_blueprint(messages_api)
 
 
     # Create tables

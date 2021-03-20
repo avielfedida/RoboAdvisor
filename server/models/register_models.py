@@ -7,3 +7,6 @@ def register_models():
     from .portfolio_stocks import PortfolioStocks
     from .users import User
     from .port_user_answers_set import PortUserAnswersSet
+    from .clusters import Cluster
+    from .topics import Topic
+    from .messages import Message

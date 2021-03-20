@@ -2,6 +2,7 @@ from app.extensions import db
 from models.enums.gender import Gender
 from models.enums.risk import Risk
 from sqlalchemy.orm import validates
+from sqlalchemy.orm import relationship
 
 
 class Member(db.Model):
@@ -17,6 +18,8 @@ class Member(db.Model):
     gender = db.Column('gender', db.Enum(Gender))
     latest_portfolio_risk = db.Column('latest_portfolio_risk', db.Enum(Risk), default='undefined')
     user_id = db.Column('user_id', db.String, db.ForeignKey('users._id'))
+    topics = relationship("Topic", backref='member')
+    messages = relationship("Message", backref='member')
 
     def as_dict(self):
         member_as_dict = {
