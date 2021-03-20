@@ -34,7 +34,7 @@ const Header = () => {
               className="nav_link_custom"
               id="nav_link_login"
             >
-              <span class="lnr lnr-enter"></span>
+              <span className="lnr lnr-enter"></span>
 
               <span>התחברות</span>
             </Nav.Link>
@@ -43,8 +43,16 @@ const Header = () => {
               className="nav_link_custom"
               id="nav_link_register"
             >
-              <span class="lnr lnr-user"></span>
+              <span className="lnr lnr-user"></span>
               <span>הרשמה</span>
+            </Nav.Link>
+            <Nav.Link
+              onClick={() => navigate("forum")}
+              className="nav_link_custom"
+              id="nav_link_forum"
+            >
+              <span className="lnr lnr-bubble"></span>
+              <span>פורום</span>
             </Nav.Link>
           </>
         </Navbar.Collapse>
