@@ -44,6 +44,7 @@ def insert_price_data(self):
             marketCap = int(0)
         bond_data['market_cap'] = [int(marketCap) for i in range( len( bond_data ) )]
         data_to_insert = data_to_insert.append( bond_data, ignore_index=True )
+    data_to_insert['market_cap'].loc[data_to_insert['market_cap'] == 0] = [data_to_insert['market_cap'].mean() for i in range(len(data_to_insert['market_cap'].loc[data_to_insert['market_cap'] == 0]))]
 
     # getting stocks price data
     stocks = pd.read_html( 'https://en.wikipedia.org/wiki/List_of_S%26P_500_companies' )[0]['Symbol'].tolist()
@@ -64,4 +65,4 @@ def insert_price_data(self):
     # insert price data to sql table
     data_to_insert.dropna( inplace=True )
     data_to_insert.to_sql( 'stocks_prices', db.engine, if_exists='replace', index=False )
-    print('done')
+    print('done inserting assets dat to the database')
