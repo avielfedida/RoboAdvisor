@@ -9,36 +9,6 @@ from models.users import User
 from models.members import Member
 
 
-class UsersApi(MethodView):
-
-    # add new user
-    def post(self):
-        try:
-            new_user = User(_id=request.form['_id'])
-            db.session.add(new_user)
-            db.session.commit()
-            response = make_response(jsonify(message="User successfully added to database"), 200)
-
-        except Exception as e:
-            response = make_response(jsonify(message=str(e)), 400)
-
-        return response
-
-    def put(self):
-        try:
-            user_by__id = db.session.query(User).filter_by(_id=request.args.get('_id')).first()
-            if user_by__id is None:
-                response = make_response(jsonify(message='Invalid User'), 400)
-            else:
-                user_by__id._id = request.form['email']
-                db.session.commit()
-                response = make_response(jsonify(message='User _id changed successfully'), 200)
-        except Exception as e:
-            response = make_response(jsonify(message=str(e)), 400)
-
-        return response
-
-
 class RegisterUser(MethodView):
     def post(self):
         data = request.get_json()
@@ -81,8 +51,8 @@ class RegisterUser(MethodView):
         user_password = data.get("password")
         user_first_name = data.get("first_name")
         user_last_name = data.get("last_name")
-        user_age = 1#data.get("age")
-        user_gender = Gender.other#data.get("gender")
+        user_age = 1  # data.get("age")
+        user_gender = Gender.other  # data.get("gender")
         user_id = user_email
         if not user_email or not user_password or not user_first_name or not user_last_name or not user_age or not user_gender:
             json_abort(400, "Missing on or more fields")
@@ -98,9 +68,5 @@ class RegisterUser(MethodView):
 
 
 api = Blueprint('users_api', __name__, url_prefix=Config.API_PREFIX + '/users')
-# users = UsersApi.as_view('api_users')
-
 user_register_api = RegisterUser.as_view('user_register_api')
-# api.add_url_rule('/add_user/', methods=['POST'], view_func=users)
-# api.add_url_rule('/set_user_id/', methods=['PUT'], view_func=users)
 api.add_url_rule('/register', methods=['POST'], view_func=user_register_api)
