@@ -5,8 +5,8 @@ from app.extensions import db
 from models.stock_price import StockPrice
 from datetime import datetime
 
-class StocksPricesApi(MethodView):
 
+class StocksPricesApi(MethodView):
     # add new stock price
     def post(self):
         try:

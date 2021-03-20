@@ -1,3 +1,5 @@
+from datetime import timedelta
+
 from celery.app import Celery
 from flask import Flask
 from app.extensions import celery

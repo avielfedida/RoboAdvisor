@@ -12,6 +12,8 @@ pd.set_option('display.width', None)
 class Markowitz:
     all_assets = ['SHY', 'TLT', 'SHV', 'IEF', 'GOVT', 'AAPL', 'AMZN', 'MSFT', 'GOOG', 'NFLX']
 
+    # todo remove sdfsdfsdfsdfsdfsdf
+
     end_date = datetime.now() - timedelta(1)
     start_date = datetime(end_date.year - 1, end_date.month, end_date.day)
     # prices_df = pd.DataFrame()
@@ -46,6 +48,8 @@ class Markowitz:
 
     def get_selected_assets(self, risk_score):
         # self.get_assets_price_data()
+        self.prices_df = pd.read_excel('./api/resources/assets_prices.xlsx')
+        self.all_assets = pd.read_excel('./api/resources/assets_list.xlsx')
         print(len(self.prices_df.columns))
         all_std = [self.prices_df[col].std() for col in self.prices_df.columns]
         print(len(all_std))
@@ -108,9 +112,10 @@ class Markowitz:
         column_order = ['Returns', 'Volatility', 'Sharpe Ratio'] + [stock + ' Weight' for stock in self.selected_assets]
         df = df[column_order]
         sharpe_portfolio = df.loc[df['Sharpe Ratio'] == df['Sharpe Ratio'].max()]
-        fig = self.pie_plot(sharpe_portfolio)
+        # fig = self.pie_plot(sharpe_portfolio)
         # self.plot_portfolios( df )
-        return fig
+        # return fig
+        return sharpe_portfolio.to_json()
 
     def pie_plot(self, portfolio):
         portfolio.columns = portfolio.columns.str.rstrip(' Weight')
