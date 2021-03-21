@@ -32,8 +32,6 @@ def create_app():
     from api.topics_api import api as topics_api
     from api.messages_api import api as messages_api
 
-
-
     app.register_blueprint(users_api)
     app.register_blueprint(members_api)
     app.register_blueprint(stocks_prices_api)

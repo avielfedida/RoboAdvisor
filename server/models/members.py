@@ -1,6 +1,5 @@
 from app.extensions import db
 from models.enums.gender import Gender
-from models.enums.risk import Risk
 from sqlalchemy.orm import validates
 from sqlalchemy.orm import relationship
 from werkzeug.security import generate_password_hash, check_password_hash
