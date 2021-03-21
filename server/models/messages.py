@@ -9,7 +9,7 @@ class Message(db.Model):
     # Set columns for the table
     id = db.Column( db.Integer, primary_key=True, autoincrement=True)
     created_at = db.Column('created_at', db.DateTime, default=datetime.datetime.utcnow)
-    content = db.Column('content', db.String)
+    content = db.Column('content', db.JSON, nullable=False)
     member_email = db.Column('member_email', db.String, db.ForeignKey('members.email'), nullable=False)
     topic_id = db.Column('topic_id', db.Integer, db.ForeignKey('topics.id'), nullable=False)
 
