@@ -45,7 +45,7 @@ def insert_price_data(self):
         bond_data['market_cap'] = [int(marketCap) for i in range( len( bond_data ) )]
         data_to_insert = data_to_insert.append( bond_data, ignore_index=True )
     data_to_insert['market_cap'].loc[data_to_insert['market_cap'] == 0] = [data_to_insert['market_cap'].mean() for i in range(len(data_to_insert['market_cap'].loc[data_to_insert['market_cap'] == 0]))]
-
+   # todo delete
     # getting stocks price data
     stocks = pd.read_html( 'https://en.wikipedia.org/wiki/List_of_S%26P_500_companies' )[0]['Symbol'].tolist()
     stocks_df = pdr.get_data_yahoo( stocks, start_date, end_date )['Adj Close']
