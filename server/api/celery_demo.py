@@ -6,10 +6,13 @@ from celery_tasks.tasks import print_hello
 import celery_tasks.tasks as tasks
 
 
+
 class CeleryDemo(MethodView):
 
     def post(self):
         tasks.insert_price_data()
+        # tasks.print_hello()
+        # print_hello.apply_async()#args=[alg.as_dict(), analysis_type, params]) # No args for now
         return make_response(jsonify(message="OK"), 200)
 
 

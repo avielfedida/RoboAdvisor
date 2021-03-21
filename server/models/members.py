@@ -2,6 +2,8 @@ from app.extensions import db
 from models.enums.gender import Gender
 from models.enums.risk import Risk
 from sqlalchemy.orm import validates
+from sqlalchemy.orm import relationship
+from werkzeug.security import generate_password_hash, check_password_hash
 
 
 class Member(db.Model):
@@ -15,8 +17,34 @@ class Member(db.Model):
     last_name = db.Column('last_name', db.String)
     age = db.Column('age', db.Numeric)
     gender = db.Column('gender', db.Enum(Gender))
-    latest_portfolio_risk = db.Column('latest_portfolio_risk', db.Enum(Risk), default='undefined')
+    latest_portfolio_risk = db.Column('latest_portfolio_risk', db.Integer, default=0)
     user_id = db.Column('user_id', db.String, db.ForeignKey('users._id'))
+    topics = relationship("Topic", backref='member')
+    messages = relationship("Message", backref='member')
+
+    def __init__(self, email, password, first_name, last_name, age, gender, user_id):
+        self.email = email
+        self.password = generate_password_hash(password, method='sha256')
+        self.first_name = first_name
+        self.last_name = last_name
+        self.age = age
+        self.gender = gender
+        self.user_id = user_id
+
+    # def __init__(self, email, password):
+    #     self.email = email
+    #     self.password = generate_password_hash(password, method='sha256')
+
+    @classmethod
+    def authenticate(cls, **kwargs):
+        email = kwargs.get('email')
+        password = kwargs.get('password')
+        if not email or not password:
+            return None
+        member = cls.query.filter_by(email=email).first()
+        if not member or not check_password_hash(member.password, password):
+            return None
+        return member
 
     def as_dict(self):
         member_as_dict = {

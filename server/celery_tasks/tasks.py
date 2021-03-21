@@ -8,7 +8,6 @@ from pandas_datareader import data as pdr
 import pandas as pd
 from datetime import datetime, timedelta
 from celery.task import periodic_task
-from yahoofinance import BalanceSheet
 
 
 # @celery.task(name='print_hello', bind=True)
@@ -23,6 +22,19 @@ def insert_price_data(self):
     print('start')
     task_id = self.request.id
 
+
+# @celery.task(name='print_hello', bind=True)
+@celery.task(name='print_hello', bind=True)
+def print_hello(self):
+    task_id = self.request.id
+    print(f'Hello: {task_id}')
+    return 'ans'
+
+
+@celery.task(name='insert_price_data', bind=True)
+def insert_price_data(self):
+    task_id = self.request.id
+    
     # setting time period of the stock prices (default is one year) //todo change time period
     end_date = datetime.now() - timedelta( 1 )
     start_date = datetime( end_date.year - 1, end_date.month, end_date.day )
@@ -32,6 +44,9 @@ def insert_price_data(self):
              'GBIL', 'SPTI', 'VGLT', 'TLH', 'EDV', 'USFR', 'SGOV', 'CLTL', 'BSJK', 'FLGV', 'ZROZ', 'TFLO']
     bonds_df = pdr.get_data_yahoo( bonds, start_date, end_date )['Adj Close']
     data_to_insert = pd.DataFrame( columns=['ticker', 'date', 'price', 'type', 'market_cap'] )
+                 'GBIL', 'SPTI', 'VGLT', 'TLH', 'EDV', 'USFR', 'SGOV', 'CLTL', 'BSJK', 'FLGV', 'ZROZ', 'TFLO']
+    bonds_df = pdr.get_data_yahoo( bonds, start_date, end_date )['Adj Close']
+    data_to_insert = pd.DataFrame(columns=['date', 'price', 'ticker', 'type'])
     for bond in bonds_df.columns:
         bond_data = pd.DataFrame()
         bond_data['date'] = bonds_df.index
@@ -45,7 +60,8 @@ def insert_price_data(self):
         bond_data['market_cap'] = [int(marketCap) for i in range( len( bond_data ) )]
         data_to_insert = data_to_insert.append( bond_data, ignore_index=True )
     data_to_insert['market_cap'].loc[data_to_insert['market_cap'] == 0] = [data_to_insert['market_cap'].mean() for i in range(len(data_to_insert['market_cap'].loc[data_to_insert['market_cap'] == 0]))]
-   # todo delete
+        data_to_insert = data_to_insert.append(bond_data, ignore_index=True)
+
     # getting stocks price data
     stocks = pd.read_html( 'https://en.wikipedia.org/wiki/List_of_S%26P_500_companies' )[0]['Symbol'].tolist()
     stocks_df = pdr.get_data_yahoo( stocks, start_date, end_date )['Adj Close']
@@ -66,3 +82,11 @@ def insert_price_data(self):
     data_to_insert.dropna( inplace=True )
     data_to_insert.to_sql( 'stocks_prices', db.engine, if_exists='replace', index=False )
     print('done inserting assets dat to the database')
+
+    data_to_insert = data_to_insert.append(stock_data, ignore_index=True)
+
+    # insert price data to sql table
+    data_to_insert.dropna(inplace=True)
+    # engine = create_engine('postgresql+psycopg2://postgres:123@127.0.0.1:5432/radb')
+    data_to_insert.to_sql('stocks_prices', db, if_exists='replace', index=False)
+

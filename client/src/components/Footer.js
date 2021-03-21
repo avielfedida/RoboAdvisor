@@ -1,13 +1,14 @@
 import React from "react";
-import { Container, Row, Col } from "react-bootstrap";
-import Copyrights from "./reusable/Copyrights";
+import { Container, Row, Col, Card, Image, ListGroup } from "react-bootstrap";
+
+import Copyrights from "./reusables/Copyrights";
 
 const Footer = () => {
   return (
-    <footer className="navbar fixed-bottom bg-light">
+    <footer className="navbar bg-light fixed-bottom">
       <Container className="justify-content-end">
         <Row>
-          <Col className="text-center py-3">
+          <Col xs={12}>
             <Copyrights />
           </Col>
         </Row>

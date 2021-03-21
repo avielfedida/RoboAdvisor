@@ -17,7 +17,7 @@ class AnswersSet(db.Model):
     ans_6 = db.Column('ans_6', db.String)
     ans_7 = db.Column('ans_7', db.String)
     ans_8 = db.Column('ans_8', db.String)
-    risk = db.Column('risk', db.Enum(Risk))
+    risk = db.Column('risk', db.Integer)
     port_user_answers_set = relationship("PortUserAnswersSet", backref='ans_set')
 
     def as_dict(self):
