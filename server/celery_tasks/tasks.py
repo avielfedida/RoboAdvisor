@@ -12,9 +12,10 @@ from yahoofinance import BalanceSheet
 
 
 # @celery.task(name='print_hello', bind=True)
-@periodic_task(name='print_hello', run_every=timedelta(seconds=1))
-def print_hello():
-    print('Hello')
+@celery.task(name='print_hello', bind=True)
+def print_hello(self):
+    task_id = self.request.id
+    print(f'Hello: {task_id}')
     return 'ans'
 
 

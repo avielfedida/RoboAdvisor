@@ -12,57 +12,49 @@ import {
   Col,
 } from "react-bootstrap";
 
+import Logo from "./reusables/Logo";
+import { Link, useNavigate } from "react-router-dom";
+
 const Header = () => {
+  const navigate = useNavigate();
+
   return (
     <header>
-      {/* <Container id="stripe_over_navbar">
-        <Row>
-          <Col>בקרו אותנו בפייסבוק</Col>
-        </Row>
-      </Container> */}
-      <Navbar id="main-navbar" bg="light" expand="xl">
-        <Navbar.Brand href="/">
-          <h1>RoboAdvisor</h1>
-        </Navbar.Brand>
+      <Navbar id="main_navbar" className="fixed-top">
+        <Link to="/">
+          <Navbar.Brand>
+            <Logo />
+          </Navbar.Brand>
+        </Link>
         <Navbar.Toggle aria-controls="basic_navbar_nav" />
-        <Navbar.Collapse className="justify-content-end" id="basic-navbar-nav">
-          <Form inline>
-            <InputGroup>
-              <InputGroup.Prepend>
-                <Button>
-                  <i className="fa fa-search"></i>
-                </Button>
-              </InputGroup.Prepend>
-              <FormControl
-                id="search_box"
-                type="text"
-                placeholder="חפש מאמר"
-                className="p-4"
-              />
-            </InputGroup>
-          </Form>
+        <Navbar.Collapse id="basic-navbar-nav">
+          <>
+            <Nav.Link
+              onClick={() => navigate("login")}
+              className="nav_link_custom"
+              id="nav_link_login"
+            >
+              <span className="lnr lnr-enter"></span>
 
-          <Nav className="ml-5">
-            <Nav.Link href="/forum" className="nav_link_custom">
-              <i className="fas fa-comment-dollar fa-2x"></i>
-              <p>פורום</p>
+              <span>התחברות</span>
             </Nav.Link>
-            <Nav.Link href="/login" className="nav_link_custom">
-              <i className="fas fa-user fa-2x"></i>
-              <p>התחברות</p>
+            <Nav.Link
+              onClick={() => navigate("register")}
+              className="nav_link_custom"
+              id="nav_link_register"
+            >
+              <span className="lnr lnr-user"></span>
+              <span>הרשמה</span>
             </Nav.Link>
-            <Nav.Link href="/" className="nav_link_custom">
-              <i className="fas fa-home fa-2x"></i>
-              <p>עמוד הבית</p>
+            <Nav.Link
+              onClick={() => navigate("forum")}
+              className="nav_link_custom"
+              id="nav_link_forum"
+            >
+              <span className="lnr lnr-bubble"></span>
+              <span>פורום</span>
             </Nav.Link>
-            {/* <NavDropdown title="Dropdown" id="basic-nav-dropdown">
-                        <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
-                        <NavDropdown.Item href="#action/3.2">Another action</NavDropdown.Item>
-                        <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
-                        <NavDropdown.Divider />
-                        <NavDropdown.Item href="#action/3.4">Separated link</NavDropdown.Item>
-                    </NavDropdown> */}
-          </Nav>
+          </>
         </Navbar.Collapse>
       </Navbar>
     </header>

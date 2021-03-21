@@ -21,15 +21,18 @@ class Config(object):
     CELERY_TIMEZONE = 'Asia/Jerusalem'
     CELERY_ENABLE_UTC = True
     CELERYBEAT_SCHEDULE = {
-        'print hello': {
-            'task': 'print_hello',
-            'schedule': timedelta( seconds=1 ),
+        'print-hello-every-2-seconds': {
+            'task': 'print_hello',  # notice that the complete name is needed
+            'schedule': timedelta(seconds=2),
+            # 'args': (16000, 42) # If needed, commented out for now
         },
     }
+
+
     # API
     API_PREFIX = '/api/v1'
 
     # Database
     SQLALCHEMY_ECHO = True
-    SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://postgres:123@127.0.0.1:5432/radb'
+    SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://postgres:16941694@127.0.0.1:5432/radb'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
