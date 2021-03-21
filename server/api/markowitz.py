@@ -6,13 +6,14 @@ from datetime import datetime, timedelta
 from app.extensions import db
 from os import environ
 from sqlalchemy import create_engine
+from abstract_class import Algorithm
 
 pd.set_option('display.max_rows', None)
 pd.set_option('display.max_columns', None)
 pd.set_option('display.width', None)
 
 
-class Markowitz:
+class Markowitz(Algorithm):
     all_assets = ['SHY', 'TLT', 'SHV', 'IEF', 'GOVT', 'AAPL', 'AMZN', 'MSFT', 'GOOG', 'NFLX']
 
     end_date = datetime.now() - timedelta(1)
@@ -22,34 +23,32 @@ class Markowitz:
     # prices_df = pd.read_excel('./resources/assets_prices.xlsx', index_col=0)
     selected_assets = []
 
-    def get_all_assets(self):
-        bonds = pd.read_html('https://etfdb.com/etfdb-category/government-bonds')
-        bonds_df = bonds[0]['Symbol'].iloc[0:25]
-        sp500_stocks = pd.read_html('https://en.wikipedia.org/wiki/List_of_S%26P_500_companies')
-        sp500_stocks_df = sp500_stocks[0]['Symbol']
-        self.all_assets = bonds_df.tolist() + sp500_stocks_df.tolist()
-        # bonds_df.to_excel('bonds list.xlsx')
-        # sp500_stocks_df.to_excel('stocks list.xlsx')
+    # def get_all_assets(self):
+    #     bonds = pd.read_html('https://etfdb.com/etfdb-category/government-bonds')
+    #     bonds_df = bonds[0]['Symbol'].iloc[0:25]
+    #     sp500_stocks = pd.read_html('https://en.wikipedia.org/wiki/List_of_S%26P_500_companies')
+    #     sp500_stocks_df = sp500_stocks[0]['Symbol']
+    #     self.all_assets = bonds_df.tolist() + sp500_stocks_df.tolist()
+    #     bonds_df.to_csv('./resources/bonds_list.csv', index=False)
+    #     sp500_stocks_df.to_csv('./resources/stocks_list.csv', index=False)
 
     def get_assets_price_data(self):
         price_data = pdr.get_data_yahoo( self.all_assets, self.start_date, self.end_date )['Adj Close']
         self.prices_df = pd.DataFrame(price_data)
         print('done')
-        # self.prices_df.to_excel('./resources/assets_prices.xlsx')
-        # pd.DataFrame(self.all_assets).to_excel('./resources/assets_list.xlsx')
 
-    def get_assets_price_data_from_db(self):
-        data = pd.read_sql_table( 'stocks_prices', db.engine )
-        columns_names = data['ticker'].unique()
-        dates = data['date'].unique()
-        prices_df = pd.DataFrame( index=dates, columns=columns_names )
-        for ticker in prices_df.columns:
-            try:
-                prices_df[ticker] = [p for p in data.loc[data['ticker'] == ticker]['price']]
-            except:
-                print( 'there is not enough data for this asset' )
-        prices_df.dropna( axis=1, inplace=True )
-        self.prices_df = prices_df
+    # def get_assets_price_data_from_db(self):
+    #     data = pd.read_sql_table( 'stocks_prices', db.engine )
+    #     columns_names = data['ticker'].unique()
+    #     dates = data['date'].unique()
+    #     prices_df = pd.DataFrame( index=dates, columns=columns_names )
+    #     for ticker in prices_df.columns:
+    #         try:
+    #             prices_df[ticker] = [p for p in data.loc[data['ticker'] == ticker]['price']]
+    #         except:
+    #             print( 'there is not enough data for this asset' )
+    #     prices_df.dropna( axis=1, inplace=True )
+    #     self.prices_df = prices_df
 
     def get_selected_assets(self, risk_score):
         # self.get_assets_price_data()
@@ -122,7 +121,7 @@ class Markowitz:
     def pie_plot(self, portfolio):
         portfolio.columns = portfolio.columns.str.rstrip(' Weight')
         assets_list = portfolio.columns[3:].tolist()
-        bonds_list = pd.read_excel('./resources/bonds_list.xlsx')['Symbol'].tolist()
+        bonds_list = pd.read_excel('./resources/bonds_list.csv')['Symbol'].tolist()
         port_bonds_list = list(set(assets_list).intersection(set(bonds_list)))
         port_stocks_list = list(set(assets_list) ^ set(port_bonds_list))
         bonds_weights = portfolio.loc[:, port_bonds_list].iloc[0].tolist()
@@ -203,7 +202,8 @@ class Markowitz:
 
 # execution of the model
 model = Markowitz()
-model.get_assets_price_data()
+model.get_all_assets()
+# model.get_assets_price_data()
 # risk_score = 1  # todo get the risk score from the client
 # model.get_selected_assets(risk_score)
 # model.get_optimal_portfolio(risk_score)
