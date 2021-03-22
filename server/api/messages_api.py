@@ -1,29 +1,13 @@
 from flask import Blueprint, request, make_response, jsonify, current_app
 from flask.views import MethodView
+from sqlalchemy import desc
+
 from app.configurations import Config
 from app.extensions import db
 from models.topics import Topic
 from models.members import Member
 from models.messages import Message
 from api.utils import token_required, json_abort
-
-
-class MessageApi(MethodView):
-
-    # add new message
-    def post(self):
-        try:
-            member = db.session.query(Member).filter_by(email=request.form['member_email']).first()
-            topic = db.session.query(Topic).filter_by(id=request.form['topic_id']).first()
-            new_message = Message(content=request.form['content'], topic=topic, member=member)
-            db.session.add(new_message)
-            db.session.commit()
-            response = make_response(jsonify(message="Message successfully added to database"), 200)
-
-        except Exception as e:
-            response = make_response(jsonify(message=str(e)), 400)
-
-        return response
 
 
 class SingleMessage(MethodView):
@@ -74,8 +58,23 @@ class SingleMessage(MethodView):
         return response
 
 
+class AllMessages(MethodView):
+    def get(self, page, perPage, topic_id):
+        if page < 1 or perPage < 5:
+            json_abort(400, "Missing on or more fields")
+        try:
+            all_messages = db.session.query.filter_by(topic_id=topic_id).order_by(desc('added_date')).paginate(
+                page=page, perPage=perPage)
+            response = make_response(jsonify(all_messages), 200)
+            return response
+        except Exception as e:
+            json_abort(500, e)
+
+
 api = Blueprint('messages_api', __name__, url_prefix=Config.API_PREFIX + '/message')
 single_message_get_api = SingleMessage.as_view('single_message_get_api')
 single_message_api = SingleMessage.as_view('single_message_api')
-api.add_url_rule('/get_single_message', methods=['GET'], view_func=single_message_get_api)
+api.add_url_rule('/<int:topic_id>/<int:msg_id>', methods=['GET'], view_func=single_message_get_api)
 api.add_url_rule('/single_message', methods=['PUT', 'POST'], view_func=single_message_api)
+message_get_all_api = AllMessages.as_view('message_get_all_api')
+api.add_url_rule('/<int:page>/<int:perPage>/<int:topic_id>/', methods=['GET'], view_func=message_get_all_api)
