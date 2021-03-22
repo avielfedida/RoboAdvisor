@@ -19,27 +19,26 @@ class SingleMessage(MethodView):
             response = make_response(jsonify(msg), 200)
             return response
         except Exception as e:
-            json_abort(500, e)
+            json_abort(500, "fuck u 3")
 
     @token_required
     def put(self, curr_user):
-        try:
-            data = request.get_json()
-            member = curr_user.member
-            msg_id = data.get("id")
-            topic_id = data.get("topic_id")
-            msg = db.session.query.filter_by(eamil=member.email, topic_id=topic_id, id=msg_id).first()
-            if not msg:
-                json_abort(404, "Message not found")
-            new_content = data.get("content")
-            if not new_content:
-                json_abort(400, "Content is empty")
-            msg.content = new_content
-            db.session.commit()
-            response = make_response(jsonify(message='Message updated successfully'), 200)
-            return response
-        except Exception as e:
-            json_abort(500, e)
+        data = request.get_json()
+        member = curr_user.member
+        msg_id = data.get("id")
+        topic_id = data.get("topic_id")
+        msg = db.session.query(Message).filter_by(member_email=member.email, topic_id=topic_id, id=msg_id).first()
+        print("was here")
+        if not msg:
+            json_abort(404, "Message not found")
+        new_content = data.get("content")
+        print("here too")
+        if not new_content:
+            json_abort(400, "Content is empty")
+        msg.content = new_content
+        db.session.commit()
+        response = make_response(jsonify(message='Message updated successfully'), 200)
+        return response
 
     @token_required
     def post(self, curr_user):
@@ -68,7 +67,7 @@ class AllMessages(MethodView):
             response = make_response(jsonify(all_messages), 200)
             return response
         except Exception as e:
-            json_abort(500, e)
+            json_abort(500, "fuck u 2")
 
 
 api = Blueprint('messages_api', __name__, url_prefix=Config.API_PREFIX + '/message')
