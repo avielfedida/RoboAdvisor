@@ -1,27 +1,25 @@
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
-from pandas_datareader import data as pdr
 from datetime import datetime, timedelta
+from pandas_datareader import data as pdr
 from app.extensions import db
 from os import environ
 from sqlalchemy import create_engine
-from abstract_class import Algorithm
 
 pd.set_option('display.max_rows', None)
 pd.set_option('display.max_columns', None)
 pd.set_option('display.width', None)
 
 
-class Markowitz(Algorithm):
-    all_assets = ['SHY', 'TLT', 'SHV', 'IEF', 'GOVT', 'AAPL', 'AMZN', 'MSFT', 'GOOG', 'NFLX']
+class Markowitz():
 
-    end_date = datetime.now() - timedelta(1)
-    start_date = datetime(end_date.year - 1, end_date.month, end_date.day)
-    # prices_df = pd.DataFrame()
-    #TODO: FIX HERE, FIX PATHS
-    # prices_df = pd.read_excel('./resources/assets_prices.xlsx', index_col=0)
-    selected_assets = []
+    def __init__(self):
+        self.all_assets = ['SHY', 'TLT', 'SHV', 'IEF', 'GOVT', 'AAPL', 'AMZN', 'MSFT', 'GOOG', 'NFLX']
+        self.end_date = datetime.now() - timedelta(1)
+        self.start_date = datetime(self.end_date.year - 1, self.end_date.month, self.end_date.day)
+        # self.prices_df = pd.DataFrame()
+        # self.selected_assets = []
 
     # def get_all_assets(self):
     #     bonds = pd.read_html('https://etfdb.com/etfdb-category/government-bonds')
@@ -31,12 +29,12 @@ class Markowitz(Algorithm):
     #     self.all_assets = bonds_df.tolist() + sp500_stocks_df.tolist()
     #     bonds_df.to_csv('./resources/bonds_list.csv', index=False)
     #     sp500_stocks_df.to_csv('./resources/stocks_list.csv', index=False)
-
-    def get_assets_price_data(self):
-        price_data = pdr.get_data_yahoo( self.all_assets, self.start_date, self.end_date )['Adj Close']
-        self.prices_df = pd.DataFrame(price_data)
-        print('done')
-
+    #
+    # def get_assets_price_data(self):
+    #     price_data = pdr.get_data_yahoo( self.all_assets, self.start_date, self.end_date )['Adj Close']
+    #     self.prices_df = pd.DataFrame(price_data)
+    #     print('done')
+    #
     # def get_assets_price_data_from_db(self):
     #     data = pd.read_sql_table( 'stocks_prices', db.engine )
     #     columns_names = data['ticker'].unique()
@@ -49,37 +47,37 @@ class Markowitz(Algorithm):
     #             print( 'there is not enough data for this asset' )
     #     prices_df.dropna( axis=1, inplace=True )
     #     self.prices_df = prices_df
-
-    def get_selected_assets(self, risk_score):
-        # self.get_assets_price_data()
-        print(len(self.prices_df.columns))
-        all_std = [self.prices_df[col].std() for col in self.prices_df.columns]
-        print(len(all_std))
-        print(len(self.all_assets))
-        std_df = pd.DataFrame(index=self.prices_df.columns, columns=['std'])
-        for index, asset in enumerate(self.all_assets):
-            print(asset)
-            std_df.loc[asset, 'std'] = all_std[index]
-        std_df.sort_values(by=['std'], inplace=True)
-
-        # return the relevant assets according to the risk level
-        size = int(len(std_df) / 5)
-        if risk_score == 1:
-            self.selected_assets = std_df.iloc[0:size].index.tolist()
-        elif risk_score == 2:
-            self.selected_assets = std_df.iloc[size:size * 2].index.tolist()
-        elif risk_score == 3:
-            self.selected_assets = std_df.iloc[size * 2:size * 3].index.tolist()
-        elif risk_score == 4:
-            self.selected_assets = std_df.iloc[size * 3:size * 4].index.tolist()
-        elif risk_score == 5:
-            self.selected_assets = std_df.iloc[size * 4:size * 5].index.tolist()
-        else:
-            self.selected_assets = std_df.index.tolist()
-        return
+    #
+    # def get_selected_assets(self, risk_score):
+    #     # self.get_assets_price_data()
+    #     print(len(self.prices_df.columns))
+    #     all_std = [self.prices_df[col].std() for col in self.prices_df.columns]
+    #     print(len(all_std))
+    #     print(len(self.all_assets))
+    #     std_df = pd.DataFrame(index=self.prices_df.columns, columns=['std'])
+    #     for index, asset in enumerate(self.all_assets):
+    #         print(asset)
+    #         std_df.loc[asset, 'std'] = all_std[index]
+    #     std_df.sort_values(by=['std'], inplace=True)
+    #
+    #     # return the relevant assets according to the risk level
+    #     size = int(len(std_df) / 5)
+    #     if risk_score == 1:
+    #         self.selected_assets = std_df.iloc[0:size].index.tolist()
+    #     elif risk_score == 2:
+    #         self.selected_assets = std_df.iloc[size:size * 2].index.tolist()
+    #     elif risk_score == 3:
+    #         self.selected_assets = std_df.iloc[size * 2:size * 3].index.tolist()
+    #     elif risk_score == 4:
+    #         self.selected_assets = std_df.iloc[size * 3:size * 4].index.tolist()
+    #     elif risk_score == 5:
+    #         self.selected_assets = std_df.iloc[size * 4:size * 5].index.tolist()
+    #     else:
+    #         self.selected_assets = std_df.index.tolist()
+    #     return
 
     def get_optimal_portfolio(self, score):
-        self.get_selected_assets(score)
+        # self.get_selected_assets(score)
         selected_prices_value = self.prices_df[self.selected_assets].dropna()
         num_portfolios = 500
         years = len(selected_prices_value) / 253
@@ -201,8 +199,8 @@ class Markowitz(Algorithm):
 
 
 # execution of the model
-model = Markowitz()
-model.get_all_assets()
+# model = Markowitz()
+# model.get_all_assets()
 # model.get_assets_price_data()
 # risk_score = 1  # todo get the risk score from the client
 # model.get_selected_assets(risk_score)
