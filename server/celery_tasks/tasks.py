@@ -66,4 +66,4 @@ def insert_price_data(self):
     # insert price data to sql table
     data_to_insert.dropna( inplace=True )
     data_to_insert.to_sql( 'stocks_prices', db.engine, if_exists='replace', index=False )
-    print('done inserting assets dat to the database')
+    print('done inserting assets data to the database')
