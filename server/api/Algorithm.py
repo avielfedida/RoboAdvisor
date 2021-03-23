@@ -14,7 +14,7 @@ class Algorithm:
         self.all_assets = self.get_all_assets()
         self.prices_df = self.get_assets_price_data_from_db()
         self.selected_assets = self.get_selected_assets(self.risk_score)
-        self.model = self.create_model(model_name)
+        # self.model = self.create_model(model_name)
 
     def get_all_assets(self):
         bonds_df = pd.read_csv('./resources/bonds_list.csv')
@@ -67,24 +67,27 @@ class Algorithm:
     def get_optimal_portfolio(self, score):
         pass
 
-    def create_model(self, model_name):
+    @staticmethod
+    def create_model(model_name, risk):
         if model_name == 'markowitz':
-            return Markowitz(self.prices_df, self.risk_score, self.selected_assets)
+            return Markowitz(model_name, risk)
         # todo add more models
 
     def build_portfolio(self):
-        self.model.get_optimal_portfolio(self.risk_score)
+        return self.get_optimal_portfolio(self.risk_score)
 
 
-class Markowitz():
+class Markowitz(Algorithm):
 
-    def __init__(self, prices_df, risk_score, selected_assets):
+    # def __init__(self, prices_df, risk_score, selected_assets):
+    def __init__(self, model_name, risk_score):
+        super().__init__( model_name, risk_score )
         self.all_assets = ['SHY', 'TLT', 'SHV', 'IEF', 'GOVT', 'AAPL', 'AMZN', 'MSFT', 'GOOG', 'NFLX']
         self.end_date = datetime.now() - timedelta(1)
         self.start_date = datetime(self.end_date.year - 1, self.end_date.month, self.end_date.day)
-        self.prices_df = prices_df
-        self.selected_assets = selected_assets
-        self.risk_score = risk_score
+        # self.prices_df = prices_df
+        # self.selected_assets = selected_assets
+        # self.risk_score = risk_score
         # self.selected_assets = []
 
     def get_optimal_portfolio(self, score):
@@ -123,10 +126,7 @@ class Markowitz():
         column_order = ['Returns', 'Volatility', 'Sharpe Ratio'] + [stock + ' Weight' for stock in self.selected_assets]
         df = df[column_order]
         sharpe_portfolio = df.loc[df['Sharpe Ratio'] == df['Sharpe Ratio'].max()]
-        # fig = self.pie_plot(sharpe_portfolio)
-        # self.plot_portfolios( df )
-        # return fig
-        pass
+        return sharpe_portfolio.to_json()
 
     def remove_noise_data(self):
         assets = self.all_assets['Symbol'].tolist()
@@ -139,6 +139,7 @@ class Markowitz():
         self.all_assets = pd.DataFrame(assets, columns=['Symbol'])
 
 
-algo = Algorithm('markowitz', 1)
-algo.build_portfolio()
+algo = Algorithm.create_model('markowitz', 1)
+portfolio = algo.build_portfolio()
+print(portfolio)
 print('done')
