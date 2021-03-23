@@ -205,8 +205,8 @@ class Markowitz:
 
 
 # execution of the model
-model = Markowitz()
-model.get_assets_price_data()
+# model = Markowitz()
+# model.get_assets_price_data()
 # risk_score = 1  # todo get the risk score from the client
 # model.get_selected_assets(risk_score)
 # model.get_optimal_portfolio(risk_score)
