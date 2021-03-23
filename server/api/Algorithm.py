@@ -7,14 +7,13 @@ from datetime import datetime, timedelta
 
 class Algorithm:
 
-    def __init__(self, model_name, risk_score):
+    def __init__(self, risk_score):
         app = create_app()
         app.app_context().push()
         self.risk_score = risk_score
         self.all_assets = self.get_all_assets()
         self.prices_df = self.get_assets_price_data_from_db()
         self.selected_assets = self.get_selected_assets(self.risk_score)
-        # self.model = self.create_model(model_name)
 
     def get_all_assets(self):
         bonds_df = pd.read_csv('./resources/bonds_list.csv')
@@ -36,14 +35,9 @@ class Algorithm:
         return prices_df
 
     def get_selected_assets(self, risk_score):
-        # todo delete all printing
-        print(len(self.prices_df.columns))
         all_std = [self.prices_df[col].std() for col in self.prices_df.columns]
-        print(len(all_std))
-        print(len(self.all_assets))
         std_df = pd.DataFrame(index=self.prices_df.columns, columns=['std'])
         for index, asset in enumerate(self.prices_df.columns):
-            print(asset)
             std_df.loc[asset, 'std'] = all_std[index]
         std_df.sort_values(by=['std'], inplace=True)
 
@@ -63,14 +57,13 @@ class Algorithm:
             selected_assets = std_df.index.tolist()
         return selected_assets
 
-    @staticmethod
     def get_optimal_portfolio(self, score):
         pass
 
     @staticmethod
     def create_model(model_name, risk):
         if model_name == 'markowitz':
-            return Markowitz(model_name, risk)
+            return Markowitz(risk)
         # todo add more models
 
     def build_portfolio(self):
@@ -79,19 +72,13 @@ class Algorithm:
 
 class Markowitz(Algorithm):
 
-    # def __init__(self, prices_df, risk_score, selected_assets):
-    def __init__(self, model_name, risk_score):
-        super().__init__( model_name, risk_score )
+    def __init__(self, risk_score):
+        super().__init__( risk_score )
         self.all_assets = ['SHY', 'TLT', 'SHV', 'IEF', 'GOVT', 'AAPL', 'AMZN', 'MSFT', 'GOOG', 'NFLX']
         self.end_date = datetime.now() - timedelta(1)
         self.start_date = datetime(self.end_date.year - 1, self.end_date.month, self.end_date.day)
-        # self.prices_df = prices_df
-        # self.selected_assets = selected_assets
-        # self.risk_score = risk_score
-        # self.selected_assets = []
 
     def get_optimal_portfolio(self, score):
-        # self.get_selected_assets(score)
         selected_prices_value = self.prices_df[self.selected_assets].dropna()
         num_portfolios = 500
         years = len(selected_prices_value) / 253
