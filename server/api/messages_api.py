@@ -13,7 +13,7 @@ from api.utils import token_required, json_abort
 class SingleMessage(MethodView):
     def get(self, topic_id, msg_id):
         try:
-            msg = db.session.query.filter_by(topic_id=topic_id, id=msg_id).first()
+            msg = db.session.query(Message).filter_by(topic_id=topic_id, id=msg_id).first()
             if not msg:
                 json_abort(404, "Message not found")
             response = make_response(jsonify(msg), 200)

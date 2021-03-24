@@ -8,11 +8,12 @@ from api.utils import json_abort
 
 class GetAllClusters(MethodView):
     def get(self):
-        cluster = db.session.query(Cluster)
-        if not cluster:
+        clusters = db.session.query(Cluster).all()
+        if not clusters:
             json_abort(500, "Unexpected server exception")
         else:
-            response = make_response(jsonify(cluster), 200)
+            result = dict(clusters=[c.as_dict() for c in clusters])
+            response = make_response(jsonify(result), 200)
             return response
 
 
