@@ -12,14 +12,12 @@ from api.utils import token_required, json_abort
 
 class SingleMessage(MethodView):
     def get(self, topic_id, msg_id):
-        try:
-            msg = db.session.query(Message).filter_by(topic_id=topic_id, id=msg_id).first()
-            if not msg:
-                json_abort(404, "Message not found")
-            response = make_response(jsonify(msg), 200)
+        msg = db.session.query(Message).filter_by(topic_id=topic_id, id=msg_id).first()
+        if not msg:
+            json_abort(404, "Message not found")
+        else:
+            response = make_response(jsonify(msg.as_dict()), 200)
             return response
-        except Exception as e:
-            json_abort(500, "fuck u 3")
 
     @token_required
     def put(self, curr_user):
@@ -61,13 +59,15 @@ class AllMessages(MethodView):
     def get(self, page, perPage, topic_id):
         if page < 1 or perPage < 5:
             json_abort(400, "Missing on or more fields")
-        try:
-            all_messages = db.session.query.filter_by(topic_id=topic_id).order_by(desc('added_date')).paginate(
-                page=page, perPage=perPage)
-            response = make_response(jsonify(all_messages), 200)
+        all_messages = db.session.query(Message).filter_by(topic_id=topic_id).order_by(desc('created_at')).paginate(
+            page=page, per_page=perPage)
+        if not all_messages:
+            json_abort(500, "Unexpected server exception")
+        else:
+            result = dict(messages=[a.as_dict() for a in all_messages.items], total=all_messages.total,
+                          current_page=all_messages.page, per_page=all_messages.per_page)
+            response = make_response(jsonify(result), 200)
             return response
-        except Exception as e:
-            json_abort(500, "fuck u 2")
 
 
 api = Blueprint('messages_api', __name__, url_prefix=Config.API_PREFIX + '/message')
@@ -76,4 +76,4 @@ single_message_api = SingleMessage.as_view('single_message_api')
 api.add_url_rule('/<int:topic_id>/<int:msg_id>', methods=['GET'], view_func=single_message_get_api)
 api.add_url_rule('/single_message', methods=['PUT', 'POST'], view_func=single_message_api)
 message_get_all_api = AllMessages.as_view('message_get_all_api')
-api.add_url_rule('/<int:page>/<int:perPage>/<int:topic_id>/', methods=['GET'], view_func=message_get_all_api)
+api.add_url_rule('/<int:page>/<int:perPage>/<int:topic_id>', methods=['GET'], view_func=message_get_all_api)
