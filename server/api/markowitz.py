@@ -3,6 +3,9 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from pandas_datareader import data as pdr
 from datetime import datetime, timedelta
+from app.extensions import db
+from os import environ
+from sqlalchemy import create_engine
 
 pd.set_option('display.max_rows', None)
 pd.set_option('display.max_columns', None)
@@ -11,8 +14,6 @@ pd.set_option('display.width', None)
 
 class Markowitz:
     all_assets = ['SHY', 'TLT', 'SHV', 'IEF', 'GOVT', 'AAPL', 'AMZN', 'MSFT', 'GOOG', 'NFLX']
-
-    # todo remove sdfsdfsdfsdfsdfsdf
 
     end_date = datetime.now() - timedelta(1)
     start_date = datetime(end_date.year - 1, end_date.month, end_date.day)
@@ -27,24 +28,28 @@ class Markowitz:
         sp500_stocks = pd.read_html('https://en.wikipedia.org/wiki/List_of_S%26P_500_companies')
         sp500_stocks_df = sp500_stocks[0]['Symbol']
         self.all_assets = bonds_df.tolist() + sp500_stocks_df.tolist()
-        bonds_df.to_excel('bonds list.xlsx')
-        sp500_stocks_df.to_excel('stocks list.xlsx')
+        # bonds_df.to_excel('bonds list.xlsx')
+        # sp500_stocks_df.to_excel('stocks list.xlsx')
 
     def get_assets_price_data(self):
-        price_data = {}
-        for asset in self.all_assets:
-            print(asset)
-            try:
-                data_var = pdr.get_data_yahoo(asset, self.start_date, self.end_date)['Adj Close']
-                data_var.to_frame()
-                price_data.update({asset: data_var})
-            except:
-                print("failed")
-                self.all_assets.remove(asset)
-                continue
+        price_data = pdr.get_data_yahoo( self.all_assets, self.start_date, self.end_date )['Adj Close']
         self.prices_df = pd.DataFrame(price_data)
-        self.prices_df.to_excel('./resources/assets_prices.xlsx')
-        pd.DataFrame(self.all_assets).to_excel('./resources/assets_list.xlsx')
+        print('done')
+        # self.prices_df.to_excel('./resources/assets_prices.xlsx')
+        # pd.DataFrame(self.all_assets).to_excel('./resources/assets_list.xlsx')
+
+    def get_assets_price_data_from_db(self):
+        data = pd.read_sql_table( 'stocks_prices', db.engine )
+        columns_names = data['ticker'].unique()
+        dates = data['date'].unique()
+        prices_df = pd.DataFrame( index=dates, columns=columns_names )
+        for ticker in prices_df.columns:
+            try:
+                prices_df[ticker] = [p for p in data.loc[data['ticker'] == ticker]['price']]
+            except:
+                print( 'there is not enough data for this asset' )
+        prices_df.dropna( axis=1, inplace=True )
+        self.prices_df = prices_df
 
     def get_selected_assets(self, risk_score):
         # self.get_assets_price_data()
@@ -197,3 +202,11 @@ class Markowitz:
             if asset not in self.prices_df.columns:
                 assets.remove(asset)
         self.all_assets = pd.DataFrame(assets, columns=['Symbol'])
+
+
+# execution of the model
+# model = Markowitz()
+# model.get_assets_price_data()
+# risk_score = 1  # todo get the risk score from the client
+# model.get_selected_assets(risk_score)
+# model.get_optimal_portfolio(risk_score)
