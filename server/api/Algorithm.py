@@ -22,9 +22,11 @@ class Algorithm:
         return all_assets
 
     def get_assets_price_data_from_db(self):
-        data = pd.read_sql_table('stocks_prices', db.engine)
+        table_data = pd.read_sql_table('stocks_prices', db.engine)
+        relevant_dates = table_data['date_time'].sort_values(ascending=False).unique()[:253]  # there are approximately 253 trading days
+        data = table_data[table_data['date_time'].isin(relevant_dates)]
         columns_names = data['ticker'].unique()
-        dates = data['date'].unique()
+        dates = data['date_time'].unique()
         prices_df = pd.DataFrame(index=dates, columns=columns_names)
         for ticker in prices_df.columns:
             try:
@@ -127,6 +129,7 @@ class Markowitz(Algorithm):
 
 
 algo = Algorithm.create_model('markowitz', 1)
+algo.get_assets_price_data_from_db()
 portfolio = algo.build_portfolio()
 print(portfolio)
 print('done')

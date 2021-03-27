@@ -3,15 +3,11 @@ from sqlalchemy import create_engine
 
 from app.extensions import celery
 from app.extensions import db
-from models.number_addition import NumberAddition
 from pandas_datareader import data as pdr
 import pandas as pd
 from datetime import datetime, timedelta
-from celery.task import periodic_task
-from yahoofinance import BalanceSheet
 
 
-# @celery.task(name='print_hello', bind=True)
 @celery.task(name='print_hello', bind=True)
 def print_hello(self):
     task_id = self.request.id
@@ -32,13 +28,13 @@ def insert_price_data(self):
     bonds = ['SHY', 'TLT', 'SHV', 'IEF', 'GOVT', 'BIL', 'IEI', 'VGSH', 'SCHO', 'VGIT', 'SCHR', 'SPTS', 'SPTL',
              'GBIL', 'SPTI', 'VGLT', 'TLH', 'EDV', 'USFR', 'SGOV', 'CLTL', 'BSJK', 'FLGV', 'ZROZ', 'TFLO']
     bonds_df = pdr.get_data_yahoo( bonds, start_date, end_date )['Adj Close']
-    data_to_insert = pd.DataFrame( columns=['ticker', 'date', 'price', 'type', 'market_cap'] )
+    data_to_insert = pd.DataFrame( columns=['ticker', 'date_time', 'price', 'asset_type', 'market_cap'] )
     for bond in bonds_df.columns:
         bond_data = pd.DataFrame()
-        bond_data['date'] = bonds_df.index
+        bond_data['date_time'] = bonds_df.index
         bond_data['price'] = bonds_df[bond].values
         bond_data['ticker'] = bond
-        bond_data['type'] = 'bond'
+        bond_data['asset_type'] = 'bond'
         try:
             marketCap = pdr.get_quote_yahoo( bond )['marketCap'][0]
         except:
@@ -52,10 +48,10 @@ def insert_price_data(self):
     stocks_df = pdr.get_data_yahoo( stocks, start_date, end_date )['Adj Close']
     for stock in stocks_df.columns:
         stock_data = pd.DataFrame()
-        stock_data['date'] = stocks_df.index
+        stock_data['date_time'] = stocks_df.index
         stock_data['price'] = stocks_df[stock].values
         stock_data['ticker'] = stock
-        stock_data['type'] = 'stock'
+        stock_data['asset_type'] = 'stock'
         try:
             marketCap = pdr.get_quote_yahoo( stock )['marketCap'][0]
         except:
@@ -65,5 +61,10 @@ def insert_price_data(self):
 
     # insert price data to sql table
     data_to_insert.dropna( inplace=True )
-    data_to_insert.to_sql( 'stocks_prices', db.engine, if_exists='replace', index=False )
+    if db.engine.dialect.has_table(db.engine, 'stocks_prices'):
+        table_data = pd.read_sql_table('stocks_prices', db.engine)
+        data_to_insert = data_to_insert[~data_to_insert['date_time'].isin(table_data['date_time'])]
+    data_to_insert.to_sql( 'stocks_prices', db.engine, if_exists='append', index=False )
     print('done inserting assets data to the database')
+
+
