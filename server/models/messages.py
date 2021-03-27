@@ -16,7 +16,7 @@ class Message(db.Model):
     def as_dict(self):
         message_as_dict = {
             'id': self.id,
-            'title': self.title,
+            'content': self.content,
             'created_at': self.created_at.strftime('%m-%d-%Y'),
             'topic_id': self.topic_id,
             'member_email': self.member_email
