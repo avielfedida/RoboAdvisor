@@ -21,8 +21,9 @@ def insert_price_data(self):
     task_id = self.request.id
 
     # setting time period of the stock prices (default is one year) //todo change time period
-    end_date = datetime.now() - timedelta( 1 )
-    start_date = datetime( end_date.year - 1, end_date.month, end_date.day )
+    end_date = datetime.now() - timedelta( days=1 )
+    # start_date = datetime( end_date.year - 1, end_date.month, end_date.day )
+    start_date = datetime( end_date.year, end_date.month, end_date.day - 1 )
 
     # getting bonds price data
     bonds = ['SHY', 'TLT', 'SHV', 'IEF', 'GOVT', 'BIL', 'IEI', 'VGSH', 'SCHO', 'VGIT', 'SCHR', 'SPTS', 'SPTL',

@@ -8,6 +8,8 @@ import QWrapper from "./components/screens/questionnaire/QWrapper";
 import LoginScreen from "./components/screens/LoginScreen";
 import ForumScreen from "./components/screens/forum/ForumScreen";
 import RegisterScreen from "./components/screens/RegisterScreen";
+import ProfileScreen from "./components/screens/ProfileScreen";
+import ChangePasswordScreen from "./components/screens/ChangePasswordScreen";
 
 function App() {
   return (
@@ -17,6 +19,8 @@ function App() {
         <Routes>
           <Route path="login" element={<LoginScreen />} />
           <Route path="register" element={<RegisterScreen />} />
+          <Route path="profile" element={<ProfileScreen />} />
+          <Route path="change_password" element={<ChangePasswordScreen />} />
           <Route path="forum/*" element={<ForumScreen />} />
           <Route path="questionnaire/*" element={<QWrapper />} />
           <Route path="/" element={<Home />} />

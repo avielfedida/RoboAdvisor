@@ -22,8 +22,10 @@ class Config(object):
     CELERY_ENABLE_UTC = True
     CELERYBEAT_SCHEDULE = {
         'print-hello-every-2-seconds': {
-            'task': 'print_hello',  # notice that the complete name is needed
-            'schedule': timedelta(seconds=2),
+            'task': 'insert_price_data',  # notice that the complete name is needed
+            'schedule': timedelta(minutes=3000
+
+                                  ),
             # 'args': (16000, 42) # If needed, commented out for now
         },
     }
@@ -31,6 +33,8 @@ class Config(object):
 
     # API
     API_PREFIX = '/api/v1'
+    MESSAGES_PER_PAGE = 2
+    TOPICS_PER_PAGE = 2
 
     # Database
     SQLALCHEMY_ECHO = True

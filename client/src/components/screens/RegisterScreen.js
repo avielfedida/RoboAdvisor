@@ -23,17 +23,17 @@ const RegisterScreen = () => {
 
   const submitHandler = (e) => {
     e.preventDefault();
-    if (email.length == 0) {
+    if (email.length === 0) {
       setMessage("חשבון המייל לא יכול להיות ריק");
     } else if (!validateEmail(email)) {
       setMessage("פורמט מייל אינו תקין");
-    } else if (name.length == 0) {
+    } else if (name.length === 0) {
       setMessage("השם לא יכול להיות ריק");
-    } else if (surname.length == 0) {
+    } else if (surname.length === 0) {
       setMessage("שם המשפחה לא יכול להיות ריק");
-    } else if (password.length == 0) {
+    } else if (password.length === 0) {
       setMessage("הסיסמה לא יכולה להיות ריקה");
-    } else if (password != passwordConfirm) {
+    } else if (password !== passwordConfirm) {
       setMessage("הסיסמאות אינן תואמות");
     } else {
       setMessage("");

@@ -26,11 +26,11 @@ const LoginScreen = () => {
 
   const submitHandler = (e) => {
     e.preventDefault();
-    if (email.length == 0) {
+    if (email.length === 0) {
       setMessage("חשבון המייל לא יכול להיות ריק");
     } else if (!validateEmail(email)) {
       setMessage("פורמט מייל אינו תקין");
-    } else if (password.length == 0) {
+    } else if (password.length === 0) {
       setMessage("הסיסמה לא יכולה להיות ריקה");
     } else {
       setMessage("");

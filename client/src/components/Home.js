@@ -2,6 +2,8 @@ import React from "react";
 import { Container, Row, Col, Image, Button } from "react-bootstrap";
 import Logo from "./reusables/Logo";
 import { useNavigate } from "react-router-dom";
+import LatestResults from "./LatestResults";
+
 const Home = () => {
   const navigate = useNavigate();
   return (
@@ -33,7 +35,7 @@ const Home = () => {
       </Row>
       <Row>
         <Col sm={12}>
-          <h2>תוכן נוסף בהמשך...</h2>
+          <LatestResults />
         </Col>
       </Row>
     </Container>

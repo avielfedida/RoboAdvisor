@@ -30,7 +30,7 @@ class AnswersSet(db.Model):
             'ans_6': self.ans_6,
             'ans_7': self.ans_7,
             'ans_8': self.ans_8,
-            'risk': self.risk.name
+            'risk': self.risk
         }
         return answers_set_as_dict
 
