@@ -52,7 +52,7 @@ class Member(db.Model):
             'last_name': self.last_name,
             'age': str(self.age),
             'gender': self.gender.name,
-            'latest_portfolio_risk': self.latest_portfolio_risk.name,
+            'latest_portfolio_risk': self.latest_portfolio_risk,
             'user_id': self.user_id
         }
         return member_as_dict

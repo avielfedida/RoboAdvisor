@@ -9,11 +9,13 @@ class Cluster(db.Model):
     # Set columns for the table
     title = db.Column('title', db.String, primary_key=True)
     description = db.Column('description', db.String)
+    image_path = db.Column('image_path', db.String)
     topics = relationship("Topic", backref='cluster')
 
     def as_dict(self):
         cluster_as_dict = {
             'title': self.title,
             'description': self.description,
+            'image_path': self.image_path
         }
         return cluster_as_dict
