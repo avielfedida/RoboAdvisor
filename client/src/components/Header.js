@@ -13,10 +13,19 @@ import {
 } from "react-bootstrap";
 
 import Logo from "./reusables/Logo";
+import { useDispatch, useSelector } from "react-redux";
+import { logout } from "../actions/userActions";
 import { Link, useNavigate } from "react-router-dom";
 
 const Header = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const userLogin = useSelector((state) => state.userLogin);
+  const { userInfo } = userLogin;
+
+  const logoutHandler = () => {
+    dispatch(logout());
+  };
 
   return (
     <header>
@@ -29,23 +38,42 @@ const Header = () => {
         <Navbar.Toggle aria-controls="basic_navbar_nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <>
-            <Nav.Link
-              onClick={() => navigate("login")}
-              className="nav_link_custom"
-              id="nav_link_login"
-            >
-              <span className="lnr lnr-enter"></span>
+            {userInfo ? (
+              <>
+                <span>ברוך שובך </span>
+                <NavDropdown
+                  title={userInfo.first_name + " " + userInfo.last_name}
+                  id="username"
+                >
+                  <NavDropdown.Item onClick={() => navigate("profile")}>
+                    פרופיל משתמש
+                  </NavDropdown.Item>
+                  <NavDropdown.Item onClick={logoutHandler}>
+                    התנתק/י
+                  </NavDropdown.Item>
+                </NavDropdown>
+              </>
+            ) : (
+              <>
+                <Nav.Link
+                  onClick={() => navigate("login")}
+                  className="nav_link_custom"
+                  id="nav_link_login"
+                >
+                  <span className="lnr lnr-enter"></span>
 
-              <span>התחברות</span>
-            </Nav.Link>
-            <Nav.Link
-              onClick={() => navigate("register")}
-              className="nav_link_custom"
-              id="nav_link_register"
-            >
-              <span className="lnr lnr-user"></span>
-              <span>הרשמה</span>
-            </Nav.Link>
+                  <span>התחברות</span>
+                </Nav.Link>
+                <Nav.Link
+                  onClick={() => navigate("register")}
+                  className="nav_link_custom"
+                  id="nav_link_register"
+                >
+                  <span className="lnr lnr-user"></span>
+                  <span>הרשמה</span>
+                </Nav.Link>
+              </>
+            )}
             <Nav.Link
               onClick={() => navigate("forum")}
               className="nav_link_custom"
@@ -53,6 +81,14 @@ const Header = () => {
             >
               <span className="lnr lnr-bubble"></span>
               <span>פורום</span>
+            </Nav.Link>
+            <Nav.Link
+              onClick={() => navigate("/")}
+              className="nav_link_custom"
+              id="nav_link_forum"
+            >
+              <span className="lnr lnr-home"></span>
+              <span>בית</span>
             </Nav.Link>
           </>
         </Navbar.Collapse>

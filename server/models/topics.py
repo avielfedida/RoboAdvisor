@@ -20,7 +20,7 @@ class Topic(db.Model):
             'id': self.id,
             'title': self.title,
             'created_at': self.created_at.strftime('%m-%d-%Y'),
-            'cluster': self.cluster,
+            'cluster_title': self.cluster_title,
             'member_email': self.member_email
         }
         return topic_as_dict

@@ -1,6 +1,6 @@
 from flask import Blueprint, request, make_response, jsonify, current_app
 from flask.views import MethodView
-from sqlalchemy import desc
+from sqlalchemy import desc, asc
 
 from app.configurations import Config
 from app.extensions import db
@@ -26,16 +26,14 @@ class SingleMessage(MethodView):
         msg_id = data.get("id")
         topic_id = data.get("topic_id")
         msg = db.session.query(Message).filter_by(member_email=member.email, topic_id=topic_id, id=msg_id).first()
-        print("was here")
         if not msg:
-            json_abort(404, "Message not found")
+            json_abort(404, "ההודעה לא נמצאה")
         new_content = data.get("content")
-        print("here too")
         if not new_content:
             json_abort(400, "Content is empty")
         msg.content = new_content
         db.session.commit()
-        response = make_response(jsonify(message='Message updated successfully'), 200)
+        response = make_response(jsonify(message='ההודעה עודכנה בהצלחה'), 200)
         return response
 
     @token_required
@@ -51,29 +49,27 @@ class SingleMessage(MethodView):
             json_abort(500, "Couldn't create new message")
         db.session.add(new_message)
         db.session.commit()
-        response = make_response(jsonify(message='Message added successfully'), 200)
+        response = make_response(jsonify(message='ההודעה התווספה בהצלחה'), 200)
+        return response
+
+class AllMessages(MethodView):
+    def get(self, page, topic_id):
+        if page < 1:
+            json_abort(400, "Missing on or more fields")
+        all_messages = Message.query.filter_by(topic_id=topic_id).order_by(asc('created_at')).paginate(
+            page=page, per_page=Config.MESSAGES_PER_PAGE)
+        result = dict(datas=[a.as_dict() for a in all_messages.items],
+                      total=all_messages.total,
+                      current_page=all_messages.page,
+                      per_page=all_messages.per_page)
+        response = make_response(jsonify(result), 200)
         return response
 
 
-class AllMessages(MethodView):
-    def get(self, page, perPage, topic_id):
-        if page < 1 or perPage < 5:
-            json_abort(400, "Missing on or more fields")
-        all_messages = db.session.query(Message).filter_by(topic_id=topic_id).order_by(desc('created_at')).paginate(
-            page=page, per_page=perPage)
-        if not all_messages:
-            json_abort(500, "Unexpected server exception")
-        else:
-            result = dict(messages=[a.as_dict() for a in all_messages.items], total=all_messages.total,
-                          current_page=all_messages.page, per_page=all_messages.per_page)
-            response = make_response(jsonify(result), 200)
-            return response
-
-
-api = Blueprint('messages_api', __name__, url_prefix=Config.API_PREFIX + '/message')
+api = Blueprint('messages_api', __name__, url_prefix=Config.API_PREFIX + '/messages')
 single_message_get_api = SingleMessage.as_view('single_message_get_api')
 single_message_api = SingleMessage.as_view('single_message_api')
-api.add_url_rule('/<int:topic_id>/<int:msg_id>', methods=['GET'], view_func=single_message_get_api)
+api.add_url_rule('/single/<int:topic_id>/<int:msg_id>', methods=['GET'], view_func=single_message_get_api)
 api.add_url_rule('/single_message', methods=['PUT', 'POST'], view_func=single_message_api)
 message_get_all_api = AllMessages.as_view('message_get_all_api')
-api.add_url_rule('/<int:page>/<int:perPage>/<int:topic_id>', methods=['GET'], view_func=message_get_all_api)
+api.add_url_rule('/all/<int:topic_id>/<int:page>', methods=['GET'], view_func=message_get_all_api)
