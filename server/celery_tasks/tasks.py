@@ -44,20 +44,20 @@ def insert_price_data(self):
     data_to_insert['market_cap'].loc[data_to_insert['market_cap'] == 0] = [data_to_insert['market_cap'].mean() for i in range(len(data_to_insert['market_cap'].loc[data_to_insert['market_cap'] == 0]))]
 
     # getting stocks price data
-    stocks = pd.read_html( 'https://en.wikipedia.org/wiki/List_of_S%26P_500_companies' )[0]['Symbol'].tolist()
-    stocks_df = pdr.get_data_yahoo( stocks, start_date, end_date )['Adj Close']
-    for stock in stocks_df.columns:
-        stock_data = pd.DataFrame()
-        stock_data['date_time'] = stocks_df.index
-        stock_data['price'] = stocks_df[stock].values
-        stock_data['ticker'] = stock
-        stock_data['asset_type'] = 'stock'
-        try:
-            marketCap = pdr.get_quote_yahoo( stock )['marketCap'][0]
-        except:
-            marketCap = int(0)
-        stock_data['market_cap'] = [int(marketCap) for i in range( len( stock_data ) )]
-        data_to_insert = data_to_insert.append( stock_data, ignore_index=True )
+    # stocks = pd.read_html( 'https://en.wikipedia.org/wiki/List_of_S%26P_500_companies' )[0]['Symbol'].tolist()
+    # stocks_df = pdr.get_data_yahoo( stocks, start_date, end_date )['Adj Close']
+    # for stock in stocks_df.columns:
+    #     stock_data = pd.DataFrame()
+    #     stock_data['date_time'] = stocks_df.index
+    #     stock_data['price'] = stocks_df[stock].values
+    #     stock_data['ticker'] = stock
+    #     stock_data['asset_type'] = 'stock'
+    #     try:
+    #         marketCap = pdr.get_quote_yahoo( stock )['marketCap'][0]
+    #     except:
+    #         marketCap = int(0)
+    #     stock_data['market_cap'] = [int(marketCap) for i in range( len( stock_data ) )]
+    #     data_to_insert = data_to_insert.append( stock_data, ignore_index=True )
 
     # insert price data to sql table
     data_to_insert.dropna( inplace=True )
