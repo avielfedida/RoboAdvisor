@@ -31,6 +31,7 @@ def create_app():
     from api.clusters_api import api as clusters_api
     from api.topics_api import api as topics_api
     from api.messages_api import api as messages_api
+    from api.algorithm_api import api as algorithm_api
 
     app.register_blueprint(users_api)
     app.register_blueprint(members_api)
@@ -42,6 +43,8 @@ def create_app():
     app.register_blueprint(clusters_api)
     app.register_blueprint(topics_api)
     app.register_blueprint(messages_api)
+    app.register_blueprint(algorithm_api)
+
 
 
     # Create tables

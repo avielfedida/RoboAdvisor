@@ -23,15 +23,15 @@ class StocksPricesApi(MethodView):
 
         return response
 
-    # get stock price by ticker
+    # get stock price by asset_type
     def get(self):
 
         try:
-            stock_price_by_email = db.session.query(StockPrice).filter_by(ticker=request.args.get('ticker')).first()
-            if stock_price_by_email is None:
-                response = make_response(jsonify(message='Invalid ticker'), 400)
+            stock_price_by_asset_type = db.session.query(StockPrice).filter_by(asset_type=request.args.get('asset_type')).first()
+            if stock_price_by_asset_type is None:
+                response = make_response(jsonify(message='Invalid asset_type'), 400)
             else:
-                response = make_response(jsonify(stock_price_by_email.as_dict()), 200)
+                response = make_response(jsonify(stock_price_by_asset_type.as_dict()), 200)
         except Exception as e:
             response = make_response(jsonify(message=str(e)), 400)
 

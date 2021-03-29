@@ -3,21 +3,21 @@ from app.factory import create_app
 import numpy as np
 import pandas as pd
 from datetime import datetime, timedelta
-
+# from .black_litterman import BlackLitterman
 
 class Algorithm:
 
-    def __init__(self, risk_score):
-        app = create_app()
-        app.app_context().push()
+    def __init__(self, model_name, risk_score):
+        # app = create_app()
+        # app.app_context().push()
         self.risk_score = risk_score
         self.all_assets = self.get_all_assets()
         self.prices_df = self.get_assets_price_data_from_db()
         self.selected_assets = self.get_selected_assets(self.risk_score)
 
     def get_all_assets(self):
-        bonds_df = pd.read_csv('./resources/bonds_list.csv')
-        sp500_stocks_df = pd.read_csv('./resources/stocks_list.csv')
+        bonds_df = pd.read_csv('api/resources/bonds_list.csv')
+        sp500_stocks_df = pd.read_csv('api/resources/stocks_list.csv')
         all_assets = bonds_df['Symbol'].tolist() + sp500_stocks_df['Symbol'].tolist()
         return all_assets
 
@@ -59,14 +59,19 @@ class Algorithm:
             selected_assets = std_df.index.tolist()
         return selected_assets
 
+
+
     def get_optimal_portfolio(self, score):
         pass
 
-    @staticmethod
-    def create_model(model_name, risk):
-        if model_name == 'markowitz':
-            return Markowitz(risk)
-        # todo add more models
+    # @staticmethod
+    # def create_model(model_name, risk):
+    #     if model_name == 'markowitz':
+    #         return Markowitz(risk)
+    #     if model_name == 'black_litterman':
+    #         return BlackLitterman(model_name, risk)
+    #
+    #     # todo add more models
 
     def build_portfolio(self):
         return self.get_optimal_portfolio(self.risk_score)
@@ -129,7 +134,6 @@ class Markowitz(Algorithm):
 
 
 # algo = Algorithm.create_model('markowitz', 1)
-# algo.get_all_assets()
 # algo.get_assets_price_data_from_db()
 # portfolio = algo.build_portfolio()
 # print(portfolio)
