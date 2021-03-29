@@ -128,9 +128,9 @@ class Markowitz(Algorithm):
         self.all_assets = pd.DataFrame(assets, columns=['Symbol'])
 
 
-algo = Algorithm.create_model('markowitz', 1)
+# algo = Algorithm.create_model('markowitz', 1)
 # algo.get_all_assets()
-algo.get_assets_price_data_from_db()
-portfolio = algo.build_portfolio()
-print(portfolio)
-print('done')
+# algo.get_assets_price_data_from_db()
+# portfolio = algo.build_portfolio()
+# print(portfolio)
+# print('done')
