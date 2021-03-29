@@ -23,7 +23,7 @@ def insert_price_data(self):
     # setting time period of the stock prices (default is one year) //todo change time period
     end_date = datetime.now() - timedelta( days=1 )
     # start_date = datetime( end_date.year - 1, end_date.month, end_date.day )
-    start_date = datetime( end_date.year, end_date.month, end_date.day - 1 )
+    start_date = datetime( end_date.year, end_date.month, end_date.day - 3)
 
     # getting bonds price data
     bonds = ['SHY', 'TLT', 'SHV', 'IEF', 'GOVT', 'BIL', 'IEI', 'VGSH', 'SCHO', 'VGIT', 'SCHR', 'SPTS', 'SPTL',
@@ -45,27 +45,25 @@ def insert_price_data(self):
     data_to_insert['market_cap'].loc[data_to_insert['market_cap'] == 0] = [data_to_insert['market_cap'].mean() for i in range(len(data_to_insert['market_cap'].loc[data_to_insert['market_cap'] == 0]))]
 
     # getting stocks price data
-    # stocks = pd.read_html( 'https://en.wikipedia.org/wiki/List_of_S%26P_500_companies' )[0]['Symbol'].tolist()
-    # stocks_df = pdr.get_data_yahoo( stocks, start_date, end_date )['Adj Close']
-    # for stock in stocks_df.columns:
-    #     stock_data = pd.DataFrame()
-    #     stock_data['date_time'] = stocks_df.index
-    #     stock_data['price'] = stocks_df[stock].values
-    #     stock_data['ticker'] = stock
-    #     stock_data['asset_type'] = 'stock'
-    #     try:
-    #         marketCap = pdr.get_quote_yahoo( stock )['marketCap'][0]
-    #     except:
-    #         marketCap = int(0)
-    #     stock_data['market_cap'] = [int(marketCap) for i in range( len( stock_data ) )]
-    #     data_to_insert = data_to_insert.append( stock_data, ignore_index=True )
+    stocks = pd.read_html( 'https://en.wikipedia.org/wiki/List_of_S%26P_500_companies' )[0]['Symbol'].tolist()
+    stocks_df = pdr.get_data_yahoo( stocks, start_date, end_date )['Adj Close']
+    for stock in stocks_df.columns:
+        stock_data = pd.DataFrame()
+        stock_data['date_time'] = stocks_df.index
+        stock_data['price'] = stocks_df[stock].values
+        stock_data['ticker'] = stock
+        stock_data['asset_type'] = 'stock'
+        try:
+            marketCap = pdr.get_quote_yahoo( stock )['marketCap'][0]
+        except:
+            marketCap = int(0)
+        stock_data['market_cap'] = [int(marketCap) for i in range( len( stock_data ) )]
+        data_to_insert = data_to_insert.append( stock_data, ignore_index=True )
 
     # insert price data to sql table
     data_to_insert.dropna( inplace=True )
     if db.engine.dialect.has_table(db.engine, 'stocks_prices'):
         table_data = pd.read_sql_table('stocks_prices', db.engine)
-        data_to_insert = data_to_insert[~data_to_insert['date_time'].isin(table_data['date_time'])]
+        data_to_insert = pd.concat([data_to_insert, table_data]).drop_duplicates(subset=['ticker', 'date_time'], keep=False)
     data_to_insert.to_sql( 'stocks_prices', db.engine, if_exists='append', index=False )
     print('done inserting assets data to the database')
-
-

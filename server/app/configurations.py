@@ -22,8 +22,8 @@ class Config(object):
     CELERY_ENABLE_UTC = True
     CELERYBEAT_SCHEDULE = {
         'print-hello-every-2-seconds': {
-            'task': 'insert_price_data',  # notice that the complete name is needed
-            'schedule': timedelta(minutes=3000
+            'task': 'print_hello',  # notice that the complete name is needed
+            'schedule': timedelta(seconds=1
 
                                   ),
             # 'args': (16000, 42) # If needed, commented out for now

@@ -129,6 +129,7 @@ class Markowitz(Algorithm):
 
 
 algo = Algorithm.create_model('markowitz', 1)
+# algo.get_all_assets()
 algo.get_assets_price_data_from_db()
 portfolio = algo.build_portfolio()
 print(portfolio)
