@@ -1,4 +1,4 @@
-from flask import Blueprint, make_response, jsonify
+from flask import Blueprint, request, make_response, jsonify
 from flask.views import MethodView
 from app.configurations import Config
 from algorithms.create_model import create_model
@@ -10,11 +10,11 @@ class AlgorithmApi(MethodView):
     # add new stock price
     def get(self):
         try:
-            algo = create_model('black_litterman', 5)
+            model_name = request.args.get('model_name')
+            risk = int(request.args.get('risk'))
+            algo = create_model(model_name, risk)
             portfolio = algo.build_portfolio()
             json_object = json.loads(portfolio)
-            # lst = list(json_object['Weight'].values())
-            # print(sorted([(x, i) for (i, x) in enumerate(lst)], reverse=True)[:3])
             response = make_response(json_object, 200)
 
         except Exception as e:
@@ -24,4 +24,4 @@ class AlgorithmApi(MethodView):
 
 api = Blueprint('algorithm_api', __name__, url_prefix=Config.API_PREFIX + '/algorithms')
 algorithms = AlgorithmApi.as_view('api_algorithm')
-api.add_url_rule('/black_litterman/', methods=['GET'], view_func=algorithms)
+api.add_url_rule('/run_algorithm_by_name/', methods=['GET'], view_func=algorithms)
