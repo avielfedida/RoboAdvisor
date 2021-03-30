@@ -1,10 +1,10 @@
-from api.black_litterman import BlackLitterman
-from api.Algorithm import Markowitz
+from algorithms.black_litterman import BlackLitterman
+from algorithms.markowitz import Markowitz
 
 def create_model(model_name, risk):
     if model_name == 'markowitz':
         return Markowitz(risk)
     if model_name == 'black_litterman':
-        return BlackLitterman(model_name, risk)
+        return BlackLitterman(risk)
 
     # todo add more models
