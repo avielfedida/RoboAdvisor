@@ -2,13 +2,13 @@ from app.extensions import db
 import pandas as pd
 import numpy as np
 import scipy.optimize
-from .Algorithm import Algorithm
+from algorithms.Algorithm import Algorithm
 
 
 class BlackLitterman(Algorithm):
 
-    def __init__(self, model_name, risk_score):
-        super().__init__(model_name, risk_score)
+    def __init__(self, risk_score):
+        super().__init__(risk_score)
         self.df_cap_bonds_and_stocks = pd.DataFrame(columns=['ticker', 'market_cap'])
         dates = self.prices_df.index
         self.df_prices_bonds_and_stocks = pd.DataFrame(index=dates, columns=self.selected_assets)
