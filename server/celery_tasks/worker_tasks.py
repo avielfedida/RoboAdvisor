@@ -26,7 +26,7 @@ def print_hello(self):
 # @celery.task(name='insert_price_data', bind=True)
 
 @periodic_task(
-    run_every=(crontab(minute=7, hour=17)),# Israel time = UTC + 3
+    run_every=(crontab(minute=30, hour=21)),# Israel time = UTC + 3
     name="insert_price_data",
     ignore_result=True)
 def insert_price_data():
@@ -35,9 +35,9 @@ def insert_price_data():
         # users = db.session.query(User).all()#todo: remove
         # task_id = self.request.id
         # setting time period of the stock prices (default is one year) //todo change time period
-        end_date = datetime.now() - timedelta( days=1 )
+        end_date = datetime.now() - timedelta(days=1)
         # start_date = datetime( end_date.year - 1, end_date.month, end_date.day )
-        start_date = datetime( end_date.year-1, end_date.month, end_date.day )
+        start_date = datetime(end_date.year-1, end_date.month, end_date.day)
 
         # getting bonds price data
         bonds = ['SHY', 'TLT', 'SHV', 'IEF', 'GOVT', 'BIL', 'IEI', 'VGSH', 'SCHO', 'VGIT', 'SCHR', 'SPTS', 'SPTL',

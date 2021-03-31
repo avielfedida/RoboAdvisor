@@ -10,7 +10,7 @@ class PortfolioStocks(db.Model):
     stock_price_date_time = db.Column(db.DateTime)
     portfolios_date_time = db.Column(db.DateTime, primary_key=True)
     portfolios_algorithm = db.Column(db.Enum(Algorithm), primary_key=True)
-    portfolios_risk = db.Column(db.Integer, primary_key=True)
+    portfolios_risk = db.Column(db.Enum(Risk), primary_key=True)
     weight = db.Column(db.Numeric)
 
     __table_args__ = (
@@ -23,3 +23,13 @@ class PortfolioStocks(db.Model):
             ['portfolios.date_time', 'portfolios.algorithm', 'portfolios.risk'],
         ),
     )
+
+    def as_dict(self):
+        portfolio_stock_as_dict = {
+            'stock_price_ticker': self.stock_price_ticker,
+            'portfolios_date_time': self.portfolios_date_time,
+            'portfolios_algorithm': self.portfolios_algorithm,
+            'risk': self.portfolios_risk,
+            'weight': self.weight
+        }
+        return portfolio_stock_as_dict

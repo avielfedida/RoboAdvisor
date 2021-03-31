@@ -12,7 +12,7 @@ class Portfolio(db.Model):
 
     date_time = db.Column('date_time', db.DateTime, default=datetime.datetime.now, primary_key=True)
     algorithm = db.Column('algorithm', db.Enum(Algorithm), primary_key=True)
-    risk = db.Column('risk', db.Integer, primary_key=True)
+    risk = db.Column('risk',  db.Enum(Risk), primary_key=True)
     link = db.Column('link', db.String)
     port_user_answers_set = relationship("PortUserAnswersSet", backref='portfolio')
     portfolio_stocks = relationship("PortfolioStocks", backref='portfolio')
@@ -20,8 +20,8 @@ class Portfolio(db.Model):
     def as_dict(self):
         portfolio_as_dict = {
             'date_time': self.date_time.strftime('%m-%d-%Y'),
-            'algorithm': self.algorithm.name,
-            'risk': self.risk, # TODO: should be risk.name
+            'algorithm': self.algorithm,
+            'risk': self.risk,
             'link': self.link
         }
         return portfolio_as_dict
