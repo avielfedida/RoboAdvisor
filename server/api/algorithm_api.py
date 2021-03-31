@@ -14,8 +14,14 @@ class AlgorithmApi(MethodView):
             risk = int(request.args.get('risk'))
             algo = create_model(model_name, risk)
             portfolio = algo.build_portfolio()
-            json_object = json.loads(portfolio)
-            response = make_response(json_object, 200)
+            json_object = {'portfolio': portfolio.as_dict()}
+            i = 0
+            for portfolio_stock in portfolio.portfolio_stocks:
+                stock = 'stock' + str(i)
+                json_object.update({stock: portfolio_stock.as_dict()})
+                i += 1
+            print(json_object)
+            response = make_response(jsonify(message="run algorithm successfully"), 200)
 
         except Exception as e:
             response = make_response(jsonify(message=str(e)), 400)

@@ -1,6 +1,7 @@
 from app.extensions import db
 import pandas as pd
-
+from models.portfolio import Portfolio
+from datetime import datetime
 
 class Algorithm:
 
@@ -54,14 +55,33 @@ class Algorithm:
             selected_assets = std_df.index.tolist()
         return selected_assets
 
+    def create_portfolio(self, risk, algorithm_name):
+        risk_sym = ''
+        if risk == 1:
+            risk_sym = 'a'
+        elif risk == 2:
+            risk_sym = 'b'
+        elif risk == 3:
+            risk_sym = 'c'
+        elif risk == 4:
+            risk_sym = 'd'
+        elif risk == 5:
+            risk_sym = 'e'
+        date_time = datetime.now()
+        # Create Portfolio Object
+        portfolio = Portfolio(date_time=date_time, algorithm=algorithm_name, risk=risk_sym)
+        return portfolio
+
     def get_optimal_portfolio(self, score):
         pass
 
-    def build_portfolio(self):
-        return self.get_optimal_portfolio(self.risk_score)
-
     def get_portfolio_object(self, risk):
         pass
+
+    def build_portfolio(self):
+        return self.get_portfolio_object(self.risk_score)
+
+
 
 
 # class Markowitz(Algorithm):

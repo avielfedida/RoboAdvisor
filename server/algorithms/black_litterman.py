@@ -3,7 +3,10 @@ import pandas as pd
 import numpy as np
 import scipy.optimize
 from algorithms.Algorithm import Algorithm
-
+from models.portfolio_stocks import PortfolioStocks
+from models.stock_price import StockPrice
+from models.enums.algorithm import Algorithm as algorithm_enum
+from datetime import datetime
 
 class BlackLitterman(Algorithm):
 
@@ -120,10 +123,19 @@ class BlackLitterman(Algorithm):
         return weights, tangency_mean, tangency_var, frontier_mean, frontier_var, frontier_weights
 
     def get_portfolio_object(self, risk):
-        res = self.get_optimal_portfolio(risk)
-        # Create PorfolioStocks
-        # Create Portfolio Object
-        return 0 # Portfolio Object
+        algorithm_name = algorithm_enum.blackLitterman.name
+        portfolio = self.create_portfolio(risk, algorithm_name)
+        sharpe_portfolio = self.get_optimal_portfolio(risk)
+        data = pd.read_sql_table('stocks_prices', db.engine)
+        data['date_time'] = pd.to_datetime(data['date_time'])
+        for ticker in sharpe_portfolio.index.values:
+            last_date = data[data['ticker'] == ticker]['date_time'].max()
+            weight = sharpe_portfolio.loc[ticker, 'Weight']
+            portfolio_stock = PortfolioStocks(stock_price_ticker=ticker, stock_price_date_time=last_date,
+                                              portfolio=portfolio, portfolios_date_time=datetime.now,
+                                              portfolios_algorithm=algorithm_name, weight=weight, portfolios_risk=portfolio.risk)
+            portfolio.portfolio_stocks.append(portfolio_stock)
+        return portfolio
 
     def get_optimal_portfolio(self, score):
         risk_free_rate = 0.12
@@ -147,6 +159,6 @@ class BlackLitterman(Algorithm):
             ticker = self.selected_assets[i]
             weight = weights[i]
             sharpe_portfolio = sharpe_portfolio.append({'Ticker': ticker, 'Weight': weight}, ignore_index=True)
-        return sharpe_portfolio.to_json()
-
-
+        # return sharpe_portfolio.to_json()
+        sharpe_portfolio= sharpe_portfolio.set_index('Ticker')
+        return sharpe_portfolio
