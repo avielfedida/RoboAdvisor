@@ -14,20 +14,19 @@ class Member(db.Model):
     password = db.Column('password', db.String)
     first_name = db.Column('first_name', db.String)
     last_name = db.Column('last_name', db.String)
-    age = db.Column('age', db.Numeric)
-    gender = db.Column('gender', db.Enum(Gender))
+    date_of_birth = db.Column('date_of_birth', db.String)
+    # gender = db.Column('gender', db.Enum(Gender))
     latest_portfolio_risk = db.Column('latest_portfolio_risk', db.Integer, default=0)
     user_id = db.Column('user_id', db.String, db.ForeignKey('users._id'))
     topics = relationship("Topic", backref='member')
     messages = relationship("Message", backref='member')
 
-    def __init__(self, email, password, first_name, last_name, age, gender, user_id):
+    def __init__(self, email, password, first_name, last_name, date_of_birth, user_id):
         self.email = email
         self.password = generate_password_hash(password, method='sha256')
         self.first_name = first_name
         self.last_name = last_name
-        self.age = age
-        self.gender = gender
+        self.date_of_birth = date_of_birth
         self.user_id = user_id
 
     # def __init__(self, email, password):
@@ -50,8 +49,8 @@ class Member(db.Model):
             'email': self.email,
             'first_name': self.first_name,
             'last_name': self.last_name,
-            'age': str(self.age),
-            'gender': self.gender.name,
+            'date_of_birth': str(self.date_of_birth),
+            # 'gender': self.gender.name,
             'latest_portfolio_risk': self.latest_portfolio_risk,
             'user_id': self.user_id
         }

@@ -1,6 +1,10 @@
 from flask import Flask
 from .configurations import Config
 from .extensions import db
+from flask import Flask
+
+from .configurations import Config
+from .extensions import db
 
 
 def create_app():
@@ -14,12 +18,6 @@ def create_app():
     # Set up database
     db.init_app(app)
 
-    from api.form_submit import api as sumbit_form
-    from api.celery_demo import api as celery_demo_api
-
-    app.register_blueprint(sumbit_form)
-    app.register_blueprint(celery_demo_api)
-
     # We created these APIs to perform database-based testing
     from api.users_api import api as users_api
     from api.members_api import api as members_api
@@ -31,7 +29,9 @@ def create_app():
     from api.clusters_api import api as clusters_api
     from api.topics_api import api as topics_api
     from api.messages_api import api as messages_api
+    from api.stock_prices_data_insert_api import api as stock_prices_data_insert_api
     from api.algorithm_api import api as algorithm_api
+    from api.form_submit import api as submit_form_api
 
     app.register_blueprint(users_api)
     app.register_blueprint(members_api)
@@ -44,8 +44,8 @@ def create_app():
     app.register_blueprint(topics_api)
     app.register_blueprint(messages_api)
     app.register_blueprint(algorithm_api)
-
-
+    app.register_blueprint(submit_form_api)
+    app.register_blueprint(stock_prices_data_insert_api)
 
     # Create tables
     with app.app_context():

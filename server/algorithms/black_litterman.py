@@ -119,6 +119,12 @@ class BlackLitterman(Algorithm):
         # Weights, Tangency portfolio asset means and variances, Efficient frontier means and variances
         return weights, tangency_mean, tangency_var, frontier_mean, frontier_var, frontier_weights
 
+    def get_portfolio_object(self, risk):
+        res = self.get_optimal_portfolio(risk)
+        # Create PorfolioStocks
+        # Create Portfolio Object
+        return 0 # Portfolio Object
+
     def get_optimal_portfolio(self, score):
         risk_free_rate = 0.12
         prices_out = []

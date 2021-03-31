@@ -60,6 +60,9 @@ class Algorithm:
     def build_portfolio(self):
         return self.get_optimal_portfolio(self.risk_score)
 
+    def get_portfolio_object(self, risk):
+        pass
+
 
 # class Markowitz(Algorithm):
 #

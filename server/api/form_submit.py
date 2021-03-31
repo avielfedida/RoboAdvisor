@@ -111,7 +111,7 @@ class FormSubmit(MethodView):
             db.session.add(pua)
             db.session.commit()
 
-            json_res = model.get_optimal_portfolio(0)
+            json_res = model.get_optimal_portfolio(risk)
 
             # TODO: here I should add to the PortfolioStocks model and set its primary key to the Portfolio
             # that was created

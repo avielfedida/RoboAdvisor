@@ -13,6 +13,7 @@ const RegisterScreen = () => {
   const [surname, setSurname] = useState("");
   const [password, setPassword] = useState("");
   const [passwordConfirm, setPasswordConfirm] = useState("");
+  const [dateOfBirth, setDateOfBirth] = useState("");
 
   const [message, setMessage] = useState("");
 
@@ -37,7 +38,7 @@ const RegisterScreen = () => {
       setMessage("הסיסמאות אינן תואמות");
     } else {
       setMessage("");
-      dispatch(register(name, surname, email, password));
+      dispatch(register(name, surname, email, password, dateOfBirth));
     }
   };
 
@@ -52,7 +53,9 @@ const RegisterScreen = () => {
           {loading && <Loader />}
           <Form onSubmit={submitHandler}>
             <Form.Group controlId="email">
-              <Form.Label>מייל</Form.Label>
+              <Form.Label>
+                מייל<span className="red">*</span>
+              </Form.Label>
               <Form.Control
                 autoFocus
                 type="email"
@@ -61,7 +64,9 @@ const RegisterScreen = () => {
               />
             </Form.Group>
             <Form.Group size="lg" controlId="name">
-              <Form.Label>שם</Form.Label>
+              <Form.Label>
+                שם<span className="red">*</span>
+              </Form.Label>
               <Form.Control
                 type="text"
                 value={name}
@@ -69,7 +74,9 @@ const RegisterScreen = () => {
               />
             </Form.Group>
             <Form.Group size="lg" controlId="surname">
-              <Form.Label>שם משפחה</Form.Label>
+              <Form.Label>
+                שם משפחה<span className="red">*</span>
+              </Form.Label>
               <Form.Control
                 type="text"
                 value={surname}
@@ -77,7 +84,9 @@ const RegisterScreen = () => {
               />
             </Form.Group>
             <Form.Group size="lg" controlId="password">
-              <Form.Label>סיסמה</Form.Label>
+              <Form.Label>
+                סיסמה<span className="red">*</span>
+              </Form.Label>
               <Form.Control
                 type="password"
                 value={password}
@@ -85,11 +94,21 @@ const RegisterScreen = () => {
               />
             </Form.Group>
             <Form.Group size="lg" controlId="password_confirm">
-              <Form.Label>סיסמה שנית</Form.Label>
+              <Form.Label>
+                סיסמה שנית<span className="red">*</span>
+              </Form.Label>
               <Form.Control
                 type="password"
                 value={passwordConfirm}
                 onChange={(e) => setPasswordConfirm(e.target.value)}
+              />
+            </Form.Group>
+            <Form.Group size="lg" controlId="date_of_birth">
+              <Form.Label>תאריך לידה</Form.Label>
+              <Form.Control
+                type="date"
+                value={dateOfBirth}
+                onChange={(e) => setDateOfBirth(e.target.value)}
               />
             </Form.Group>
             <Button block size="lg" type="submit">
