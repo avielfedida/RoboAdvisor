@@ -26,7 +26,7 @@ def print_hello(self):
 # @celery.task(name='insert_price_data', bind=True)
 
 @periodic_task(
-    run_every=(crontab(minute=30, hour=21)),# Israel time = UTC + 3
+    run_every=(crontab(minute=20, hour=10)),# Israel time = UTC + 3
     name="insert_price_data",
     ignore_result=True)
 def insert_price_data():

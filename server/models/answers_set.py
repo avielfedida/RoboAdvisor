@@ -1,5 +1,4 @@
 from app.extensions import db
-from models.enums.risk import Risk
 from sqlalchemy.orm import relationship
 from sqlalchemy.orm import validates
 import re

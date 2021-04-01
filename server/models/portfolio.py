@@ -1,7 +1,6 @@
 import datetime
 
 from app.extensions import db
-from models.enums.risk import Risk
 from models.enums.algorithm import Algorithm
 from sqlalchemy.orm import relationship
 
@@ -12,7 +11,7 @@ class Portfolio(db.Model):
 
     date_time = db.Column('date_time', db.DateTime, default=datetime.datetime.now, primary_key=True)
     algorithm = db.Column('algorithm', db.Enum(Algorithm), primary_key=True)
-    risk = db.Column('risk',  db.Enum(Risk), primary_key=True)
+    risk = db.Column('risk',  db.Integer, primary_key=True)
     link = db.Column('link', db.String)
     port_user_answers_set = relationship("PortUserAnswersSet", backref='portfolio')
     portfolio_stocks = relationship("PortfolioStocks", backref='portfolio')

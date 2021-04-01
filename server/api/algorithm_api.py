@@ -13,7 +13,7 @@ class AlgorithmApi(MethodView):
             model_name = request.args.get('model_name')
             risk = int(request.args.get('risk'))
             algo = create_model(model_name, risk)
-            portfolio = algo.build_portfolio()
+            portfolio = algo.get_portfolio_object()
             json_object = {'portfolio': portfolio.as_dict()}
             i = 0
             for portfolio_stock in portfolio.portfolio_stocks:
