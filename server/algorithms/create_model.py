@@ -3,8 +3,8 @@ from algorithms.markowitz import Markowitz
 
 def create_model(model_name, risk):
     if model_name == 'markowitz':
-        return Markowitz(risk)
-    if model_name == 'black_litterman':
-        return BlackLitterman(risk)
+        return Markowitz(risk, model_name)
+    if model_name == 'blackLitterman':
+        return BlackLitterman(risk , model_name)
 
     # todo add more models

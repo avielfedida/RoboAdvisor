@@ -1,5 +1,4 @@
 from app.extensions import db
-from models.enums.risk import Risk
 from models.enums.algorithm import Algorithm
 
 
@@ -23,3 +22,13 @@ class PortfolioStocks(db.Model):
             ['portfolios.date_time', 'portfolios.algorithm', 'portfolios.risk'],
         ),
     )
+
+    def as_dict(self):
+        portfolio_stock_as_dict = {
+            'stock_price_ticker': self.stock_price_ticker,
+            'portfolios_date_time': self.portfolios_date_time,
+            'portfolios_algorithm': self.portfolios_algorithm,
+            'risk': self.portfolios_risk,
+            'weight': self.weight
+        }
+        return portfolio_stock_as_dict

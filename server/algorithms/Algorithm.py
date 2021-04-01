@@ -1,10 +1,14 @@
 from app.extensions import db
 import pandas as pd
+from models.portfolio import Portfolio
+from datetime import datetime
+from models.portfolio_stocks import PortfolioStocks
 
 
 class Algorithm:
 
-    def __init__(self, risk_score):
+    def __init__(self, risk_score, model_name):
+        self.model_name = model_name
         self.risk_score = risk_score
         self.all_assets = self.get_all_assets()
         self.prices_df = self.get_assets_price_data_from_db()
@@ -54,11 +58,42 @@ class Algorithm:
             selected_assets = std_df.index.tolist()
         return selected_assets
 
-    def get_optimal_portfolio(self, score):
+    def create_portfolio(self, risk, algorithm_name):
+        # risk_sym = ''
+        # if risk == 1:
+        #     risk_sym = 'a'
+        # elif risk == 2:
+        #     risk_sym = 'b'
+        # elif risk == 3:
+        #     risk_sym = 'c'
+        # elif risk == 4:
+        #     risk_sym = 'd'
+        # elif risk == 5:
+        #     risk_sym = 'e'
+        date_time = datetime.now()
+        # Create Portfolio Object
+        portfolio = Portfolio(date_time=date_time, algorithm=algorithm_name, risk=self.risk_score)
+        return portfolio
+
+    def get_optimal_portfolio(self):
         pass
 
-    def build_portfolio(self):
-        return self.get_optimal_portfolio(self.risk_score)
+    def get_portfolio_object(self):
+        algorithm_name = self.model_name
+        portfolio = self.create_portfolio(self.risk_score, algorithm_name)
+        sharpe_portfolio = self.get_optimal_portfolio()
+        data = pd.read_sql_table('stocks_prices', db.engine)
+        data['date_time'] = pd.to_datetime(data['date_time'])
+        for ticker in sharpe_portfolio.index.values:
+            last_date = data[data['ticker'] == ticker]['date_time'].max()
+            weight = sharpe_portfolio.loc[ticker, 'Weight']
+            portfolio_stock = PortfolioStocks(stock_price_ticker=ticker, stock_price_date_time=last_date,
+                                              portfolio=portfolio, portfolios_date_time=datetime.now,
+                                              portfolios_algorithm=algorithm_name, weight=weight,
+                                              portfolios_risk=portfolio.risk)
+            portfolio.portfolio_stocks.append(portfolio_stock)
+        return portfolio
+
 
 
 # class Markowitz(Algorithm):

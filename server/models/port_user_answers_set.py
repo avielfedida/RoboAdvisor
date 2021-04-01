@@ -1,6 +1,5 @@
 from app.extensions import db
 from models.answers_set import AnswersSet
-from models.enums.risk import Risk
 from models.enums.algorithm import Algorithm
 from models.portfolio import Portfolio
 from models.users import User

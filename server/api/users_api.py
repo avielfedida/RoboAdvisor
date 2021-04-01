@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from flask import Blueprint, request, make_response, jsonify, current_app
 from flask.views import MethodView
 from app.configurations import Config
@@ -12,7 +14,7 @@ from models.members import Member
 class RegisterUser(MethodView):
     def post(self):
         data = request.get_json()
-        print('Data: ', data)
+
         # first time in the system
         if data.get("_id") is None:
             user_email = data.get("email")
@@ -44,6 +46,11 @@ class RegisterUser(MethodView):
         return response
 
     def createMember(self, data):
+        user_date_of_birth = data.get("date_of_birth")
+        try:
+            user_date_of_birth = datetime.strptime(user_date_of_birth, '%Y-%m-%d')
+        except:
+            user_date_of_birth = ''
         user_email = data.get("email")
         # check_if_in_member_db = db.session.query(Member).filter_by(user_id=user_email).first()
         # if check_if_in_member_db:
@@ -51,12 +58,11 @@ class RegisterUser(MethodView):
         user_password = data.get("password")
         user_first_name = data.get("first_name")
         user_last_name = data.get("last_name")
-        user_age = 1  # data.get("age")
-        user_gender = Gender.other  # data.get("gender")
+        # user_gender = Gender.other  # data.get("gender")
         user_id = user_email
-        if not user_email or not user_password or not user_first_name or not user_last_name or not user_age or not user_gender:
+        if not user_email or not user_password or not user_first_name or not user_last_name:
             json_abort(400, "Missing on or more fields")
-        new_member = Member(user_email, user_password, user_first_name, user_last_name, user_age, user_gender, user_id)
+        new_member = Member(user_email, user_password, user_first_name, user_last_name, user_date_of_birth, user_id)
         db.session.add(new_member)
         db.session.commit()
 

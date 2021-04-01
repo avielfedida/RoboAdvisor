@@ -1,6 +1,8 @@
 import os
 from datetime import timedelta
 
+from celery.schedules import crontab
+
 
 class Config(object):
     # Flask
@@ -18,18 +20,21 @@ class Config(object):
     CELERY_ACCEPT_CONTENT = ['json', 'yaml']
     CELERY_TASK_SERIALIZER = 'json'
     CELERY_RESULT_SERIALIZER = 'json'
-    CELERY_TIMEZONE = 'Asia/Jerusalem'
+    # TODO: There is timezone issue, this makes the beat to execute under known hours, for now I set hour='*'
+    # TODO: I was using: 'Asia/Jerusalem' which didnt work
+    # TODO: When using docker, refactor the code to use: https://github.com/nebularazer/flask-celery-example
+    CELERY_TIMEZONE = 'UTC' # UTC=Asia/Jerusalem-3, so if the time is 23:00, you put 20:00 in the task
     CELERY_ENABLE_UTC = True
-    CELERYBEAT_SCHEDULE = {
-        'print-hello-every-2-seconds': {
-            'task': 'print_hello',  # notice that the complete name is needed
-            'schedule': timedelta(seconds=1
-
-                                  ),
-            # 'args': (16000, 42) # If needed, commented out for now
-        },
-    }
-
+    # TODO: Is this required?
+    CELERY_SEND_SENT_EVENT = True
+    # CELERYBEAT_SCHEDULE = {
+    #     'print-hello-every-2-seconds': {
+    #         'task': 'insert_price_data',  # notice that the complete name is needed
+    #         # 'schedule': timedelta(minutes=30, hours=21),
+    #         'schedule': crontab(hour=22, minute=37),#crontab(minute=7, hour='21', day_of_week='mon,tue,wed,thu,fri,sat,sun')
+    #         # 'args': (16000, 42) # If needed, commented out for now
+    #     },
+    # }
 
     # API
     API_PREFIX = '/api/v1'

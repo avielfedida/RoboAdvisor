@@ -26,7 +26,7 @@ class PortfolioStocksApi(MethodView):
 
             db.session.add(new_portfolio_stocks)
             db.session.commit()
-            response = make_response(jsonify(message="StockPrice successfully added to database"), 200)
+            response = make_response(jsonify(message="PortfolioStocks successfully added to database"), 200)
 
         except Exception as e:
             response = make_response(jsonify(message=str(e)), 400)

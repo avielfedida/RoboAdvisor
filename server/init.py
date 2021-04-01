@@ -2,8 +2,11 @@ from subprocess import Popen
 
 redis_init = ["redis-server.exe", "redis.windows.conf"]
 # More about beat: https://stackoverflow.com/questions/28587030/celery-schedule-not-working
-celery_beat = ["celery", "-A", "celery_tasks.worker.celery", "beat"]
-celery_init = ["celery", "-A", "celery_tasks.worker.celery", "worker", "--loglevel=info", "--pool=eventlet"]
+# celery -A celery_tasks.worker.celery beat
+# celery -A celery_tasks.worker.celery worker --loglevel=info --pool=eventlet --concurrency=2
+# celery beat -A celery_tasks.worker_tasks.celery -l info
+celery_beat = ["celery", "beat", "-A", "celery_tasks.worker_tasks.celery", "-l", "info"]
+celery_init = ["celery", "-A", "celery_tasks.worker_tasks.celery", "worker", "--loglevel=info", "--pool=eventlet", "--concurrency=2"]#, "--pool=eventlet", "--concurrency=2"]
 
 pc_user = "Noa"
 
