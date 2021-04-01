@@ -10,8 +10,8 @@ from datetime import datetime
 
 class BlackLitterman(Algorithm):
 
-    def __init__(self, risk_score):
-        super().__init__(risk_score)
+    def __init__(self, risk_score, model_name):
+        super().__init__(risk_score, model_name)
         self.df_cap_bonds_and_stocks = pd.DataFrame(columns=['ticker', 'market_cap'])
         dates = self.prices_df.index
         self.df_prices_bonds_and_stocks = pd.DataFrame(index=dates, columns=self.selected_assets)
@@ -122,22 +122,22 @@ class BlackLitterman(Algorithm):
         # Weights, Tangency portfolio asset means and variances, Efficient frontier means and variances
         return weights, tangency_mean, tangency_var, frontier_mean, frontier_var, frontier_weights
 
-    def get_portfolio_object(self, risk):
-        algorithm_name = algorithm_enum.blackLitterman.name
-        portfolio = self.create_portfolio(risk, algorithm_name)
-        sharpe_portfolio = self.get_optimal_portfolio(risk)
-        data = pd.read_sql_table('stocks_prices', db.engine)
-        data['date_time'] = pd.to_datetime(data['date_time'])
-        for ticker in sharpe_portfolio.index.values:
-            last_date = data[data['ticker'] == ticker]['date_time'].max()
-            weight = sharpe_portfolio.loc[ticker, 'Weight']
-            portfolio_stock = PortfolioStocks(stock_price_ticker=ticker, stock_price_date_time=last_date,
-                                              portfolio=portfolio, portfolios_date_time=datetime.now,
-                                              portfolios_algorithm=algorithm_name, weight=weight, portfolios_risk=portfolio.risk)
-            portfolio.portfolio_stocks.append(portfolio_stock)
-        return portfolio
+    # def get_portfolio_object(self, model_name):
+    #     algorithm_name = model_name
+    #     portfolio = self.create_portfolio(self.risk_score, algorithm_name)
+    #     sharpe_portfolio = self.get_optimal_portfolio()
+    #     data = pd.read_sql_table('stocks_prices', db.engine)
+    #     data['date_time'] = pd.to_datetime(data['date_time'])
+    #     for ticker in sharpe_portfolio.index.values:
+    #         last_date = data[data['ticker'] == ticker]['date_time'].max()
+    #         weight = sharpe_portfolio.loc[ticker, 'Weight']
+    #         portfolio_stock = PortfolioStocks(stock_price_ticker=ticker, stock_price_date_time=last_date,
+    #                                           portfolio=portfolio, portfolios_date_time=datetime.now,
+    #                                           portfolios_algorithm=algorithm_name, weight=weight, portfolios_risk=portfolio.risk)
+    #         portfolio.portfolio_stocks.append(portfolio_stock)
+    #     return portfolio
 
-    def get_optimal_portfolio(self, score):
+    def get_optimal_portfolio(self):
         risk_free_rate = 0.12
         prices_out = []
         for s in self.selected_assets:
