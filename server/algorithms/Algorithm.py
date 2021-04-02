@@ -3,7 +3,7 @@ import pandas as pd
 from models.portfolio import Portfolio
 from datetime import datetime
 from models.portfolio_stocks import PortfolioStocks
-
+import numpy as np
 
 class Algorithm:
 
@@ -37,11 +37,13 @@ class Algorithm:
 
     def get_selected_assets(self, risk_score):
         all_std = [self.prices_df[col].std() for col in self.prices_df.columns]
-        std_df = pd.DataFrame(index=self.prices_df.columns, columns=['std'])
+        all_ret = [self.prices_df.loc[self.prices_df.index.max(), col] - self.prices_df.loc[self.prices_df.index.min(), col] for col in self.prices_df.columns]
+        all_sharpe_ratio = self.sharpe_ratio(all_ret, min(all_ret))
+        std_df = pd.DataFrame(index=self.prices_df.columns, columns=['std', 'sharpe_ratio'])
         for index, asset in enumerate(self.prices_df.columns):
             std_df.loc[asset, 'std'] = all_std[index]
-            std_df.loc[asset, 'metricX'] = all_std[index]
-        std_df.sort_values(by=['std', 'metricX'], inplace=True)
+            std_df.loc[asset, 'sharpe_ratio'] = all_sharpe_ratio[index]
+        std_df.sort_values(by=['std', 'sharpe_ratio'], inplace=True)
         take_top = 20
         # return the relevant assets according to the risk level
         size = int(len(std_df) / 5)
@@ -57,23 +59,13 @@ class Algorithm:
             selected_assets = std_df.iloc[size * 4:size * 5].index.tolist()[:take_top]
         else:
             selected_assets = std_df.index.tolist()[:take_top]
-        
-        
-        
         return selected_assets
 
-    def create_portfolio(self, risk, algorithm_name):
-        # risk_sym = ''
-        # if risk == 1:
-        #     risk_sym = 'a'
-        # elif risk == 2:
-        #     risk_sym = 'b'
-        # elif risk == 3:
-        #     risk_sym = 'c'
-        # elif risk == 4:
-        #     risk_sym = 'd'
-        # elif risk == 5:
-        #     risk_sym = 'e'
+    def sharpe_ratio(self, returns, rf, days=252):
+        volatility = np.array(returns).std() * np.sqrt(days)
+        return (returns - rf) / volatility
+
+    def create_portfolio(self,algorithm_name):
         date_time = datetime.now()
         # Create Portfolio Object
         portfolio = Portfolio(date_time=date_time, algorithm=algorithm_name, risk=self.risk_score, link="")#TODO: add link
@@ -84,7 +76,7 @@ class Algorithm:
 
     def get_portfolio_object(self):
         algorithm_name = self.model_name
-        portfolio = self.create_portfolio(self.risk_score, algorithm_name)
+        portfolio = self.create_portfolio(algorithm_name)
         sharpe_portfolio = self.get_optimal_portfolio()
         data = pd.read_sql_table('stocks_prices', db.engine)
         data['date_time'] = pd.to_datetime(data['date_time'])
@@ -99,7 +91,6 @@ class Algorithm:
                                               portfolios_risk=portfolio.risk)
             portfolio.portfolio_stocks.append(portfolio_stock)
         return portfolio
-
 
 
 # class Markowitz(Algorithm):
