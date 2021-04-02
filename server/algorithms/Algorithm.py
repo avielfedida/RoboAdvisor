@@ -72,7 +72,7 @@ class Algorithm:
         #     risk_sym = 'e'
         date_time = datetime.now()
         # Create Portfolio Object
-        portfolio = Portfolio(date_time=date_time, algorithm=algorithm_name, risk=self.risk_score)
+        portfolio = Portfolio(date_time=date_time, algorithm=algorithm_name, risk=self.risk_score, link="")#TODO: add link
         return portfolio
 
     def get_optimal_portfolio(self):
@@ -87,9 +87,11 @@ class Algorithm:
         for ticker in sharpe_portfolio.index.values:
             last_date = data[data['ticker'] == ticker]['date_time'].max()
             weight = sharpe_portfolio.loc[ticker, 'Weight']
-            portfolio_stock = PortfolioStocks(stock_price_ticker=ticker, stock_price_date_time=last_date,
-                                              portfolio=portfolio, portfolios_date_time=datetime.now,
-                                              portfolios_algorithm=algorithm_name, weight=weight,
+            portfolio_stock = PortfolioStocks(stock_price_ticker=ticker,
+                                              stock_price_date_time=last_date,
+                                              portfolios_date_time=portfolio.date_time,
+                                              portfolios_algorithm=portfolio.algorithm,
+                                              weight=weight,
                                               portfolios_risk=portfolio.risk)
             portfolio.portfolio_stocks.append(portfolio_stock)
         return portfolio

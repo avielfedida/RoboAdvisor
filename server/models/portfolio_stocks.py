@@ -1,3 +1,5 @@
+from sqlalchemy.orm import relationship
+
 from app.extensions import db
 from models.enums.algorithm import Algorithm
 
@@ -8,9 +10,10 @@ class PortfolioStocks(db.Model):
     stock_price_ticker = db.Column(db.String, primary_key=True)
     stock_price_date_time = db.Column(db.DateTime)
     portfolios_date_time = db.Column(db.DateTime, primary_key=True)
-    portfolios_algorithm = db.Column(db.Enum(Algorithm), primary_key=True)
+    portfolios_algorithm = db.Column(db.String, primary_key=True)
     portfolios_risk = db.Column(db.Integer, primary_key=True)
     weight = db.Column(db.Numeric)
+
 
     __table_args__ = (
         db.ForeignKeyConstraint(
@@ -29,6 +32,8 @@ class PortfolioStocks(db.Model):
             'portfolios_date_time': self.portfolios_date_time,
             'portfolios_algorithm': self.portfolios_algorithm,
             'risk': self.portfolios_risk,
-            'weight': self.weight
+            'weight': str(self.weight.real),
+            'asset_type': self.stock_price.asset_type # stock_price is backref from StockPrice model
         }
         return portfolio_stock_as_dict
+

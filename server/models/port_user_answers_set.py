@@ -11,7 +11,7 @@ class PortUserAnswersSet(db.Model):
     user_id = db.Column(db.String, primary_key=True)
     ans_set_val = db.Column(db.String, primary_key=True)
     portfolios_date_time = db.Column(db.DateTime, primary_key=True)
-    portfolios_algorithm = db.Column(db.Enum(Algorithm), primary_key=True)
+    portfolios_algorithm = db.Column(db.String, primary_key=True)
     portfolios_risk = db.Column(db.Integer, primary_key=True)
 
     __table_args__ = (
