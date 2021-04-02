@@ -56,7 +56,7 @@ class Algorithm:
         elif risk_score == 5:
             selected_assets = std_df.iloc[size * 4:size * 5].index.tolist()[:take_top]
         else:
-            selected_assets = std_df.index.tolist()
+            selected_assets = std_df.index.tolist()[:take_top]
         
         
         
