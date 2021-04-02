@@ -40,22 +40,26 @@ class Algorithm:
         std_df = pd.DataFrame(index=self.prices_df.columns, columns=['std'])
         for index, asset in enumerate(self.prices_df.columns):
             std_df.loc[asset, 'std'] = all_std[index]
-        std_df.sort_values(by=['std'], inplace=True)
-
+            std_df.loc[asset, 'metricX'] = all_std[index]
+        std_df.sort_values(by=['std', 'metricX'], inplace=True)
+        take_top = 20
         # return the relevant assets according to the risk level
         size = int(len(std_df) / 5)
         if risk_score == 1:
-            selected_assets = std_df.iloc[0:size].index.tolist()
+            selected_assets = std_df.iloc[0:size].index.tolist()[:take_top]
         elif risk_score == 2:
-            selected_assets = std_df.iloc[size:size * 2].index.tolist()
+            selected_assets = std_df.iloc[size:size * 2].index.tolist()[:take_top]
         elif risk_score == 3:
-            selected_assets = std_df.iloc[size * 2:size * 3].index.tolist()
+            selected_assets = std_df.iloc[size * 2:size * 3].index.tolist()[:take_top]
         elif risk_score == 4:
-            selected_assets = std_df.iloc[size * 3:size * 4].index.tolist()
+            selected_assets = std_df.iloc[size * 3:size * 4].index.tolist()[:take_top]
         elif risk_score == 5:
-            selected_assets = std_df.iloc[size * 4:size * 5].index.tolist()
+            selected_assets = std_df.iloc[size * 4:size * 5].index.tolist()[:take_top]
         else:
             selected_assets = std_df.index.tolist()
+        
+        
+        
         return selected_assets
 
     def create_portfolio(self, risk, algorithm_name):

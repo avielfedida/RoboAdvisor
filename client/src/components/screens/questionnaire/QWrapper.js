@@ -38,8 +38,8 @@ const QWrapper = () => {
         answers: _.fromPairs(answersState.map((x, i) => [i, x])),
         model_name: "blackLitterman",
       });
-      // console.log(res.data.data);
       setPortfolioResult(res.data.data);
+      setQuestion(0);
       navigate("portfolio_view");
       setLoad(false);
     } catch (e) {
