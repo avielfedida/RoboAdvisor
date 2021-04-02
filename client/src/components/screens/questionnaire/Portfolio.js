@@ -27,8 +27,7 @@ const Portfolio = ({ data }) => {
   });
   const filteredData = parsedData.filter((x) => x.value > 0.0005);
   const stocksBonds = filteredData.reduce(
-    (accumulator, currentValue, currentIndex, array) => {
-      let name = null;
+    (accumulator, currentValue) => {
       if (currentValue.asset_type === "stock") {
         accumulator[0].value += currentValue.value;
       } else {
