@@ -44,7 +44,7 @@ def get_next_answer_set_pk(only_risk_of):
 
 
 @periodic_task(
-    run_every=(crontab(minute=36, hour=19)),# Israel time = UTC + 3
+    run_every=(crontab(minute=16, hour=14)),# Israel time = UTC + 3
     name="execute_models",
     ignore_result=True)
 def execute_models():
@@ -65,7 +65,7 @@ def execute_models():
         for model_name in models_names:
             for risk in risks:
                 model = create_model(model_name, risk)
-                portfolio: Portfolio = model.get_portfolio_object()  # todo: the models doesn't need the risk
+                portfolio: Portfolio = model.get_portfolio_object()
                 db.session.add(portfolio)
                 for pk_of_risk in get_next_answer_set_pk(risk):
                     pua = PortUserAnswersSet(user_id=uid, ans_set_val=pk_of_risk, portfolios_date_time=portfolio.date_time, portfolios_risk=risk, portfolios_algorithm=model_name)
@@ -74,7 +74,7 @@ def execute_models():
 
 
 @periodic_task(
-    run_every=(crontab(minute=20, hour=10)),# Israel time = UTC + 3
+    run_every=(crontab(minute=34, hour=13)),# Israel time = UTC + 3
     name="insert_price_data",
     ignore_result=True)
 def insert_price_data():
