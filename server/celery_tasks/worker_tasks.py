@@ -1,3 +1,5 @@
+import uuid
+
 from .clr import configure_celery
 from celery.schedules import crontab
 from celery.task import periodic_task
@@ -23,7 +25,53 @@ def print_hello(self):
     return 'ans'
 
 
-# @celery.task(name='insert_price_data', bind=True)
+
+def get_next_answer_set_pk(only_risk_of):
+    for risk in range(1, 5 + 1):
+        if risk != only_risk_of:
+            continue
+        for ans_1 in range(1, 6 + 1):
+            for ans_2 in range(1, 4 + 1):
+                for ans_3 in range(1, 3 + 1):
+                    for ans_4 in range(1, 3 + 1):
+                        for ans_5 in range(1, 5 + 1):
+                            for ans_6 in range(1, 5 + 1):
+                                for ans_7 in range(1, 5 + 1):
+                                    for ans_8 in range(1, 4 + 1):
+                                        yield "{}_{}_{}_{}_{}_{}_{}_{}_{}".format(risk, ans_1, ans_2, ans_3,
+                                                                                                 ans_4, ans_5, ans_6,
+                                                                                                 ans_7, ans_8)
+
+
+@periodic_task(
+    run_every=(crontab(minute=36, hour=19)),# Israel time = UTC + 3
+    name="execute_models",
+    ignore_result=True)
+def execute_models():
+    # Settings
+    models_names = ['blackLitterman']#'markowitz', 'black_litterman']
+    risks = range(1,2)#range(1,6)
+
+    with app.app_context():
+        from models.users import User
+        from algorithms.create_model import create_model
+        from models.portfolio import Portfolio
+        from models.port_user_answers_set import PortUserAnswersSet
+
+        uid = str(uuid.uuid4())
+        user = User(_id=uid)
+        db.session.add(user)
+
+        for model_name in models_names:
+            for risk in risks:
+                model = create_model(model_name, risk)
+                portfolio: Portfolio = model.get_portfolio_object()  # todo: the models doesn't need the risk
+                db.session.add(portfolio)
+                for pk_of_risk in get_next_answer_set_pk(risk):
+                    pua = PortUserAnswersSet(user_id=uid, ans_set_val=pk_of_risk, portfolios_date_time=portfolio.date_time, portfolios_risk=risk, portfolios_algorithm=model_name)
+                    db.session.add(pua)
+        db.session.commit()
+
 
 @periodic_task(
     run_every=(crontab(minute=20, hour=10)),# Israel time = UTC + 3

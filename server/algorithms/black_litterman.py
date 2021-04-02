@@ -5,7 +5,7 @@ import scipy.optimize
 from algorithms.Algorithm import Algorithm
 from models.portfolio_stocks import PortfolioStocks
 from models.stock_price import StockPrice
-from models.enums.algorithm import Algorithm as algorithm_enum
+from datetime import datetime
 from datetime import datetime
 
 class BlackLitterman(Algorithm):

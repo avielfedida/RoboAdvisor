@@ -1,0 +1,8 @@
+﻿INSERT INTO public.clusters(
+	title, description, image_path)
+	VALUES ('דיון כללי', 'בפורום זה תוכלו לדון על נושאים כללים הקשורים לעולם הפיננסים', '/images/backgrounds/3.jpg');
+
+
+INSERT INTO public.clusters(
+	title, description, image_path)
+	VALUES ('יועץ רובוטי', 'בפורום זה תוכלו לדון בכל הקשור למודלים השונים של היועצים הרובוטים', '/images/backgrounds/4.jpg');
