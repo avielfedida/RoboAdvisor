@@ -15,11 +15,6 @@ class AlgorithmApi(MethodView):
             algo = create_model(model_name, risk)
             portfolio = algo.get_portfolio_object()
             json_object = {'portfolio': portfolio.as_dict()}
-            i = 0
-            for portfolio_stock in portfolio.portfolio_stocks:
-                stock = 'stock' + str(i)
-                json_object.update({stock: portfolio_stock.as_dict()})
-                i += 1
             print(json_object)
             response = make_response(jsonify(message="run algorithm successfully"), 200)
 

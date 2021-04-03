@@ -33,8 +33,8 @@ class AnswersSet(db.Model):
         }
         return answers_set_as_dict
 
-    @validates('ans_set_val')
-    def validate_ans_set_val(self, key, ans_set_val):
-        r = re.compile('.,.,.,.,.,.,.,.')
-        if r.match(ans_set_val):
-            return ans_set_val
+    # @validates('ans_set_val')
+    # def validate_ans_set_val(self, key, ans_set_val):
+    #     r = re.compile('.,.,.,.,.,.,.,.')
+    #     if r.match(ans_set_val):
+    #         return ans_set_val

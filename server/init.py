@@ -1,4 +1,12 @@
 from subprocess import Popen
+import os
+
+# Clean celerybeat files if exists, might make beat get stuck
+for f in os.listdir('.'):
+    if os.path.isfile(f):
+        if 'celerybeat' in f:
+            os.remove(f)
+
 
 redis_init = ["redis-server.exe", "redis.windows.conf"]
 # More about beat: https://stackoverflow.com/questions/28587030/celery-schedule-not-working
