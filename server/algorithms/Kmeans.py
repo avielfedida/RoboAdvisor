@@ -23,7 +23,7 @@ class Kmeans(Algorithm):
         df = self.choose_stocks(k,self.risk_score, df_sharpe_ratio_cluster)
         for i in range(df):
             ticker = df[i]
-            weight = weights[i]
+            weight = weights
             sharpe_portfolio = sharpe_portfolio.append({'Ticker': ticker, 'Weight': weight}, ignore_index=True)
         sharpe_portfolio = sharpe_portfolio.set_index('Ticker')
         return sharpe_portfolio
@@ -101,3 +101,8 @@ class Kmeans(Algorithm):
         for cluster in df_sharpe_ratio_cluster['cluster']:
             selected_assets = df_sharpe_ratio_cluster.groupby('cluster').apply(
                     lambda x: x.nsmallest(amount, 'Volatility')).reset_index(drop=True)
+        gap = size - len(selected_assets)
+        more_assets = df_sharpe_ratio_cluster.groupby('cluster').apply(
+            lambda x: x.nsmallest(gap, 'Volatility')).reset_index(drop=True)
+        return_assets = pd.merge(selected_assets, more_assets)
+        return return_assets
