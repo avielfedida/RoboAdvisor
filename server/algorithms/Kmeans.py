@@ -19,10 +19,10 @@ class Kmeans(Algorithm):
     def get_optimal_portfolio(self):
         sharpe_portfolio = pd.DataFrame(columns=['Ticker', 'Weight'])
         k, df_sharpe_ratio_cluster = self.k_means()
-        weights = (len(self.df_sharpe_ratio_cluster)) / k
-        df = self.choose_stocks(k,self.risk_score, df_sharpe_ratio_cluster)
-        for i in range(df):
-            ticker = df[i]
+        weights = (len(df_sharpe_ratio_cluster)) / k
+        df = self.choose_stocks(k, df_sharpe_ratio_cluster)
+        for i in range(len(df)):
+            ticker = df["name"].iloc[i]
             weight = weights
             sharpe_portfolio = sharpe_portfolio.append({'Ticker': ticker, 'Weight': weight}, ignore_index=True)
         sharpe_portfolio = sharpe_portfolio.set_index('Ticker')
@@ -94,7 +94,7 @@ class Kmeans(Algorithm):
         for ticker in self.selected_assets:
             self.df_prices_bonds_and_stocks[ticker] = data[data['ticker'] == ticker]['price'].values
 
-    def choose_stocks(self, k, risk, df_sharpe_ratio_cluster):
+    def choose_stocks(self, k, df_sharpe_ratio_cluster):
         size = 20
         amount = math.floor(size / k)
         df_sharpe_ratio_cluster.sort_values(by=['Volatility'], inplace=True)

@@ -44,7 +44,7 @@ def get_next_answer_set_pk(only_risk_of):
 
 
 @periodic_task(
-    run_every=(crontab(minute=16, hour=14)),# Israel time = UTC + 3
+    run_every=(crontab(minute=15, hour=11)),# Israel time = UTC + 3
     name="execute_models",
     ignore_result=True)
 def execute_models():
@@ -74,7 +74,7 @@ def execute_models():
 
 
 @periodic_task(
-    run_every=(crontab(minute=1, hour=16)),# Israel time = UTC + 3
+    run_every=(crontab(minute=27, hour=18)),# Israel time = UTC + 3
     name="insert_price_data",
     ignore_result=True)
 def insert_price_data():
