@@ -45,3 +45,7 @@ scipy==1.6.1
 Werkzeug
 pyjwt==1.5.3
 kneed
+joblib==1.0.1
+scikit-learn==0.24.1
+sklearn==0.0
+threadpoolctl==2.1.0

@@ -32,6 +32,7 @@ def create_app():
     from api.stock_prices_data_insert_api import api as stock_prices_data_insert_api
     from api.algorithm_api import api as algorithm_api
     from api.form_submit import api as submit_form_api
+    from api.password_recovery_api import api as password_recovery_api
 
     app.register_blueprint(users_api)
     app.register_blueprint(members_api)
@@ -46,6 +47,7 @@ def create_app():
     app.register_blueprint(algorithm_api)
     app.register_blueprint(submit_form_api)
     app.register_blueprint(stock_prices_data_insert_api)
+    app.register_blueprint(password_recovery_api)
 
     # Create tables
     with app.app_context():
