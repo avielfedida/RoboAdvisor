@@ -20,7 +20,7 @@ class Member(db.Model):
     user_id = db.Column('user_id', db.String, db.ForeignKey('users._id'))
     topics = relationship("Topic", backref='member')
     messages = relationship("Message", backref='member')
-    # passwords_recovery = relationship("PasswordRecovery", backref='member')
+    passwords_recovery = relationship("PasswordRecovery", backref='member')
 
     def __init__(self, email, password, first_name, last_name, date_of_birth, user_id):
         self.email = email
