@@ -2,7 +2,7 @@ from flask import Blueprint, request, make_response, jsonify
 from flask.views import MethodView
 from app.configurations import Config
 from algorithms.create_model import create_model
-import json
+
 
 
 class AlgorithmApi(MethodView):
