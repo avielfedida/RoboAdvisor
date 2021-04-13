@@ -12,7 +12,7 @@ class RequestResetPassword(MethodView):
         data = request.get_json()
         user_email = data.get("email")
         check_if_member_in_db = db.session.query(Member).filter_by(user_id=user_email).first()
-        if check_if_member_in_db:
+        if not check_if_member_in_db:
             json_abort(409, "Member not found")
         uid = str(uuid.uuid4())
         self.send_email(user_email, uid)
