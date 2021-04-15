@@ -44,12 +44,12 @@ def get_next_answer_set_pk(only_risk_of):
 
 
 @periodic_task(
-    run_every=(crontab(minute=33, hour=11)),# Israel time = UTC + 3
+    run_every=(crontab(minute=16, hour=14)),# Israel time = UTC + 3
     name="execute_models",
     ignore_result=True)
 def execute_models():
     # Settings
-    models_names = ['blackLitterman', 'Kmeans']# TODO ADD 'markowitz' and 'gini'
+    models_names = ['blackLitterman']#'markowitz', 'black_litterman']
     risks = range(1,2)#range(1,6)
 
     with app.app_context():
@@ -74,7 +74,7 @@ def execute_models():
 
 
 @periodic_task(
-    run_every=(crontab(minute=58, hour=10)),# Israel time = UTC + 3
+    run_every=(crontab(minute=34, hour=13)),# Israel time = UTC + 3
     name="insert_price_data",
     ignore_result=True)
 def insert_price_data():
@@ -85,7 +85,7 @@ def insert_price_data():
         # setting time period of the stock prices (default is one year) //todo change time period
         end_date = datetime.now() - timedelta(days=1)
         # start_date = datetime( end_date.year - 1, end_date.month, end_date.day )
-        start_date = datetime(end_date.year, end_date.month-1, end_date.day)
+        start_date = datetime(end_date.year-1, end_date.month, end_date.day)
 
         # getting bonds price data
         bonds = ['SHY', 'TLT', 'SHV', 'IEF', 'GOVT', 'BIL', 'IEI', 'VGSH', 'SCHO', 'VGIT', 'SCHR', 'SPTS', 'SPTL',
