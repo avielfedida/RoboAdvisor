@@ -1,6 +1,6 @@
 from flask import Flask
 from .configurations import Config
-from .extensions import db
+from .extensions import db, mail
 from flask import Flask
 
 from .configurations import Config
@@ -14,7 +14,7 @@ def create_app():
 
     from app.extensions import cors
     cors.init_app(app)
-
+    mail.init_app(app)
     # Set up database
     db.init_app(app)
 

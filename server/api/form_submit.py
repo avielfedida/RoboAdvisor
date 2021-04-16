@@ -112,4 +112,4 @@ class FormSubmit(MethodView):
 
 api = Blueprint("api_form_submit", __name__, url_prefix=Config.API_PREFIX + '/form_submit')
 form_submit = FormSubmit.as_view('form_submit_api')
-api.add_url_rule('/', methods=['POST', 'GET'], view_func=form_submit)
+api.add_url_rule('/submit', methods=['POST', 'GET'], view_func=form_submit)
