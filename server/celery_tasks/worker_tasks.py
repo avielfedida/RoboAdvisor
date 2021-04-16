@@ -44,13 +44,13 @@ def get_next_answer_set_pk(only_risk_of):
 
 
 @periodic_task(
-    run_every=(crontab(minute=16, hour=14)),# Israel time = UTC + 3
+    run_every=(crontab(minute=44, hour=5)),# Israel time = UTC + 3
     name="execute_models",
     ignore_result=True)
 def execute_models():
     # Settings
     models_names = ['blackLitterman']#'markowitz', 'black_litterman']
-    risks = range(1,2)#range(1,6)
+    risks = range(1,6)#range(1,6)
 
     with app.app_context():
         from models.users import User
