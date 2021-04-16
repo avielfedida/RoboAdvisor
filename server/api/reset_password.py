@@ -4,6 +4,7 @@ from app.configurations import Config
 from app.extensions import db
 from api.utils import json_abort, exceptions_mapper
 from models.members import Member
+from models.password_recovery import PasswordRecovery
 import uuid
 
 
@@ -15,8 +16,11 @@ class RequestResetPassword(MethodView):
         if not check_if_member_in_db:
             json_abort(409, "Member not found")
         uid = str(uuid.uuid4())
+        password_recovery = PasswordRecovery(id=uid, member_email=user_email)
+        db.session.add(password_recovery)
+        db.session.commit()
         self.send_email(user_email, uid)
-        response = make_response(jsonify(message="User successfully added to database"), 200)
+        response = make_response(jsonify(message="אימייל לשחזור סיסמה נשלח בהצלחה"), 200)
         return response
 
     def send_email(self, user_email, uid):
