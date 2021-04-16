@@ -13,6 +13,10 @@ const ForumSubjectsScreen = () => {
   const navigate = useNavigate();
   const subjectsList = useSelector((state) => state.subjectsList);
   const { loading, error, subjects, pages } = subjectsList;
+
+  const userLogin = useSelector((state) => state.userLogin);
+  const { userInfo } = userLogin;
+
   useEffect(() => {
     dispatch(listSubjects(title, page));
   }, [dispatch, listSubjects, page]);
@@ -25,7 +29,11 @@ const ForumSubjectsScreen = () => {
             <h1>{title}</h1>
             <Button
               variant="primary"
-              onClick={() => navigate(`/forum/new_post/${title}`)}
+              onClick={() =>
+                userInfo
+                  ? navigate(`/forum/new_post/${title}`)
+                  : navigate("/login")
+              }
             >
               הוספת פוסט
             </Button>

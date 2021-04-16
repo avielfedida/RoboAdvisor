@@ -2,7 +2,7 @@ from flask import Blueprint, request, make_response, jsonify, current_app
 from flask.views import MethodView
 from app.configurations import Config
 from app.extensions import db
-from api.utils import json_abort, exceptions_mapper
+from api.utils import json_abort, exceptions_mapper, reset_pass_mail
 from models.members import Member
 from werkzeug.security import generate_password_hash, check_password_hash
 from models.password_recovery import PasswordRecovery
@@ -25,7 +25,7 @@ class RequestResetPassword(MethodView):
         return response
 
     def send_email(self, user_email, uid):
-        print("need to send the mail")
+        reset_pass_mail(user_email, f'Reset password request, visit the following link: http://localhost:3000/reset_password/{uid}')
 
 
 class EnterNewPassword(MethodView):

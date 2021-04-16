@@ -12,7 +12,6 @@ from app.extensions import logger
 from flask import request, current_app, abort, make_response, jsonify
 import jwt
 from datetime import datetime, timedelta
-from flask import render_template
 from app.extensions import mail
 
 
@@ -25,7 +24,8 @@ error_mapper = {
 }
 
 
-
+def is_valid_model_name(name):
+    return name in ['markowitz', 'blackLitterman', 'mean_gini', 'Kmeans']
 
 def reset_pass_mail(to_email, message):
     msg = Message(message,

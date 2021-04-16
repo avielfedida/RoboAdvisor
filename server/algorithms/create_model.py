@@ -14,3 +14,4 @@ def create_model(model_name, risk):
     # todo add more models
     if model_name == 'Kmeans':
         return Kmeans(risk, model_name)
+

@@ -8,6 +8,7 @@ import {
   userPasswordUpdateReducer,
 } from "./reducers/userReducers";
 
+import { portfolioFetchReducer } from "./reducers/portfolioReducers";
 
 import {
   clustersListReducer,
@@ -32,6 +33,9 @@ const reducer = combineReducers({
   messageAdd: messageAddReducer,
   messageEdit: messageEditReducer,
   subjectAdd: subjectAddReducer,
+
+  // Portfolio
+  portfolioFetch: portfolioFetchReducer,
 });
 
 const userInfoFromStorage = localStorage.getItem("userInfo")
