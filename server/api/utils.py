@@ -1,6 +1,7 @@
 import base64
 from collections.abc import Iterable
 import json
+from flask_mail import Message
 from contextlib import contextmanager
 from io import BytesIO
 import matplotlib.pyplot as plt
@@ -11,6 +12,9 @@ from app.extensions import logger
 from flask import request, current_app, abort, make_response, jsonify
 import jwt
 from datetime import datetime, timedelta
+from flask import render_template
+from app.extensions import mail
+
 
 error_mapper = {
     500: 'Unexpected server exception',
@@ -19,6 +23,14 @@ error_mapper = {
     404: 'Not found',
     409: 'Already exists'
 }
+
+
+
+
+def reset_pass_mail(to_email, message):
+    msg = Message(message,
+                  recipients=[to_email])
+    mail.send(msg)
 
 
 def exceptions_mapper(status, suffix=''):

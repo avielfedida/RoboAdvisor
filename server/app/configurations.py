@@ -1,5 +1,6 @@
 import os
 from datetime import timedelta
+from distutils.util import strtobool
 
 from celery.schedules import crontab
 
@@ -13,6 +14,15 @@ class Config(object):
     CSRF_ENABLED = True
     MAX_CONTENT_LENGTH = 50 * 1024 * 1024 * 1024 * 1024
     SECRET_KEY = 'e5ac358c-f0bf-11e5-9e39-d3b532c10a28'
+
+    # Flask-Mail.
+    MAIL_SERVER = os.getenv('MAIL_SERVER', 'smtp.gmail.com')
+    MAIL_PORT = os.getenv('MAIL_PORT', 587)
+    MAIL_USE_TLS = bool(strtobool(os.getenv('MAIL_USE_TLS', 'true')))
+    MAIL_USE_SSL = bool(strtobool(os.getenv('MAIL_USE_SSL', 'false')))
+    MAIL_USERNAME = os.getenv('MAIL_USERNAME', None)
+    MAIL_PASSWORD = os.getenv('MAIL_PASSWORD', None)
+    MAIL_DEFAULT_SENDER = os.getenv('MAIL_DEFAULT_SENDER', 'smtp.gmail.com')
 
     # Celery configurations
     CELERY_BROKER_URL = 'redis://localhost:6380/0'
@@ -43,6 +53,6 @@ class Config(object):
 
     # Database
     SQLALCHEMY_ECHO = True
-    SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://postgres:16941694@127.0.0.1:5432/radb'
-    # SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://postgres:123@127.0.0.1:5432/radb'
+    # SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://postgres:16941694@127.0.0.1:5432/radb'
+    SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://postgres:123@127.0.0.1:5432/radb'
     SQLALCHEMY_TRACK_MODIFICATIONS = False

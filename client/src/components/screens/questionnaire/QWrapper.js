@@ -8,14 +8,16 @@ import {
 } from "react-router-dom";
 import _ from "lodash";
 
-import formSubmit from "../../../api/formSubmit";
-
 import Questionnaire from "./Questionnaire";
 import Questions_Answers from "./questions_answers";
 import { Breadcrumb, Spinner, Row, Col, Card } from "react-bootstrap";
 import QExplanation from "./QExplanation";
 import Portfolio from "./Portfolio";
 import Loader from "../../reusables/Loader";
+
+import { API_PREFIX } from "../../../constants/apiConstants";
+
+import axios from "axios";
 
 const QWrapper = () => {
   const location = useLocation();
@@ -34,11 +36,11 @@ const QWrapper = () => {
   const submitForm = async () => {
     try {
       setLoad(true);
-      const res = await formSubmit.post("/", {
+      const { data } = await axios.post(`${API_PREFIX}/form_submit/submit`, {
         answers: _.fromPairs(answersState.map((x, i) => [i, x])),
         model_name: "blackLitterman",
       });
-      setPortfolioResult(res.data.data);
+      setPortfolioResult(data.data);
       setQuestion(0);
       navigate("portfolio_view");
       setLoad(false);

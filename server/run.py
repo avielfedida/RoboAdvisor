@@ -3,8 +3,9 @@ from app.factory import create_app
 
 
 def run():
-    # from celery_tasks.tasks import print_hello
-    # print_hello()
+    # from celery_tasks.worker_tasks import insert_price_data
+    # insert_price_data()
+    # exit()
     app = create_app()
     # configure_celery(app)
     app.run(host='localhost', port=5000, debug=True)
