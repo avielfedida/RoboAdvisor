@@ -18,7 +18,7 @@ class Config(object):
     # Flask-Mail.
     MAIL_SERVER = os.getenv('MAIL_SERVER', 'smtp.gmail.com')
     MAIL_PORT = os.getenv('MAIL_PORT', 587)
-    MAIL_USE_TLS = bool(strtobool(os.getenv('MAIL_USE_TLS', 'true')))
+    MAIlL_USE_TLS = bool(strtobool(os.getenv('MAIL_USE_TLS', 'true')))
     MAIL_USE_SSL = bool(strtobool(os.getenv('MAIL_USE_SSL', 'false')))
     MAIL_USERNAME = os.getenv('MAIL_USERNAME', None)
     MAIL_PASSWORD = os.getenv('MAIL_PASSWORD', None)
@@ -53,6 +53,6 @@ class Config(object):
 
     # Database
     SQLALCHEMY_ECHO = True
-    # SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://postgres:16941694@127.0.0.1:5432/radb'
-    SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://postgres:123@127.0.0.1:5432/radb'
+    SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://postgres:16941694@127.0.0.1:5432/radb'
+    # SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://postgres:123@127.0.0.1:5432/radb'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
