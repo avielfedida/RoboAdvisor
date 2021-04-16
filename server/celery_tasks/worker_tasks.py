@@ -85,11 +85,10 @@ def insert_price_data():
         # setting time period of the stock prices (default is one year) //todo change time period
         end_date = datetime.now() - timedelta(days=1)
         # start_date = datetime( end_date.year - 1, end_date.month, end_date.day )
-        start_date = datetime(end_date.year-1, end_date.month, end_date.day)
+        start_date = datetime(end_date.year, end_date.month-2, end_date.day)
 
         # getting bonds price data
-        bonds = ['SHY', 'TLT', 'SHV', 'IEF', 'GOVT', 'BIL', 'IEI', 'VGSH', 'SCHO', 'VGIT', 'SCHR', 'SPTS', 'SPTL',
-                 'GBIL', 'SPTI', 'VGLT', 'TLH', 'EDV', 'USFR', 'SGOV', 'CLTL', 'BSJK', 'FLGV', 'ZROZ', 'TFLO']
+        bonds = pd.read_csv('api/resources/bonds_list.csv')['Symbol']
         bonds_df = pdr.get_data_yahoo( bonds, start_date, end_date )['Adj Close']
         data_to_insert = pd.DataFrame( columns=['ticker', 'date_time', 'price', 'asset_type', 'market_cap'] )
         for bond in bonds_df.columns:
@@ -107,7 +106,7 @@ def insert_price_data():
         data_to_insert['market_cap'].loc[data_to_insert['market_cap'] == 0] = [data_to_insert['market_cap'].mean() for i in range(len(data_to_insert['market_cap'].loc[data_to_insert['market_cap'] == 0]))]
 
         # getting stocks price data
-        stocks = pd.read_html( 'https://en.wikipedia.org/wiki/List_of_S%26P_500_companies' )[0]['Symbol'].tolist()
+        stocks = pd.read_csv('api/resources/stocks_list.csv')['Symbol']
 
         stocks_df = pdr.get_data_yahoo( stocks, start_date, end_date )['Adj Close']
         for stock in stocks_df.columns:
@@ -127,7 +126,9 @@ def insert_price_data():
         data_to_insert.dropna( inplace=True )
         if db.engine.dialect.has_table(db.engine, 'stocks_prices'):
             table_data = pd.read_sql_table('stocks_prices', db.engine)
-            data_to_insert = pd.concat([data_to_insert, table_data]).drop_duplicates(subset=['ticker', 'date_time'], keep=False)
+            all_data = pd.concat([data_to_insert, table_data]).drop_duplicates(subset=['ticker', 'date_time'], keep=False)
+            data_to_insert = all_data.loc[all_data['ticker'].isin(data_to_insert['ticker'])]
+            data_to_insert = data_to_insert.loc[~(data_to_insert['date_time'].isin(table_data['date_time']))]
         data_to_insert.to_sql( 'stocks_prices', db.engine, if_exists='append', index=False )
         print('done inserting assets data to the database')
 
