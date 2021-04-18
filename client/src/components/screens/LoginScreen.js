@@ -70,6 +70,10 @@ const LoginScreen = () => {
             <p className="mt-4">
               אין לך משתמש? <Link to="/register">הרשם/י</Link>
             </p>
+            <hr />
+            <p className="mt-4">
+              שכחתי את הסיסמה. <Link to="/forgot_password">לאיפוס</Link>
+            </p>
           </Form>
         </Col>
       </Row>

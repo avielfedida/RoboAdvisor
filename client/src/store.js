@@ -6,6 +6,8 @@ import {
   userRegisterReducer,
   userProfileUpdateReducer,
   userPasswordUpdateReducer,
+  userPasswordResetReducer,
+  userPasswordNewByResetReducer,
 } from "./reducers/userReducers";
 
 import { portfolioFetchReducer } from "./reducers/portfolioReducers";
@@ -25,6 +27,8 @@ const reducer = combineReducers({
   userRegister: userRegisterReducer,
   userProfileUpdate: userProfileUpdateReducer,
   userPasswordUpdate: userPasswordUpdateReducer,
+  userPasswordReset: userPasswordResetReducer,
+  userPasswordNewByReset: userPasswordNewByResetReducer,
 
   // Forum
   clustersList: clustersListReducer,

@@ -11,6 +11,8 @@ import RegisterScreen from "./components/screens/RegisterScreen";
 import ProfileScreen from "./components/screens/ProfileScreen";
 import ChangePasswordScreen from "./components/screens/ChangePasswordScreen";
 import PortfolioScreen from "./components/screens/PortfolioScreen";
+import ForgotPasswordScreen from "./components/screens/ForgotPasswordScreen";
+import ResetPasswordScreen from "./components/screens/ResetPasswordScreen";
 
 function App() {
   return (
@@ -22,6 +24,11 @@ function App() {
           <Route path="register" element={<RegisterScreen />} />
           <Route path="profile" element={<ProfileScreen />} />
           <Route path="change_password" element={<ChangePasswordScreen />} />
+          <Route path="forgot_password" element={<ForgotPasswordScreen />} />
+          <Route
+            path="reset_password/:reset_code"
+            element={<ResetPasswordScreen />}
+          />
           <Route path="forum/*" element={<ForumScreen />} />
           <Route path="questionnaire/*" element={<QWrapper />} />
           <Route path="portfolio/:link" element={<PortfolioScreen />} />

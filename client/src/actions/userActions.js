@@ -14,6 +14,12 @@ import {
   USER_UPDATE_PASSWORD_FAIL,
   USER_UPDATE_PASSWORD_REQUEST,
   USER_UPDATE_PASSWORD_RESET,
+  USER_PASSWORD_RESET_REQUEST,
+  USER_PASSWORD_RESET_FAIL,
+  USER_PASSWORD_RESET_SUCCESS,
+  USER_PASSWORD_NEW_BY_RESET_REQUEST,
+  USER_PASSWORD_NEW_BY_RESET_FAIL,
+  USER_PASSWORD_NEW_BY_RESET_SUCCESS,
 } from "../constants/userConstants";
 
 import { API_PREFIX } from "../constants/apiConstants";
@@ -182,6 +188,72 @@ export const register = (name, surname, email, password, dateOfBirth) => async (
   } catch (error) {
     dispatch({
       type: USER_REGISTER_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+export const passwordReset = (email) => async (dispatch) => {
+  try {
+    dispatch({
+      type: USER_PASSWORD_RESET_REQUEST,
+    });
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+    const { data } = await axios.post(
+      `${API_PREFIX}/reset_password/request`,
+      { email: email },
+      config
+    );
+
+    dispatch({
+      type: USER_PASSWORD_RESET_SUCCESS,
+      payload: data.message,
+    });
+  } catch (error) {
+    console.log(error.response);
+    dispatch({
+      type: USER_PASSWORD_RESET_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+export const passwordResetByCode = (resetCode, password) => async (
+  dispatch
+) => {
+  try {
+    dispatch({
+      type: USER_PASSWORD_NEW_BY_RESET_REQUEST,
+    });
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+    const { data } = await axios.put(
+      `${API_PREFIX}/reset_password/set_new_password`,
+      { id: resetCode, new_password: password },
+      config
+    );
+
+    dispatch({
+      type: USER_PASSWORD_NEW_BY_RESET_SUCCESS,
+      payload: data.message,
+    });
+  } catch (error) {
+    console.log(error.response);
+    dispatch({
+      type: USER_PASSWORD_NEW_BY_RESET_FAIL,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message

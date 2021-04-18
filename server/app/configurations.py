@@ -15,15 +15,6 @@ class Config(object):
     MAX_CONTENT_LENGTH = 50 * 1024 * 1024 * 1024 * 1024
     SECRET_KEY = 'e5ac358c-f0bf-11e5-9e39-d3b532c10a28'
 
-    # Flask-Mail.
-    MAIL_SERVER = os.getenv('MAIL_SERVER', 'smtp.gmail.com')
-    MAIL_PORT = os.getenv('MAIL_PORT', 587)
-    MAIlL_USE_TLS = bool(strtobool(os.getenv('MAIL_USE_TLS', 'true')))
-    MAIL_USE_SSL = bool(strtobool(os.getenv('MAIL_USE_SSL', 'false')))
-    MAIL_USERNAME = os.getenv('MAIL_USERNAME', None)
-    MAIL_PASSWORD = os.getenv('MAIL_PASSWORD', None)
-    MAIL_DEFAULT_SENDER = os.getenv('MAIL_DEFAULT_SENDER', 'smtp.gmail.com')
-
     # Celery configurations
     CELERY_BROKER_URL = 'redis://localhost:6380/0'
     CELERY_RESULT_BACKEND = 'rpc://'
