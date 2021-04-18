@@ -36,7 +36,10 @@ class RecentResultsByUser(MethodView):
         ports_user_ans = PortUserAnswersSet.query.filter_by(user_id=user_id).order_by(
             desc('portfolios_date_time')).limit(5).all()
         for port_user_ans in ports_user_ans:
-            portfolios.append(port_user_ans.portfolio)
+            if port_user_ans.portfolio not in portfolios:
+                portfolios.append(port_user_ans.portfolio)
+            if len(portfolios) == 5:
+                break
         result = create_result_as_dict(portfolios)
         response = make_response(jsonify(result), 200)
         return response
