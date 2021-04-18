@@ -29,7 +29,7 @@ class PortfolioApi(MethodView):
     def get(self, link):
 
         try:
-            portfolio_by_algorithm = db.session.query(Portfolio).filter_by(port_link=port_link).first()
+            portfolio_by_algorithm = db.session.query(Portfolio).filter_by(port_link=link).first()
             response = make_response(jsonify(portfolio_by_algorithm.as_dict()), 200)
         except Exception as e:
             response = make_response(jsonify(message=str(e)), 400)
