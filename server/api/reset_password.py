@@ -1,10 +1,10 @@
-from flask import Blueprint, request, make_response, jsonify, current_app
+from flask import Blueprint, request, make_response, jsonify
 from flask.views import MethodView
 from app.configurations import Config
 from app.extensions import db
-from api.utils import json_abort, exceptions_mapper
+from api.utils import json_abort
 from models.members import Member
-from werkzeug.security import generate_password_hash, check_password_hash
+from werkzeug.security import generate_password_hash
 from models.password_recovery import PasswordRecovery
 import uuid
 
@@ -34,7 +34,7 @@ class EnterNewPassword(MethodView):
         if password_recovery is None:
             json_abort(404, "id not found")
         if password_recovery.is_used:
-            json_abort(401, "Link has used")
+            json_abort(401, "id has used")
         member = password_recovery.member
         new_password = request.form["new_password"]
         if new_password != request.form["new_password_again"]:
