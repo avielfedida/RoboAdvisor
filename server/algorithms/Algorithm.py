@@ -88,10 +88,8 @@ class Algorithm:
             weight = sharpe_portfolio.loc[ticker, 'Weight']
             portfolio_stock = PortfolioStocks(stock_price_ticker=ticker,
                                               stock_price_date_time=last_date,
-                                              portfolios_date_time=portfolio.date_time,
-                                              portfolios_algorithm=portfolio.algorithm,
-                                              weight=weight,
-                                              portfolios_risk=portfolio.risk)
+                                              portfolios_id=portfolio.id,
+                                              weight=weight)
             portfolio.portfolio_stocks.append(portfolio_stock)
         return portfolio
 

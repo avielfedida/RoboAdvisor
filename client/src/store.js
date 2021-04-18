@@ -10,7 +10,10 @@ import {
   userPasswordNewByResetReducer,
 } from "./reducers/userReducers";
 
-import { portfolioFetchReducer } from "./reducers/portfolioReducers";
+import {
+  portfolioFetchReducer,
+  portfolioLatestListReducer,
+} from "./reducers/portfolioReducers";
 
 import {
   clustersListReducer,
@@ -40,6 +43,7 @@ const reducer = combineReducers({
 
   // Portfolio
   portfolioFetch: portfolioFetchReducer,
+  portfolioLatestList: portfolioLatestListReducer,
 });
 
 const userInfoFromStorage = localStorage.getItem("userInfo")

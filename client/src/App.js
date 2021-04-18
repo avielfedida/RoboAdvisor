@@ -13,6 +13,7 @@ import ChangePasswordScreen from "./components/screens/ChangePasswordScreen";
 import PortfolioScreen from "./components/screens/PortfolioScreen";
 import ForgotPasswordScreen from "./components/screens/ForgotPasswordScreen";
 import ResetPasswordScreen from "./components/screens/ResetPasswordScreen";
+import UserLatestResultsScreen from "./components/screens/UserLatestResultsScreen";
 
 function App() {
   return (
@@ -23,6 +24,10 @@ function App() {
           <Route path="login" element={<LoginScreen />} />
           <Route path="register" element={<RegisterScreen />} />
           <Route path="profile" element={<ProfileScreen />} />
+          <Route
+            path="user_latest_results"
+            element={<UserLatestResultsScreen />}
+          />
           <Route path="change_password" element={<ChangePasswordScreen />} />
           <Route path="forgot_password" element={<ForgotPasswordScreen />} />
           <Route

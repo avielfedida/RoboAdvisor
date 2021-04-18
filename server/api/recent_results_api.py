@@ -20,8 +20,8 @@ def create_result_as_dict(portfolios):
 class RecentResults(MethodView):
     # get recent results
     def get(self):
-        portfolios = Portfolio.query.order_by(desc(Portfolio.date_time)).limit(5).all()
-        result= create_result_as_dict(portfolios)
+        portfolios = Portfolio.query.order_by(desc(Portfolio.date_time)).limit(10).all()
+        result = create_result_as_dict(portfolios)
         response = make_response(jsonify(result), 200)
         return response
 
@@ -34,11 +34,11 @@ class RecentResultsByUser(MethodView):
         if user is None:
             json_abort(404, "Member not found")
         ports_user_ans = PortUserAnswersSet.query.filter_by(user_id=user_id).order_by(
-            desc('portfolios_date_time')).limit(5).all()
+            desc('portfolios_date_time')).limit(10).all()
         for port_user_ans in ports_user_ans:
             if port_user_ans.portfolio not in portfolios:
                 portfolios.append(port_user_ans.portfolio)
-            if len(portfolios) == 5:
+            if len(portfolios) == 10:
                 break
         result = create_result_as_dict(portfolios)
         response = make_response(jsonify(result), 200)

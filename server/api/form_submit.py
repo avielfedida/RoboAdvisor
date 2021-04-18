@@ -102,7 +102,7 @@ class FormSubmit(MethodView):
                 json_abort(*exceptions_mapper(500, "Failed to find Portfolio"))
 
             pua = PortUserAnswersSet(user_id=uid, ans_set_val=answer_set_pk, portfolios_date_time=portfolio.date_time,
-                                     portfolios_risk=score, portfolios_algorithm=model_name)
+                                     portfolios_id=portfolio.id)
             db.session.add(pua)
             db.session.commit()
         except Exception as e:
