@@ -7,7 +7,6 @@
     url("./fonts/Alef-Webfont/Alef-Bold.ttf") format("truetype");
 }
 
-
 html {
   scroll-behavior: smooth;
 }
@@ -71,6 +70,12 @@ html {
     direction: rtl;
     justify-content: flex-start;
   }
+}
+
+#portfolio_wrapper {
+  padding-top: 3rem;
+  direction: ltr;
+  text-align: right;
 }
 
 #q_wrapper {

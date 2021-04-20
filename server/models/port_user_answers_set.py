@@ -1,3 +1,6 @@
+from sqlalchemy.ext.hybrid import hybrid_property
+from sqlalchemy.orm import relationship
+
 from app.extensions import db
 from models.answers_set import AnswersSet
 from models.portfolio import Portfolio
@@ -9,9 +12,8 @@ class PortUserAnswersSet(db.Model):
 
     user_id = db.Column(db.String, primary_key=True)
     ans_set_val = db.Column(db.String, primary_key=True)
-    portfolios_date_time = db.Column(db.DateTime, primary_key=True)
-    portfolios_algorithm = db.Column(db.String, primary_key=True)
-    portfolios_risk = db.Column(db.Integer, primary_key=True)
+    portfolios_id = db.Column(db.Integer, primary_key=True)
+    portfolios_date_time = db.Column(db.DateTime)
 
     __table_args__ = (
         db.ForeignKeyConstraint(
@@ -23,7 +25,7 @@ class PortUserAnswersSet(db.Model):
             [AnswersSet.ans_set_val],
         ),
         db.ForeignKeyConstraint(
-            (portfolios_date_time, portfolios_algorithm, portfolios_risk,),
-            [Portfolio.date_time, Portfolio.algorithm, Portfolio.risk],
+            (portfolios_id,),
+            [Portfolio.id],
         ),
     )

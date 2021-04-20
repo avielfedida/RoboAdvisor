@@ -7,7 +7,7 @@ from sqlalchemy import desc
 
 from api.algorithms import get_risk_horizon_score, check_if_all_questions_with_answers
 from api.markowitz import Markowitz
-from api.utils import exceptions_mapper, json_abort, plt_to_src
+from api.utils import exceptions_mapper, json_abort, plt_to_src, is_valid_model_name
 from app.configurations import Config
 from app.extensions import db
 from models.answers_set import AnswersSet
@@ -22,7 +22,9 @@ class FormSubmit(MethodView):
 
     def post(self):
         data = request.get_json()
-        model_name = data['model_name']#todo: validate the name
+        model_name = data['model_name']
+        if not is_valid_model_name(model_name):
+            json_abort(*exceptions_mapper(400, 'Invalid model name given'))
         answers = data['answers']
         try:
             dict_variable = {int(key) + 1: value + 1 for (key, value) in answers.items()}
@@ -100,14 +102,12 @@ class FormSubmit(MethodView):
                 json_abort(*exceptions_mapper(500, "Failed to find Portfolio"))
 
             pua = PortUserAnswersSet(user_id=uid, ans_set_val=answer_set_pk, portfolios_date_time=portfolio.date_time,
-                                     portfolios_risk=score, portfolios_algorithm=model_name)
+                                     portfolios_id=portfolio.id)
             db.session.add(pua)
             db.session.commit()
-
-            res = [ps.as_dict() for ps in portfolio.portfolio_stocks]
         except Exception as e:
             json_abort(*exceptions_mapper(500), e)
-        return make_response(jsonify(message="Porfolio", data=res), 200)
+        return make_response(jsonify(message="Porfolio", link=portfolio.link), 200)
 
 
 api = Blueprint("api_form_submit", __name__, url_prefix=Config.API_PREFIX + '/form_submit')

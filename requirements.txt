@@ -10,7 +10,6 @@ cycler==0.10.0
 dnspython==1.16.0
 eventlet==0.26.1
 Flask
-Flask-Mail==0.9.1
 Flask-Cors==3.0.8
 Flask-SQLAlchemy==2.4.4
 greenlet==1.0.0

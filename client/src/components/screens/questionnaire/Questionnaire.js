@@ -10,12 +10,17 @@ import {
   FormCheck,
 } from "react-bootstrap";
 
+const model_names = ["markowitz", "blackLitterman"];
+const model_names_heb = ["מרקוביץ", "בלאק-ליטרמן"];
+
 const Questionnaire = ({
   data,
   max_q_n,
   update_question,
   answers_state,
   update_answer,
+  update_model,
+  current_model,
 }) => {
   const { q_num } = useParams();
   const q_number = parseInt(q_num);
@@ -35,12 +40,16 @@ const Questionnaire = ({
           <Card.Body>
             <Row style={{ minHeight: "20vh" }}>
               <Col xs={12}>
-                <Card.Text className="question_text">
-                  <h1>שאלה מספר {q_number}</h1>
-                </Card.Text>
-                <Card.Text className="question_text">
-                  <h4>{data.question}</h4>
-                </Card.Text>
+                <h1>
+                  <Card.Text className="question_text">
+                    שאלה מספר {q_number}
+                  </Card.Text>
+                </h1>
+                <h4>
+                  <Card.Text className="question_text">
+                    {data.question}
+                  </Card.Text>
+                </h4>
               </Col>
             </Row>
             <hr />
@@ -81,6 +90,7 @@ const Questionnaire = ({
                         onClick={() => update_answer(q_number - 1, i)}
                       >
                         <Form.Check.Input
+                          readOnly={true}
                           checked={answers_state[q_number - 1] === i}
                           name={data.question}
                           type={"radio"}
@@ -91,6 +101,28 @@ const Questionnaire = ({
                   );
                 })}
               </Col>
+            </Form.Group>
+            <br />
+            <hr />
+            <br />
+            <Form.Group>
+              <h1>מודל להריץ</h1>
+              {model_names.map((name, i) => (
+                <Form.Check key={i}>
+                  <Form.Check.Label
+                    className="rtl"
+                    onClick={() => update_model(name)}
+                  >
+                    <Form.Check.Input
+                      readOnly={true}
+                      checked={current_model === name}
+                      name={name}
+                      type={"radio"}
+                    />
+                    <span className="mr-5">{model_names_heb[i]}</span>
+                  </Form.Check.Label>
+                </Form.Check>
+              ))}
             </Form.Group>
           </Card.Body>
         </Col>

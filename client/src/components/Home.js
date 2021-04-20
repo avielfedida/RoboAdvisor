@@ -2,7 +2,7 @@ import React from "react";
 import { Container, Row, Col, Image, Button } from "react-bootstrap";
 import Logo from "./reusables/Logo";
 import { useNavigate } from "react-router-dom";
-import LatestResults from "./LatestResults";
+import LatestResults from "./reusables/LatestResults";
 
 const Home = () => {
   const navigate = useNavigate();

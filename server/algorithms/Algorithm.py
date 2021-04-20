@@ -1,3 +1,5 @@
+import uuid
+
 from app.extensions import db
 import pandas as pd
 from models.portfolio import Portfolio
@@ -68,7 +70,8 @@ class Algorithm:
     def create_portfolio(self,algorithm_name):
         date_time = datetime.now()
         # Create Portfolio Object
-        portfolio = Portfolio(date_time=date_time, algorithm=algorithm_name, risk=self.risk_score, link="")#TODO: add link
+        uid = str(uuid.uuid4())
+        portfolio = Portfolio(date_time=date_time, algorithm=algorithm_name, risk=self.risk_score, link=uid)
         return portfolio
 
     def get_optimal_portfolio(self):
@@ -85,10 +88,8 @@ class Algorithm:
             weight = sharpe_portfolio.loc[ticker, 'Weight']
             portfolio_stock = PortfolioStocks(stock_price_ticker=ticker,
                                               stock_price_date_time=last_date,
-                                              portfolios_date_time=portfolio.date_time,
-                                              portfolios_algorithm=portfolio.algorithm,
-                                              weight=weight,
-                                              portfolios_risk=portfolio.risk)
+                                              portfolios_id=portfolio.id,
+                                              weight=weight)
             portfolio.portfolio_stocks.append(portfolio_stock)
         return portfolio
 

@@ -1,6 +1,6 @@
 from celery_tasks.clr import configure_celery
 from app.factory import create_app
-
+import os
 
 def run():
     # from celery_tasks.worker_tasks import insert_price_data

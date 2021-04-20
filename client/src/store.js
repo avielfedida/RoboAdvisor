@@ -6,8 +6,14 @@ import {
   userRegisterReducer,
   userProfileUpdateReducer,
   userPasswordUpdateReducer,
+  userPasswordResetReducer,
+  userPasswordNewByResetReducer,
 } from "./reducers/userReducers";
 
+import {
+  portfolioFetchReducer,
+  portfolioLatestListReducer,
+} from "./reducers/portfolioReducers";
 
 import {
   clustersListReducer,
@@ -24,6 +30,8 @@ const reducer = combineReducers({
   userRegister: userRegisterReducer,
   userProfileUpdate: userProfileUpdateReducer,
   userPasswordUpdate: userPasswordUpdateReducer,
+  userPasswordReset: userPasswordResetReducer,
+  userPasswordNewByReset: userPasswordNewByResetReducer,
 
   // Forum
   clustersList: clustersListReducer,
@@ -32,6 +40,10 @@ const reducer = combineReducers({
   messageAdd: messageAddReducer,
   messageEdit: messageEditReducer,
   subjectAdd: subjectAddReducer,
+
+  // Portfolio
+  portfolioFetch: portfolioFetchReducer,
+  portfolioLatestList: portfolioLatestListReducer,
 });
 
 const userInfoFromStorage = localStorage.getItem("userInfo")

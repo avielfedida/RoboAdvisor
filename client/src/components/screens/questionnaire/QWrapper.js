@@ -12,9 +12,8 @@ import Questionnaire from "./Questionnaire";
 import Questions_Answers from "./questions_answers";
 import { Breadcrumb, Spinner, Row, Col, Card } from "react-bootstrap";
 import QExplanation from "./QExplanation";
-import Portfolio from "./Portfolio";
 import Loader from "../../reusables/Loader";
-
+import { useSelector } from "react-redux";
 import { API_PREFIX } from "../../../constants/apiConstants";
 
 import axios from "axios";
@@ -23,7 +22,7 @@ const QWrapper = () => {
   const location = useLocation();
   const params = useParams();
   const [load, setLoad] = useState(false);
-  const [portfolioResult, setPortfolioResult] = useState([]);
+  const [modelName, setModelName] = useState("blackLitterman");
   const [answersState, setAnswersState] = useState(
     Array(Questions_Answers.length).fill(1)
   );
@@ -31,19 +30,27 @@ const QWrapper = () => {
     parseInt(params["*"].substr(params["*"].lastIndexOf("/") + 1))
   );
 
+  const userLogin = useSelector((state) => state.userLogin);
+  const { userInfo } = userLogin;
+
   const navigate = useNavigate();
 
   const submitForm = async () => {
     try {
       setLoad(true);
-      const { data } = await axios.post(`${API_PREFIX}/form_submit/submit`, {
+      let sd = {
         answers: _.fromPairs(answersState.map((x, i) => [i, x])),
-        model_name: "blackLitterman",
-      });
-      setPortfolioResult(data.data);
-      setQuestion(0);
-      navigate("portfolio_view");
-      setLoad(false);
+        model_name: modelName,
+      };
+      if (userInfo) {
+        sd["uid"] = userInfo.email;
+      }
+      const { data } = await axios.post(`${API_PREFIX}/form_submit/submit`, sd);
+      // console.log(data);
+      // setPortfolioResult(data.data);
+      // setQuestion(0);
+      // setLoad(false);
+      navigate(`/portfolio/${data.link}`);
     } catch (e) {
       console.log(e);
     }
@@ -51,6 +58,10 @@ const QWrapper = () => {
 
   const update_answer = (quest, ans) => {
     setAnswersState(answersState.map((x, i) => (i === quest ? ans : x)));
+  };
+
+  const update_model = (name) => {
+    setModelName(name);
   };
 
   const jumpToQuestion = (num) => {
@@ -111,18 +122,10 @@ const QWrapper = () => {
                     update_answer={update_answer}
                     max_q_n={Questions_Answers.length}
                     data={Questions_Answers[question - 1]}
+                    update_model={update_model}
+                    current_model={modelName}
                   />
                 )
-              }
-            />
-
-            <Route
-              path="/portfolio_view"
-              element={
-                <Portfolio
-                  data={portfolioResult}
-                  back={() => jumpToQuestion(Questions_Answers.length)}
-                />
               }
             />
             <Route
