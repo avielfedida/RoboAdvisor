@@ -3,8 +3,6 @@ import uuid
 from .clr import configure_celery
 from celery.schedules import crontab
 from celery.task import periodic_task
-from flask import current_app
-from sqlalchemy import create_engine
 
 from app.extensions import db
 from pandas_datareader import data as pdr
@@ -44,12 +42,15 @@ def get_next_answer_set_pk(only_risk_of):
 
 
 @periodic_task(
-    run_every=(crontab(minute=44, hour=5)),# Israel time = UTC + 3
+    run_every=(crontab(minute=30, hour=12)),# Israel time = UTC + 3
     name="execute_models",
     ignore_result=True)
 def execute_models():
     # Settings
-    models_names = ['blackLitterman', 'markowitz', 'Kmeans']  #'markowitz', 'black_litterman']    risks = range(1,6)#range(1,6)
+    # models_names = ['blackLitterman']
+    models_names = ['markowitz', 'Kmeans', 'blackLitterman', 'mean_gini']
+
+    risks = range(1, 6)
 
     with app.app_context():
         from models.users import User
@@ -62,7 +63,7 @@ def execute_models():
         db.session.add(user)
 
         for model_name in models_names:
-            for risk in range(1,6):
+            for risk in risks:
                 model = create_model(model_name, risk)
                 portfolio: Portfolio = model.get_portfolio_object()
                 db.session.add(portfolio)
@@ -74,7 +75,7 @@ def execute_models():
 
 
 @periodic_task(
-    run_every=(crontab(minute=34, hour=13)),# Israel time = UTC + 3
+    run_every=(crontab(minute=23, hour=9)),# Israel time = UTC + 3
     name="insert_price_data",
     ignore_result=True)
 def insert_price_data():
@@ -85,7 +86,7 @@ def insert_price_data():
         # setting time period of the stock prices (default is one year) //todo change time period
         end_date = datetime.now() - timedelta(days=1)
         # start_date = datetime( end_date.year - 1, end_date.month, end_date.day )
-        start_date = datetime(end_date.year, end_date.month-2, end_date.day)
+        start_date = datetime(end_date.year, end_date.month-1, end_date.day)
 
         # getting bonds price data
         bonds = pd.read_csv('api/resources/bonds_list.csv')['Symbol']

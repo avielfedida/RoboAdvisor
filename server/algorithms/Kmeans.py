@@ -91,8 +91,9 @@ class Kmeans(Algorithm):
 
     def create_df(self):
         data = pd.read_sql_table('stocks_prices', db.engine)
+        len_df = len(self.df_prices_bonds_and_stocks.index)
         for ticker in self.selected_assets:
-            self.df_prices_bonds_and_stocks[ticker] = data[data['ticker'] == ticker]['price'].values
+            self.df_prices_bonds_and_stocks[ticker] = data[data['ticker'] == ticker]['price'].iloc[-len_df:].values
 
     def choose_stocks(self, k, df_sharpe_ratio_cluster):
         size = 20
