@@ -38,12 +38,12 @@ class SingleTopic(MethodView):
         cluster_title = data.get("cluster_title")
         message = data.get("message")
         if not topic_title or not cluster_title:
-            json_abort(400, "One or more of the titles is missing")
+            json_abort(400, "אחד או יותר מהנושאים חסרים")
         new_topic = Topic(title=topic_title, member_email=member.email, cluster_title=cluster_title)
         db.session.add(new_topic)
         db.session.flush() # To obtain id.
         if not new_topic:
-            json_abort(500, "Couldn't create new topic")
+            json_abort(500, "תהליך יצירת נושא חדש נכשל")
         new_message = Message(content=message, member_email=member.email, topic_id=new_topic.id)
         db.session.add(new_message)
         db.session.commit()
@@ -54,7 +54,7 @@ class SingleTopic(MethodView):
         try:
             topic = db.session.query(Topic).filter_by(cluster_title=cluster_title).first()
             if not topic:
-                json_abort(404, "Topic not found")
+                json_abort(404, "לא נמצא הנושא המבוקש במערכת")
             response = make_response(jsonify(topic.as_dict()), 200)
             return response
         except Exception as e:
@@ -64,7 +64,7 @@ class SingleTopic(MethodView):
 class AllTopics(MethodView):
     def get(self, page, cluster_title):
         if page < 1:
-            json_abort(400, "Missing on or more fields")
+            json_abort(400, "כמות הדפים שהוכנסה אינה תקינה")
         try:
             all_topics = Topic.query.filter_by(cluster_title=cluster_title).order_by(desc('created_at')).paginate(
                 page=page, per_page=Config.TOPICS_PER_PAGE)

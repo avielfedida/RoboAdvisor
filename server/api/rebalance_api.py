@@ -19,7 +19,7 @@ class RebalanceApi(MethodView):
             user_ans_port.portfolios_id = portfolio.id
             user_ans_port.portfolios_date_time = portfolio.date_time
             db.session.commit()
-            response = make_response(jsonify(message="rebalance ended successfully"), 200)
+            response = make_response(jsonify(message="חישוב התיק מחדש הסתיים בהצלחה"), 200)
         except Exception as e:
             response = make_response(jsonify(message=str(e)), 400)
         return response

@@ -32,7 +32,7 @@ class RecentResultsByUser(MethodView):
         portfolios = list()
         user = User.query.filter_by(_id=user_id).first()
         if user is None:
-            json_abort(404, "Member not found")
+            json_abort(404, "לא נמצא משתמש עם פרטים אלו")
         ports_user_ans = PortUserAnswersSet.query.filter_by(user_id=user_id).order_by(
             desc('portfolios_date_time')).limit(10).all()
         for port_user_ans in ports_user_ans:

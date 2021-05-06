@@ -56,7 +56,7 @@ class SingleMessage(MethodView):
 class AllMessages(MethodView):
     def get(self, topic_id, page):
         if page < 1:
-            json_abort(400, "חסר שדה אחד או יותר")
+            json_abort(400, "כמות הדפים שהוכנסו לא חוקי")
         all_messages = Message.query.filter_by(topic_id=topic_id).order_by(asc('created_at')).paginate(
             page=page, per_page=Config.MESSAGES_PER_PAGE)
         result = dict(datas=[a.as_dict() for a in all_messages.items],

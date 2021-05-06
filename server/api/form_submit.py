@@ -24,7 +24,7 @@ class FormSubmit(MethodView):
         data = request.get_json()
         model_name = data['model_name']
         if not is_valid_model_name(model_name):
-            json_abort(*exceptions_mapper(400, 'Invalid model name given'))
+            json_abort(*exceptions_mapper(400, 'שם המודל שהוזן אינו חוקי'))
         answers = data['answers']
         try:
             dict_variable = {int(key) + 1: value + 1 for (key, value) in answers.items()}
@@ -94,7 +94,7 @@ class FormSubmit(MethodView):
                                                 dict_variable[7], dict_variable[8])
             answers_set = AnswersSet.query.get(answer_set_pk)
             if not answers_set:
-                json_abort(*exceptions_mapper(500, "לא נמצאו התשובות לנאלון"))
+                json_abort(*exceptions_mapper(500, "לא נמצאו התשובות לשאלון"))
 
             # Get portfolio
             portfolio = Portfolio.query.filter_by(algorithm=model_name, risk=score).order_by(desc('date_time')).first()
