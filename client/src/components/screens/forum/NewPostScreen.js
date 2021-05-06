@@ -17,6 +17,12 @@ const NewPostScreen = () => {
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
 
+  useEffect(() => {
+    if (!userInfo) {
+      navigate("/login");
+    }
+  }, [navigate, userInfo]);
+
   const subjectAdd = useSelector((state) => state.subjectAdd);
   const { loading, success, error } = subjectAdd;
 

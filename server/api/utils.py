@@ -1,8 +1,11 @@
 import base64
+import os
 from collections.abc import Iterable
 import json
 from contextlib import contextmanager
 from io import BytesIO
+from typing import List
+
 import matplotlib.pyplot as plt
 from flask import abort, make_response, jsonify
 # https://stackoverflow.com/questions/21638922/custom-error-message-json-object-with-flask-restful
@@ -11,6 +14,7 @@ from app.extensions import logger
 from flask import request, current_app, abort, make_response, jsonify
 import jwt
 from datetime import datetime, timedelta
+import smtplib
 
 error_mapper = {
     500: 'Unexpected server exception',
@@ -19,6 +23,44 @@ error_mapper = {
     404: 'Not found',
     409: 'Already exists'
 }
+
+
+def is_valid_model_name(name):
+    return name in ['markowitz', 'blackLitterman', 'mean_gini', 'Kmeans']
+
+
+
+def reset_pass_mail(to_addr, subject, content) -> None:
+    from email.mime.text import MIMEText
+    from email.mime.multipart import MIMEMultipart
+    from email.header import Header
+
+    SMTP_HOST = "smtp.gmail.com"
+    SMTP_PORT = 587
+    SMTP_USER = os.getenv('GMAIL_USER')
+    FROM_ADDR = SMTP_USER
+    SMTP_PASSWORD = os.getenv('GMAIL_PASSWORD')
+
+    msg = MIMEMultipart('alternative')
+    msg.set_charset('utf8')
+
+    msg['FROM'] = FROM_ADDR
+    msg['Subject'] = Header(subject, "utf-8")
+    msg['To'] = to_addr
+    _attach = MIMEText(content, 'html', 'UTF-8')
+    msg.attach(_attach)
+    try:
+        server = smtplib.SMTP(host=SMTP_HOST, port=SMTP_PORT)
+        server.ehlo()
+        server.starttls()
+        server.login(SMTP_USER, SMTP_PASSWORD)
+        server.sendmail(FROM_ADDR, [to_addr], msg.as_string())
+        server.quit()
+        server.close()
+    except Exception as e:
+        print('Error sending password reset mail')
+        print(e)
+
 
 
 def exceptions_mapper(status, suffix=''):

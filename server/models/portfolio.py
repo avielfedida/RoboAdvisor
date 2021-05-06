@@ -9,9 +9,10 @@ class Portfolio(db.Model):
 
     __tablename__ = 'portfolios'
 
-    date_time = db.Column('date_time', db.DateTime, default=datetime.datetime.now, primary_key=True)
-    algorithm = db.Column('algorithm', db.String, primary_key=True)
-    risk = db.Column('risk',  db.Integer, primary_key=True)
+    id = db.Column('id', db.Integer, nullable=False, primary_key=True, autoincrement=True)
+    date_time = db.Column('date_time', db.DateTime, default=datetime.datetime.now)
+    algorithm = db.Column('algorithm', db.String)
+    risk = db.Column('risk',  db.Integer)
     link = db.Column('link', db.String)
     port_user_answers_set = relationship("PortUserAnswersSet", backref='portfolio')
     portfolio_stocks = relationship("PortfolioStocks", backref='portfolio')

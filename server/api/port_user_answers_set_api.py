@@ -23,7 +23,7 @@ class PortUserAnswersSetApi(MethodView):
 
             ans_set = db.session.query(AnswersSet).filter_by(ans_set_val=request.form['ans_set_val']).first()
 
-            new_port_user_answers_set = PortUserAnswersSet(user=user_by_id, portfolio=portfolio, ans_set=ans_set)
+            new_port_user_answers_set = PortUserAnswersSet(user_id=user_by_id, portfolios_id=portfolio.id, portfolios_date_time=portfolio.date_time, ans_set_val=ans_set)
 
             db.session.add(new_port_user_answers_set)
             db.session.commit()

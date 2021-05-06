@@ -48,6 +48,11 @@ const Header = () => {
                   <NavDropdown.Item onClick={() => navigate("profile")}>
                     פרופיל משתמש
                   </NavDropdown.Item>
+                  <NavDropdown.Item
+                    onClick={() => navigate("user_latest_results")}
+                  >
+                    הרצות אחרונות שלי
+                  </NavDropdown.Item>
                   <NavDropdown.Item onClick={logoutHandler}>
                     התנתק/י
                   </NavDropdown.Item>
