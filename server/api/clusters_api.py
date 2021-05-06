@@ -10,7 +10,7 @@ class GetAllClusters(MethodView):
     def get(self):
         clusters = db.session.query(Cluster).all()
         if not clusters:
-            json_abort(500, "Unexpected server exception")
+            json_abort(500, "שגיאה בשרת")
         else:
             result = dict(clusters=[c.as_dict() for c in clusters])
             response = make_response(jsonify(result), 200)

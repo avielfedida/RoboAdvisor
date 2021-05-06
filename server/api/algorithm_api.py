@@ -16,7 +16,7 @@ class AlgorithmApi(MethodView):
             portfolio = algo.get_portfolio_object()
             json_object = {'portfolio': portfolio.as_dict()}
             print(json_object)
-            response = make_response(jsonify(message="run algorithm successfully"), 200)
+            response = make_response(jsonify(message="האלגוריתם סיים לרוץ בהצלחה"), 200)
 
         except Exception as e:
             response = make_response(jsonify(message=str(e)), 400)
