@@ -18,7 +18,7 @@ celery = configure_celery(app)
 
 
 @periodic_task(
-    run_every=(crontab(minute=3, hour=12)),# Israel time = UTC + 3
+    run_every=(crontab(minute=1, hour=4)),# Israel time = UTC + 3
     name="execute_models",
     ignore_result=True)
 def execute_models():
@@ -50,7 +50,7 @@ def execute_models():
 
 
 @periodic_task(
-    run_every=(crontab(minute=23, hour=9)),# Israel time = UTC + 3
+    run_every=(crontab(minute=1, hour=3)),# Israel time = UTC + 3
     name="insert_price_data",
     ignore_result=True)
 def insert_price_data():

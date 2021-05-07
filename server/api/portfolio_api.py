@@ -9,23 +9,6 @@ from datetime import datetime
 
 class PortfolioApi(MethodView):
 
-    # add new stock price
-    def post(self):
-        try:
-            date_time_str = request.form['date_time']
-            date_time_obj = datetime.strptime(date_time_str, '%m-%d-%Y')
-            new_portfolio = Portfolio(date_time=date_time_obj, algorithm=request.form['algorithm'],
-                                      risk=request.form['risk'], link=request.form['link'])
-            db.session.add(new_portfolio)
-            db.session.commit()
-            response = make_response(jsonify(message="Portfolio added to database"), 200)
-
-        except Exception as e:
-            response = make_response(jsonify(message=str(e)), 400)
-
-        return response
-
-
     # get portfolio by algorithm
     def get(self, link):
         try:

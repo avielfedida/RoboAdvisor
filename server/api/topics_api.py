@@ -11,24 +11,6 @@ from models.clusters import Cluster
 from api.utils import token_required, json_abort
 
 
-class TopicsApi(MethodView):
-
-    # add new topic
-    def post(self):
-        try:
-            member = db.session.query(Member).filter_by(email=request.form['member_email']).first()
-            cluster = db.session.query(Cluster).filter_by(title=request.form['cluster_title']).first()
-            new_topic = Topic(title=request.form['title'], member=member, cluster=cluster)
-            db.session.add(new_topic)
-            db.session.commit()
-            response = make_response(jsonify(message="Topic successfully added to database"), 200)
-
-        except Exception as e:
-            response = make_response(jsonify(message=str(e)), 400)
-
-        return response
-
-
 class SingleTopic(MethodView):
     @token_required
     def post(self, curr_user):
