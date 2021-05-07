@@ -24,7 +24,7 @@ class Kmeans(Algorithm):
         for i in range(len(df)):
             ticker = df["name"].iloc[i]
             weight = weights
-            sharpe_portfolio = sharpe_portfolio.append({'Ticker': ticker, 'Weight': weight}, ignore_index=True)
+            sharpe_portfolio = sharpe_portfolio.append({'Ticker': ticker, 'Weight': weight / 100}, ignore_index=True)
         sharpe_portfolio = sharpe_portfolio.set_index('Ticker')
         return sharpe_portfolio
 

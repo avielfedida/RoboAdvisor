@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Row, Col, Card, Button } from "react-bootstrap";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import RichEditor from "../../reusables/RichEditor";
+import { ContentState } from "draft-js";
 import {
   listMessages,
   addMessage,
@@ -69,6 +70,7 @@ const SubjectMessagesScreen = () => {
     if (messageEdited && messageEdited.length > 0) {
       dispatch({ type: FORUM_MESSAGE_EDIT_RESET });
       dispatch(editMessage(messageEdited, postId, messageId, page));
+      setEditMode(false);
     }
   };
 

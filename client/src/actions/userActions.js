@@ -183,8 +183,6 @@ export const register = (name, surname, email, password, dateOfBirth) => async (
       type: USER_REGISTER_SUCCESS,
       payload: data.message,
     });
-
-    localStorage.setItem("userInfo", JSON.stringify(data));
   } catch (error) {
     dispatch({
       type: USER_REGISTER_FAIL,
