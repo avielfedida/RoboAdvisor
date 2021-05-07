@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, send_from_directory
 from .configurations import Config
 from flask import Flask
 
@@ -31,6 +31,7 @@ def create_app():
     from api.form_submit import api as submit_form_api
     from api.reset_password import api as reset_password_api
     from api.recent_results_api import api as recent_results_api
+    from api.articles_api import api as articles_api
 
     app.register_blueprint(users_api)
     app.register_blueprint(members_api)
@@ -47,6 +48,12 @@ def create_app():
     app.register_blueprint(stock_prices_data_insert_api)
     app.register_blueprint(reset_password_api)
     app.register_blueprint(recent_results_api)
+    app.register_blueprint(articles_api)
+
+
+    @app.route("/public/<path:filename>")
+    def staticfiles(filename):
+        return send_from_directory(app.config["STATIC_FOLDER"], filename)
 
     # Create tables
     with app.app_context():

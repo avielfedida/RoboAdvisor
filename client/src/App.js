@@ -14,6 +14,8 @@ import PortfolioScreen from "./components/screens/PortfolioScreen";
 import ForgotPasswordScreen from "./components/screens/ForgotPasswordScreen";
 import ResetPasswordScreen from "./components/screens/ResetPasswordScreen";
 import UserLatestResultsScreen from "./components/screens/UserLatestResultsScreen";
+import InfoCenterScreen from "./components/screens/infoCenter/InfoCenterScreen";
+import ArticleScreen from "./components/screens/infoCenter/ArticleScreen";
 
 function App() {
   return (
@@ -34,6 +36,12 @@ function App() {
             path="reset_password/:reset_code"
             element={<ResetPasswordScreen />}
           />
+          <Route
+            path="info_center/:title/:article_id"
+            element={<ArticleScreen />}
+          />
+          <Route path="info_center" element={<InfoCenterScreen />} />
+
           <Route path="forum/*" element={<ForumScreen />} />
           <Route path="questionnaire/*" element={<QWrapper />} />
           <Route path="portfolio/:link" element={<PortfolioScreen />} />

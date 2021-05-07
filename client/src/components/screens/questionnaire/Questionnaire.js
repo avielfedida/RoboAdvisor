@@ -10,8 +10,13 @@ import {
   FormCheck,
 } from "react-bootstrap";
 
-const model_names = ["markowitz", "blackLitterman"];
-const model_names_heb = ["מרקוביץ", "בלאק-ליטרמן"];
+const model_names = ["markowitz", "Kmeans", "blackLitterman", "mean_gini"];
+const model_names_heb = [
+  "מרקוביץ",
+  "מודל אשכולות מבוסס KMeans",
+  "בלאק-ליטרמן",
+  "מודל ג'יני",
+];
 
 const Questionnaire = ({
   data,

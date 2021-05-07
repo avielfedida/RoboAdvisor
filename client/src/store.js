@@ -11,6 +11,11 @@ import {
 } from "./reducers/userReducers";
 
 import {
+  articlesListReducer,
+  articleReducer,
+} from "./reducers/infoCenterReducers";
+
+import {
   portfolioFetchReducer,
   portfolioLatestListReducer,
 } from "./reducers/portfolioReducers";
@@ -25,6 +30,10 @@ import {
 } from "./reducers/forumReducers";
 
 const reducer = combineReducers({
+  // Articles
+  articlesList: articlesListReducer,
+  articleData: articleReducer,
+
   // Users
   userLogin: userLoginReducer,
   userRegister: userRegisterReducer,
