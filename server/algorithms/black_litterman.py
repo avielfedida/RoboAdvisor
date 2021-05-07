@@ -22,13 +22,16 @@ class BlackLitterman(Algorithm):
         self.df_cap_bonds_and_stocks = pd.DataFrame(columns=['ticker', 'market_cap'])
         data = pd.read_sql_table('stocks_prices', db.engine)
         data['date_time'] = pd.to_datetime(data['date_time'])
+        len_df = len(self.df_prices_bonds_and_stocks.index)
+
         for ticker in self.selected_assets:
             last_date = data[data['ticker'] == ticker]['date_time'].max()
             market_cap_ti = data[data['ticker'] == ticker]
             market_cap = market_cap_ti[market_cap_ti['date_time'] == last_date].iloc[0]['market_cap']
             self.df_cap_bonds_and_stocks = self.df_cap_bonds_and_stocks.append(
                 {'ticker': ticker, 'market_cap': market_cap}, ignore_index=True)
-            self.df_prices_bonds_and_stocks[ticker] = data[data['ticker'] == ticker]['price'].values
+            self.df_prices_bonds_and_stocks[ticker] = data[data['ticker'] == ticker]['price'].iloc[-len_df:].values
+
     # Calculates portfolio mean return
     def port_mean(self, weights, returns):
         return sum(returns * weights)

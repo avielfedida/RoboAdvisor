@@ -20,7 +20,7 @@ class RegisterUser(MethodView):
             user_email = data.get("email")
             check_if_member_in_db = db.session.query(Member).filter_by(user_id=user_email).first()
             if check_if_member_in_db:
-                json_abort(409, "Member already exist")
+                json_abort(409, "כבר קיים משתמש רשום למערכת עם מייל זה")
             check_if_user_in_db = db.session.query(User).filter_by(_id=user_email).first()
             # if has user in db that its the email
             if check_if_user_in_db:
@@ -29,7 +29,7 @@ class RegisterUser(MethodView):
             else:
                 self.createNewUser(data)
                 self.createMember(data)
-            response = make_response(jsonify(message="User successfully added to database"), 200)
+            response = make_response(jsonify(message="המשתמש נרשם בהצלחה למערכת"), 200)
         # the user submit the form at least one time
         else:
             user_id = data.get("_id")
@@ -39,9 +39,9 @@ class RegisterUser(MethodView):
             member_in_db = db.session.query(Member).filter_by(user_id=user_mail).first()
             if member_in_db is None:
                 self.createMember(data)
-                response = make_response(jsonify(message="User successfully added to database"), 200)
+                response = make_response(jsonify(message="המשתמש נרשם בהצלחה למערכת"), 200)
             else:
-                json_abort(409, "Member already exist")
+                json_abort(409, "כבר קיים משתמש רשום למערכת עם מייל זה")
 
         return response
 
@@ -61,7 +61,7 @@ class RegisterUser(MethodView):
         # user_gender = Gender.other  # data.get("gender")
         user_id = user_email
         if not user_email or not user_password or not user_first_name or not user_last_name:
-            json_abort(400, "Missing on or more fields")
+            json_abort(400, "אחד או יותר מהפרמטרים אינו חוקי")
         new_member = Member(user_email, user_password, user_first_name, user_last_name, user_date_of_birth, user_id)
         db.session.add(new_member)
         db.session.commit()

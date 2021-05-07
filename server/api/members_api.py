@@ -23,7 +23,7 @@ class MemberUpdateNames(MethodView):
     def put(self, curr_user):
         data = request.get_json()
         if curr_user is None:
-            json_abort(404, "Member not found")
+            json_abort(404, "לא נמצא משתמש רשום עם פרטים אלו")
         member = curr_user.member
         new_first_name = data.get("first_name")
         new_last_name = data.get("last_name")
@@ -45,7 +45,7 @@ class Member_update_password(MethodView):
     def put(self, curr_user):
         data = request.get_json()
         if curr_user is None:
-            json_abort(404, "Member not found")
+            json_abort(404, "לא נמצא משתמש רשום עם פרטים אלו")
         member = curr_user.member
         old_password = data.get("password")
         # old_password_encoded = generate_password_hash(old_password, method='sha256')

@@ -14,7 +14,7 @@ class SingleMessage(MethodView):
     def get(self, topic_id, msg_id):
         msg = db.session.query(Message).filter_by(topic_id=topic_id, id=msg_id).first()
         if not msg:
-            json_abort(404, "Message not found")
+            json_abort(404, "ההודעה לא נמצאה")
         else:
             response = make_response(jsonify(msg.as_dict()), 200)
             return response
@@ -30,7 +30,7 @@ class SingleMessage(MethodView):
             json_abort(404, "ההודעה לא נמצאה")
         new_content = data.get("content")
         if not new_content:
-            json_abort(400, "Content is empty")
+            json_abort(400, "תוכן ההודעה ריק")
         msg.content = new_content
         db.session.commit()
         response = make_response(jsonify(message='ההודעה עודכנה בהצלחה'), 200)
@@ -43,19 +43,20 @@ class SingleMessage(MethodView):
         message_content = data.get("content")
         topic_id = data.get("topic_id")
         if not message_content or not topic_id:
-            json_abort(400, "Content is empty")
+            json_abort(400, "תוכן ההודעה ריק")
         new_message = Message(content=message_content, member_email=member.email, topic_id=topic_id)
         if not new_message:
-            json_abort(500, "Couldn't create new message")
+            json_abort(500, "יצירת הודעה חדשה לא הצליחה")
         db.session.add(new_message)
         db.session.commit()
         response = make_response(jsonify(message='ההודעה התווספה בהצלחה'), 200)
         return response
 
+
 class AllMessages(MethodView):
-    def get(self, page, topic_id):
+    def get(self, topic_id, page):
         if page < 1:
-            json_abort(400, "Missing on or more fields")
+            json_abort(400, "כמות הדפים שהוכנסו לא חוקי")
         all_messages = Message.query.filter_by(topic_id=topic_id).order_by(asc('created_at')).paginate(
             page=page, per_page=Config.MESSAGES_PER_PAGE)
         result = dict(datas=[a.as_dict() for a in all_messages.items],

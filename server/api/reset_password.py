@@ -15,7 +15,7 @@ class RequestResetPassword(MethodView):
         user_email = data.get("email")
         check_if_member_in_db = db.session.query(Member).filter_by(user_id=user_email).first()
         if not check_if_member_in_db:
-            json_abort(409, "Member not found")
+            json_abort(409, "לא נמצא משתמש רשום עם המייל הזה במערכת")
         uid = str(uuid.uuid4())
         password_recovery = PasswordRecovery(id=uid, member_email=user_email)
         db.session.add(password_recovery)
@@ -51,9 +51,9 @@ class EnterNewPassword(MethodView):
         data = request.get_json()
         password_recovery = db.session.query(PasswordRecovery).filter_by(id=data.get('id')).first()
         if password_recovery is None:
-            json_abort(404, "id not found")
+            json_abort(404, "לא נמצא מזהה")
         if password_recovery.is_used:
-            json_abort(401, "Link has used")
+            json_abort(401, "כבר בוצע שימוש בקישור הזה")
         member = password_recovery.member
         new_password = data.get("new_password")
         member.password = generate_password_hash(new_password, method='sha256')

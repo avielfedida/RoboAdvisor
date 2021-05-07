@@ -24,7 +24,7 @@ class FormSubmit(MethodView):
         data = request.get_json()
         model_name = data['model_name']
         if not is_valid_model_name(model_name):
-            json_abort(*exceptions_mapper(400, 'Invalid model name given'))
+            json_abort(*exceptions_mapper(400, 'שם המודל שהוזן אינו חוקי'))
         answers = data['answers']
         try:
             dict_variable = {int(key) + 1: value + 1 for (key, value) in answers.items()}
@@ -40,40 +40,40 @@ class FormSubmit(MethodView):
                 if number_question == 1:
                     # answer_value = dict_variable[number_question]
                     if not 1 <= answer_value <= 6:
-                        json_abort(*exceptions_mapper(400, "Wrong range"))
+                        json_abort(*exceptions_mapper(400, "התשובה אינה בטווח התשובות האפשריות"))
                 if number_question == 2:
                     # answer_value = dict_variable[number_question]
                     if not 1 <= answer_value <= 4:
-                        json_abort(*exceptions_mapper(400, "Wrong range"))
+                        json_abort(*exceptions_mapper(400, "התשובה אינה בטווח התשובות האפשריות"))
                 if number_question == 3:
                     # answer_value = dict_variable[number_question]
                     if not 1 <= answer_value <= 3:
-                        json_abort(*exceptions_mapper(400, "Wrong range"))
+                        json_abort(*exceptions_mapper(400, "התשובה אינה בטווח התשובות האפשריות"))
                 if number_question == 4:
                     # answer_value = dict_variable[number_question]
                     if not 1 <= answer_value <= 3:
-                        json_abort(*exceptions_mapper(400, "Wrong range"))
+                        json_abort(*exceptions_mapper(400, "התשובה אינה בטווח התשובות האפשריות"))
                 if number_question == 5:
                     # answer_value = dict_variable[number_question]
                     if not 1 <= answer_value <= 5:
-                        json_abort(*exceptions_mapper(400, "Wrong range"))
+                        json_abort(*exceptions_mapper(400, "התשובה אינה בטווח התשובות האפשריות"))
                 if number_question == 6:
                     # answer_value = dict_variable[number_question]
                     if not 1 <= answer_value <= 5:
-                        json_abort(*exceptions_mapper(400, "Wrong range"))
+                        json_abort(*exceptions_mapper(400, "התשובה אינה בטווח התשובות האפשריות"))
                 if number_question == 7:
                     # answer_value = dict_variable[number_question]
                     if not 1 <= answer_value <= 5:
-                        json_abort(*exceptions_mapper(400, "Wrong range"))
+                        json_abort(*exceptions_mapper(400, "התשובה אינה בטווח התשובות האפשריות"))
                 if number_question == 8:
                     # answer_value = dict_variable[number_question]
                     if not 1 <= answer_value <= 4:
-                        json_abort(*exceptions_mapper(400, "Wrong range"))
+                        json_abort(*exceptions_mapper(400, "התשובה אינה בטווח התשובות האפשריות"))
 
         try:
             score = get_risk_horizon_score(dict_variable)
             if score is None:
-                return make_response(jsonify(message="You have to accept a minimum risk."), 200)
+                return make_response(jsonify(message="קיבלת רמת סיכון מינימלית"), 200)
 
             # If there are not problems with the request we wish to add the different values
             uid = data.get('uid')
@@ -82,7 +82,7 @@ class FormSubmit(MethodView):
             if uid and len(uid) > 0:
                 user = User.query.get(uid)
                 if not user:
-                    json_abort(*exceptions_mapper(400, "Invalid uid given"))
+                    json_abort(*exceptions_mapper(400, "המזהה אינו חוקי"))
             else:
                 uid = str(uuid.uuid4())
                 user = User(_id=uid)
@@ -94,12 +94,12 @@ class FormSubmit(MethodView):
                                                 dict_variable[7], dict_variable[8])
             answers_set = AnswersSet.query.get(answer_set_pk)
             if not answers_set:
-                json_abort(*exceptions_mapper(500, "Failed to find AnswersSet"))
+                json_abort(*exceptions_mapper(500, "לא נמצאו התשובות לשאלון"))
 
             # Get portfolio
             portfolio = Portfolio.query.filter_by(algorithm=model_name, risk=score).order_by(desc('date_time')).first()
             if not portfolio:
-                json_abort(*exceptions_mapper(500, "Failed to find Portfolio"))
+                json_abort(*exceptions_mapper(500, "תהליך מציאת תיק השקעות נכשל"))
 
             pua = PortUserAnswersSet(user_id=uid, ans_set_val=answer_set_pk, portfolios_date_time=portfolio.date_time,
                                      portfolios_id=portfolio.id)
