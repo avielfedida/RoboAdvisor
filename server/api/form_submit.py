@@ -6,7 +6,6 @@ from flask.views import MethodView
 from sqlalchemy import desc
 
 from api.algorithms import get_risk_horizon_score, check_if_all_questions_with_answers
-from api.markowitz import Markowitz
 from api.utils import exceptions_mapper, json_abort, plt_to_src, is_valid_model_name
 from app.configurations import Config
 from app.extensions import db
