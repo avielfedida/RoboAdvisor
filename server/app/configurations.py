@@ -14,6 +14,7 @@ class Config(object):
     CSRF_ENABLED = True
     MAX_CONTENT_LENGTH = 50 * 1024 * 1024 * 1024 * 1024
     SECRET_KEY = 'e5ac358c-f0bf-11e5-9e39-d3b532c10a28'
+    ARTICLES_FOLDER = '/server/articles'
 
     # Celery configurations
     CELERY_BROKER_URL = 'redis://localhost:6380/0'

@@ -31,6 +31,7 @@ def create_app():
     from api.form_submit import api as submit_form_api
     from api.reset_password import api as reset_password_api
     from api.recent_results_api import api as recent_results_api
+    from api.articles_api import api as articles_api
     from api.rebalance_api import api as rebalance_api
 
     app.register_blueprint(users_api)
@@ -49,6 +50,7 @@ def create_app():
     app.register_blueprint(reset_password_api)
     app.register_blueprint(recent_results_api)
     app.register_blueprint(rebalance_api)
+    app.register_blueprint(articles_api)
 
     # Create tables
     with app.app_context():

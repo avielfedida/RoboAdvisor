@@ -25,6 +25,23 @@ error_mapper = {
 }
 
 
+def get_next_answer_set_pk(only_risk_of):
+    for risk in range(1, 5 + 1):
+        if risk != only_risk_of:
+            continue
+        for ans_1 in range(1, 6 + 1):
+            for ans_2 in range(1, 4 + 1):
+                for ans_3 in range(1, 3 + 1):
+                    for ans_4 in range(1, 3 + 1):
+                        for ans_5 in range(1, 5 + 1):
+                            for ans_6 in range(1, 5 + 1):
+                                for ans_7 in range(1, 5 + 1):
+                                    for ans_8 in range(1, 4 + 1):
+                                        yield "{}_{}_{}_{}_{}_{}_{}_{}_{}".format(risk, ans_1, ans_2, ans_3,
+                                                                                                 ans_4, ans_5, ans_6,
+                                                                                                 ans_7, ans_8)
+
+
 def is_valid_model_name(name):
     return name in ['markowitz', 'blackLitterman', 'mean_gini', 'Kmeans']
 

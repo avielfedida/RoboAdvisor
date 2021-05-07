@@ -9,12 +9,9 @@ from api.utils import json_abort
 class GetAllClusters(MethodView):
     def get(self):
         clusters = db.session.query(Cluster).all()
-        if not clusters:
-            json_abort(500, "שגיאה בשרת")
-        else:
-            result = dict(clusters=[c.as_dict() for c in clusters])
-            response = make_response(jsonify(result), 200)
-            return response
+        result = dict(clusters=[c.as_dict() for c in clusters])
+        response = make_response(jsonify(result), 200)
+        return response
 
 
 api = Blueprint('clusters_api', __name__, url_prefix=Config.API_PREFIX + '/cluster')

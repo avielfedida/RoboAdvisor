@@ -88,6 +88,14 @@ const Header = () => {
               <span>פורום</span>
             </Nav.Link>
             <Nav.Link
+              onClick={() => navigate("info_center")}
+              className="nav_link_custom"
+              id="nav_link_forum"
+            >
+              <span className="lnr lnr-book"></span>
+              <span>מרכז ידע</span>
+            </Nav.Link>
+            <Nav.Link
               onClick={() => navigate("/")}
               className="nav_link_custom"
               id="nav_link_forum"

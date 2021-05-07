@@ -34,12 +34,9 @@ class RecentResultsByUser(MethodView):
         if user is None:
             json_abort(404, "לא נמצא משתמש עם פרטים אלו")
         ports_user_ans = PortUserAnswersSet.query.filter_by(user_id=user_id).order_by(
-            desc('portfolios_date_time')).limit(10).all()
+            desc('portfolios_date_time')).distinct(PortUserAnswersSet.portfolios_date_time).limit(10).all()
         for port_user_ans in ports_user_ans:
-            if port_user_ans.portfolio not in portfolios:
-                portfolios.append(port_user_ans.portfolio)
-            if len(portfolios) == 10:
-                break
+            portfolios.append(port_user_ans.portfolio)
         result = create_result_as_dict(portfolios)
         response = make_response(jsonify(result), 200)
         return response

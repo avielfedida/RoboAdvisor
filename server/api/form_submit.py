@@ -101,10 +101,12 @@ class FormSubmit(MethodView):
             if not portfolio:
                 json_abort(*exceptions_mapper(500, "תהליך מציאת תיק השקעות נכשל"))
 
-            pua = PortUserAnswersSet(user_id=uid, ans_set_val=answer_set_pk, portfolios_date_time=portfolio.date_time,
-                                     portfolios_id=portfolio.id)
-            db.session.add(pua)
-            db.session.commit()
+            if not db.session.query(PortUserAnswersSet).filter_by(user_id=uid, ans_set_val=answer_set_pk,
+                               portfolios_id=portfolio.id).first():
+                pua = PortUserAnswersSet(user_id=uid, ans_set_val=answer_set_pk, portfolios_date_time=portfolio.date_time,
+                                         portfolios_id=portfolio.id)
+                db.session.add(pua)
+                db.session.commit()
         except Exception as e:
             json_abort(*exceptions_mapper(500), e)
         return make_response(jsonify(message="Porfolio", link=portfolio.link), 200)

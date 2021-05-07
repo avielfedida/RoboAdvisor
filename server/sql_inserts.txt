@@ -6,3 +6,15 @@
 INSERT INTO public.clusters(
 	title, description, image_path)
 	VALUES ('יועץ רובוטי', 'בפורום זה תוכלו לדון בכל הקשור למודלים השונים של היועצים הרובוטים', '/images/backgrounds/4.jpg');
+
+
+
+INSERT INTO public.articles(
+	title, description, file)
+	VALUES ('מהו אלגוטרייד', 'במאמר זה תוצג סקירה כללית על תחום האלגוטרייד', 'Algotrade_general.html');
+
+INSERT INTO public.articles(
+	title, description, file)
+	VALUES ('עמלות בנקים וברוקרים פרטיים',
+	'במאמר זה נדון בעמלות בבנקים ובברוקטים פרטיים',
+	'fees_in_the_banks_and_private_brokers.html');

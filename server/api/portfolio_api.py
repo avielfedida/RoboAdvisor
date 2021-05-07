@@ -2,6 +2,7 @@ from flask import Blueprint, request, make_response, jsonify
 from flask.views import MethodView
 from app.configurations import Config
 from app.extensions import db
+from models.port_user_answers_set import PortUserAnswersSet
 from models.portfolio import Portfolio
 from datetime import datetime
 
@@ -13,7 +14,6 @@ class PortfolioApi(MethodView):
         try:
             date_time_str = request.form['date_time']
             date_time_obj = datetime.strptime(date_time_str, '%m-%d-%Y')
-            print(type(request.form['algorithm']))
             new_portfolio = Portfolio(date_time=date_time_obj, algorithm=request.form['algorithm'],
                                       risk=request.form['risk'], link=request.form['link'])
             db.session.add(new_portfolio)

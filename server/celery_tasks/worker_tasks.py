@@ -1,5 +1,6 @@
 import uuid
 
+from api.utils import get_next_answer_set_pk
 from .clr import configure_celery
 from celery.schedules import crontab
 from celery.task import periodic_task
@@ -16,38 +17,12 @@ app = create_app()
 celery = configure_celery(app)
 
 
-@celery.task(name='print_hello', bind=True)
-def print_hello(self):
-    task_id = self.request.id
-    print(f'Hello: {task_id}')
-    return 'ans'
-
-
-
-def get_next_answer_set_pk(only_risk_of):
-    for risk in range(1, 5 + 1):
-        if risk != only_risk_of:
-            continue
-        for ans_1 in range(1, 6 + 1):
-            for ans_2 in range(1, 4 + 1):
-                for ans_3 in range(1, 3 + 1):
-                    for ans_4 in range(1, 3 + 1):
-                        for ans_5 in range(1, 5 + 1):
-                            for ans_6 in range(1, 5 + 1):
-                                for ans_7 in range(1, 5 + 1):
-                                    for ans_8 in range(1, 4 + 1):
-                                        yield "{}_{}_{}_{}_{}_{}_{}_{}_{}".format(risk, ans_1, ans_2, ans_3,
-                                                                                                 ans_4, ans_5, ans_6,
-                                                                                                 ans_7, ans_8)
-
-
 @periodic_task(
-    run_every=(crontab(minute=30, hour=12)),# Israel time = UTC + 3
+    run_every=(crontab(minute=3, hour=12)),# Israel time = UTC + 3
     name="execute_models",
     ignore_result=True)
 def execute_models():
     # Settings
-    # models_names = ['blackLitterman']
     models_names = ['markowitz', 'Kmeans', 'blackLitterman', 'mean_gini']
 
     risks = range(1, 6)

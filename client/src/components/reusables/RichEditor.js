@@ -1,5 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { EditorState, convertToRaw, convertFromRaw } from "draft-js";
+import {
+  EditorState,
+  convertToRaw,
+  convertFromRaw,
+  ContentState,
+} from "draft-js";
 import { Editor } from "react-draft-wysiwyg";
 
 const parseData = (data) => {
@@ -24,6 +29,7 @@ const RichEditor = (props) => {
     } else {
       res = JSON.stringify(convertToRaw(cc));
     }
+    setEditorState(null);
     return res;
   };
 
