@@ -19,12 +19,12 @@ class Kmeans(Algorithm):
     def get_optimal_portfolio(self):
         sharpe_portfolio = pd.DataFrame(columns=['Ticker', 'Weight'])
         k, df_sharpe_ratio_cluster = self.k_means()
-        weights = (len(df_sharpe_ratio_cluster)) / k
         df = self.choose_stocks(k, df_sharpe_ratio_cluster)
+        weights = 1 / len(df)
         for i in range(len(df)):
             ticker = df["name"].iloc[i]
             weight = weights
-            sharpe_portfolio = sharpe_portfolio.append({'Ticker': ticker, 'Weight': weight / 100}, ignore_index=True)
+            sharpe_portfolio = sharpe_portfolio.append({'Ticker': ticker, 'Weight': weight}, ignore_index=True)
         sharpe_portfolio = sharpe_portfolio.set_index('Ticker')
         return sharpe_portfolio
 
