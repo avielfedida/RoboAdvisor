@@ -44,6 +44,7 @@ def execute_models():
                 db.session.add(portfolio)
                 db.session.flush()
                 for pk_of_risk in get_next_answer_set_pk(risk):
+                    
                     pua = PortUserAnswersSet(user_id=uid, ans_set_val=pk_of_risk, portfolios_id=portfolio.id, portfolios_date_time=portfolio.date_time)
                     db.session.add(pua)
         db.session.commit()
