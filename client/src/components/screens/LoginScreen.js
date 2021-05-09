@@ -51,6 +51,7 @@ const LoginScreen = () => {
               <Form.Label>מייל</Form.Label>
               <Form.Control
                 autoFocus
+                id={"email_field"}
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
@@ -59,12 +60,13 @@ const LoginScreen = () => {
             <Form.Group size="lg" controlId="password">
               <Form.Label>סיסמה</Form.Label>
               <Form.Control
+                  id={"password_field"}
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
             </Form.Group>
-            <Button block size="lg" type="submit">
+            <Button block size="lg" type="submit" id={"submit_btn"}>
               התחברות
             </Button>
             <p className="mt-4">
