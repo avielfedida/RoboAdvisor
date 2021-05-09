@@ -29,6 +29,7 @@ class LoginTests(unittest.TestCase):
         password_repeat = self.driver.find_element_by_id("password_repeat_field")
         birth_date = self.driver.find_element_by_id("birth_date_field")
 
+
         email.send_keys(f'{str(uuid.uuid4())}@gmail.com')
         first_name.send_keys('אביאל')
         last_name.send_keys('פדידה')
