@@ -6,7 +6,7 @@ const Message = ({ text, variant }) => {
   return (
     <Alert className="alert_box" variant={variant}>
       {/* <Alert.Heading>הוד</Alert.Heading> */}
-      <span>{text}</span>
+      <span data-variant={variant}>{text}</span>
     </Alert>
   );
 };

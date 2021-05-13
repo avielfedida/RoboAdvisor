@@ -63,8 +63,8 @@ class BlackLitterman(Algorithm):
             c_ = ({'type': 'eq', 'fun': lambda weights: sum(weights) - 1.})
             optimized = scipy.optimize.minimize(fitness, weights, (returns, covariance_matrix, r),
                                                 method='SLSQP', constraints=c_, bounds=b_)
-            if not optimized.success:
-                raise BaseException(optimized.message)
+            # if not optimized.success:
+            #     raise BaseException(optimized.message)
             # add point to the efficient frontier [x,y] = [optimized.x, r]
             frontier_mean.append(r)
             frontier_var.append(self.port_var(optimized.x, covariance_matrix))
@@ -112,8 +112,8 @@ class BlackLitterman(Algorithm):
         c_ = ({'type': 'eq', 'fun': lambda weights: sum(weights) - 1.})
         optimized = scipy.optimize.minimize(fitness, weights, (returns, covariance_matrix, risk_free_rate),
                                             method='SLSQP', constraints=c_, bounds=b_)
-        if not optimized.success:
-            raise BaseException(optimized.message)
+        # if not optimized.success:
+        #     raise BaseException(optimized.message)
         return optimized.x
 
     def optimize_frontier(self, returns, covariance_matrix, risk_free_rate):

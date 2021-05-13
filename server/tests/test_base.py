@@ -32,7 +32,7 @@ class TestBase(TestCase):
         self.app_context = self.app.app_context()
         self.app_context.push()
         # create all tables
-        db.create_all()
+        # db.create_all()
         self.db = db
         self.prefix = Config.API_PREFIX
         self.base = self.prefix
@@ -42,71 +42,73 @@ class TestBase(TestCase):
         # """teardown all initialized variables."""
         # drop all tables
         db.session.remove()
-        db.drop_all()
+        # db.drop_all()
         self.app_context.pop()
         # self.app.app_context().pop()
 
-    # TODO: ResourceWarning: unclosed file <_io.BufferedRandom name=5> return self.open(*args, **kw)
-    def study_first_step(self, symbol, timeframe):
-        cl = self.headers.copy()
-        cl.update({
-            "content_type": "multipart/form-data"
-        })
-        self.in_sample, self.oos = get_study_in_sample_oos_files()
-        resp = self.client().post(f'{self.prefix}/studies/send_files', headers=cl, data={
-            "symbol": symbol,
-            'timeframe': timeframe,
-            "in_sample": self.in_sample,
-            "out_of_sample": self.oos
-        })
-        return resp
+    # def study_first_step(self, symbol, timeframe):
+    #     cl = self.headers.copy()
+    #     cl.update({
+    #         "content_type": "multipart/form-data"
+    #     })
+    #     self.in_sample, self.oos = get_study_in_sample_oos_files()
+    #     resp = self.client().post(f'{self.prefix}/studies/send_files', headers=cl, data={
+    #         "symbol": symbol,
+    #         'timeframe': timeframe,
+    #         "in_sample": self.in_sample,
+    #         "out_of_sample": self.oos
+    #     })
+    #     return resp
 
-    def study_submit(self, combinations, script_name, token):
-        return self.client().post(f'{self.prefix}/studies/', headers=self.headers, json={
-            'combinations': combinations,
-            'script_name': script_name,
-            'token': token
-        })
+    # def study_submit(self, combinations, script_name, token):
+    #     return self.client().post(f'{self.prefix}/studies/', headers=self.headers, json={
+    #         'combinations': combinations,
+    #         'script_name': script_name,
+    #         'token': token
+    #     })
 
-    def register_and_login(self):
+    def register(self):
         username = 'patkennedy79@gmail.com'
         password = 'FlaskIsAwesome'
-        self.client().post(f'{self.prefix}/users/register',
-                       json=dict(email=username, password=password))
-        login_res = self.client().post(f'{self.prefix}/users/login', json=dict(email=username, password=password))
+        first_name = 'first'
+        last_name = 'last'
+        birth_date = '2021/05/13'
+        self.client().post(f'{self.prefix}/users/register', json=dict(email=username, password=password, first_name=first_name, last_name=last_name, date_of_birth=birth_date))
+
+    def login(self):
+        username = 'patkennedy79@gmail.com'
+        password = 'FlaskIsAwesome'
+        login_res = self.client().post(f'{self.prefix}/members/login', json=dict(email=username, password=password))
         self.access_token = json.loads(login_res.data)['access_token']
         token = jwt.decode(self.access_token, self.app.config['SECRET_KEY'], algorithms=["HS256"])
         self.user_id = token['uid']
         self.headers.update({'Authorization': f'Bearer {self.access_token}',
                              'Accept': "application/json"})
 
-    def new_algorithm(self, name):
-        cl = self.headers.copy()
-        cl.update({
-            "content_type": "multipart/form-data"
-        })
-        my_file = get_alg_report_file()
-        return self.client().post(f'{self.prefix}/algorithms/', headers=cl, data={
-            "report_filename": my_file,
-            'name': name,
-        })
+    # def new_algorithm(self, name):
+    #     cl = self.headers.copy()
+    #     cl.update({
+    #         "content_type": "multipart/form-data"
+    #     })
+    #     my_file = get_alg_report_file()
+    #     return self.client().post(f'{self.prefix}/algorithms/', headers=cl, data={
+    #         "report_filename": my_file,
+    #         'name': name,
+    #     })
 
-    def get_algorithm(self, name):
-        return self.client().get(f'{self.prefix}/algorithms/{name}',
-                                 headers=self.headers)
+    # def get_algorithm(self, name):
+    #     return self.client().get(f'{self.prefix}/algorithms/{name}',
+    #                              headers=self.headers)
+    #
+    # def new_tech(self, title):
+    #     return self.client().post(f'{self.prefix}/techniques/', headers=self.headers, json={
+    #         'title': title,
+    #         'description': 'another title'
+    #     })
 
-
-    def new_tech(self, title):
-        return self.client().post(f'{self.prefix}/techniques/', headers=self.headers, json={
-            'title': title,
-            'description': 'another title'
-        })
-
-    def new_trade(self, pl, alg_name, dt):
-        return self.client().post(f'{self.prefix}/trades/', headers=self.headers, json={
-            'pl': pl,
-            'alg_name': alg_name,
-            'added_date': dt
-        })
-
-
+    # def new_trade(self, pl, alg_name, dt):
+    #     return self.client().post(f'{self.prefix}/trades/', headers=self.headers, json={
+    #         'pl': pl,
+    #         'alg_name': alg_name,
+    #         'added_date': dt
+    #     })

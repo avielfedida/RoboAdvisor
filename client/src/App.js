@@ -16,6 +16,7 @@ import ResetPasswordScreen from "./components/screens/ResetPasswordScreen";
 import UserLatestResultsScreen from "./components/screens/UserLatestResultsScreen";
 import InfoCenterScreen from "./components/screens/infoCenter/InfoCenterScreen";
 import ArticleScreen from "./components/screens/infoCenter/ArticleScreen";
+import LowRiskExplanationScreen from "./components/screens/LowRiskExplanationScreen";
 
 function App() {
   return (
@@ -45,6 +46,7 @@ function App() {
           <Route path="forum/*" element={<ForumScreen />} />
           <Route path="questionnaire/*" element={<QWrapper />} />
           <Route path="portfolio/:link" element={<PortfolioScreen />} />
+          <Route path="low_risk_explanation" element={<LowRiskExplanationScreen />} />
           <Route path="/" element={<Home />} />
         </Routes>
       </main>
