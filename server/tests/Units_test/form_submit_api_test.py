@@ -1,6 +1,4 @@
 import unittest
-from unittest.mock import patch
-from werkzeug import exceptions
 from tests.test_base import TestBase
 import logging
 
