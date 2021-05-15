@@ -1,0 +1,16 @@
+import unittest
+
+from ..test_base import TestBase
+
+
+class ClustersTest(TestBase):
+    def setUp(self):
+        super(ClustersTest, self).setUp()
+        self.base += '/cluster'
+
+    def tearDown(self):
+        super(ClustersTest, self).tearDown()
+
+    def test_get_all_clusters_valid(self):
+        return self.client().get(f'{self.base}/get_clusters',
+                                 headers=self.headers)
