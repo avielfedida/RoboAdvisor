@@ -68,16 +68,16 @@ class TestBase(TestCase):
     #     })
 
     def register(self):
-        username = 'patkennedy79@gmail.com'
-        password = 'FlaskIsAwesome'
+        username = 'moran@gmail.com'
+        password = 'moran'
         first_name = 'first'
         last_name = 'last'
         birth_date = '2021/05/13'
         self.client().post(f'{self.prefix}/users/register', json=dict(email=username, password=password, first_name=first_name, last_name=last_name, date_of_birth=birth_date))
 
     def login(self):
-        username = 'patkennedy79@gmail.com'
-        password = 'FlaskIsAwesome'
+        username = 'moran@gmail.com'
+        password = 'moran'
         login_res = self.client().post(f'{self.prefix}/members/login', json=dict(email=username, password=password))
         self.access_token = json.loads(login_res.data)['access_token']
         token = jwt.decode(self.access_token, self.app.config['SECRET_KEY'], algorithms=["HS256"])
