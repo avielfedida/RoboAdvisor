@@ -10,5 +10,6 @@ def register_models():
     from .clusters import Cluster
     from .topics import Topic
     from .messages import Message
-    from .password_recovery import  PasswordRecovery
+    from .password_recovery import PasswordRecovery
     from .articles import Article
+    from .stock_price import StockPrice

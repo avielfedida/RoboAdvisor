@@ -6,6 +6,9 @@ from models.portfolio import Portfolio
 from datetime import datetime
 from models.portfolio_stocks import PortfolioStocks
 import numpy as np
+import os
+
+from run import ROOT_DIR
 
 
 class Algorithm:
@@ -18,8 +21,8 @@ class Algorithm:
         self.selected_assets = self.get_selected_assets(self.risk_score)
 
     def get_all_assets(self):
-        bonds_df = pd.read_csv('api/resources/bonds_list.csv')
-        sp500_stocks_df = pd.read_csv('api/resources/stocks_list.csv')
+        bonds_df = pd.read_csv(os.path.join(ROOT_DIR, 'api/resources/bonds_list.csv'))
+        sp500_stocks_df = pd.read_csv(os.path.join(ROOT_DIR, 'api/resources/stocks_list.csv'))
         all_assets = bonds_df['Symbol'].tolist() + sp500_stocks_df['Symbol'].tolist()
         return all_assets
 
@@ -73,7 +76,7 @@ class Algorithm:
         # Create Portfolio Object
         uid = str(uuid.uuid4())
         portfolio = Portfolio(date_time=date_time, algorithm=algorithm_name, risk=self.risk_score, link=uid)
-        portfolio.id = db.session.query(Portfolio).count() + 1
+        # portfolio.id = db.session.query(Portfolio).count() + 1
         return portfolio
 
     def get_optimal_portfolio(self):
