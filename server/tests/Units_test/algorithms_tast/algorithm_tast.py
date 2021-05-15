@@ -1,11 +1,10 @@
 import unittest
 from tests.test_base import TestBase
 import logging
-from datetime import datetime
+
 from celery_tasks.worker_tasks import execute_models
-from celery_tasks.worker_tasks import insert_price_data
 from models.portfolio import Portfolio
-from pandas_datareader import data as pdr
+
 
 
 
