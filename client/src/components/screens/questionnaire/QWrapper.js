@@ -46,11 +46,12 @@ const QWrapper = () => {
         sd["uid"] = userInfo.email;
       }
       const { data } = await axios.post(`${API_PREFIX}/form_submit/submit`, sd);
-      // console.log(data);
-      // setPortfolioResult(data.data);
-      // setQuestion(0);
-      // setLoad(false);
-      navigate(`/portfolio/${data.link}`);
+      if (data.hasOwnProperty('link')) {
+        navigate(`/portfolio/${data.link}`);
+      }
+      else {
+        navigate('/low_risk_explanation');
+      }
     } catch (e) {
       console.log(e);
     }

@@ -32,7 +32,7 @@ class TestBase(TestCase):
         self.app_context = self.app.app_context()
         self.app_context.push()
         # create all tables
-        db.create_all()
+        # db.create_all()
         self.db = db
         self.prefix = Config.API_PREFIX
         self.base = self.prefix
@@ -42,7 +42,7 @@ class TestBase(TestCase):
         # """teardown all initialized variables."""
         # drop all tables
         db.session.remove()
-        db.drop_all()
+        # db.drop_all()
         self.app_context.pop()
         # self.app.app_context().pop()
 
