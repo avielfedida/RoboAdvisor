@@ -6,9 +6,6 @@ from celery_tasks.worker_tasks import execute_models
 from models.portfolio import Portfolio
 
 
-
-
-
 class AlgorithmTestCase(TestBase):
     def setUp(self):
         super(AlgorithmTestCase, self).setUp()

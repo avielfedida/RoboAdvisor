@@ -52,7 +52,7 @@ def execute_models():
 
 
 @periodic_task(
-    run_every=(crontab(minute=42, hour=18)),# Israel time = UTC + 3
+    run_every=(crontab(minute=43, hour=6)),# Israel time = UTC + 3
     name="insert_price_data",
     ignore_result=True)
 def insert_price_data():
@@ -63,7 +63,7 @@ def insert_price_data():
         # setting time period of the stock prices (default is one year) //todo change time period
         end_date = datetime.now() - timedelta(days=1)
         # start_date = datetime( end_date.year - 1, end_date.month, end_date.day )
-        start_date = datetime(end_date.year, end_date.month-1, end_date.day)
+        start_date = datetime(end_date.year-1, end_date.month, end_date.day)
 
         # getting bonds price data
         bonds = pd.read_csv(os.path.join(ROOT_DIR, 'api/resources/bonds_list.csv'))['Symbol'].values
