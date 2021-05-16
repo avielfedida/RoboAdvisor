@@ -16,7 +16,7 @@ class AlgorithmTestCase(TestBase):
         risks = range(1, 6)
         for model in models_names:
             for risk in risks:
-                portfolio = self.db.session.query(Portfolio).filter_by( algorithm=model, risk=risk).first()
+                portfolio = self.db.session.query(Portfolio).filter_by(algorithm=model, risk=risk).first()
                 print(portfolio.as_dict())
                 self.assertIsNotNone(portfolio)
 
