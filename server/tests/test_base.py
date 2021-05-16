@@ -6,6 +6,8 @@ import jwt
 from app.configurations import Config
 from app.extensions import db
 from app.factory import create_app
+from models.articles import Article
+
 from tests.old_for_ref.utils import get_alg_report_file, get_study_in_sample_oos_files
 
 '''
@@ -84,6 +86,56 @@ class TestBase(TestCase):
         self.user_id = token['uid']
         self.headers.update({'Authorization': f'Bearer {self.access_token}',
                              'Accept': "application/json"})
+
+    def add_articles(self):
+        self.db.session.add(
+            Article(
+                title='עמלות בבנקים וברוקרים פרטיים',
+                description='במאמר זה נדון בעמלות השונות אותם גובים בנקים וברוקרים פרטיים',
+                file='fees_in_the_banks_and_private_brokers.html'
+            )
+        )
+
+        self.db.session.add(
+            Article(
+                title='מילון מונחים',
+                description='בעמוד זה תוכלו למצוא מילון מונחים בסיסי עבור עולם הפיננסים',
+                file='Glossary_of_Terms.html'
+            )
+        )
+
+        self.db.session.add(
+            Article(
+                title='אלגוטרייד',
+                description='במאמר זה נסביר על תחום האלגוטרייד',
+                file='Algotrade_general.html'
+            )
+        )
+
+        self.db.session.add(
+            Article(
+                title='ניהול השקעות עצמי',
+                description='במאמר זה נציג מדריך לניהול השקעות עצמי',
+                file='Guide_to_Independent_Investment_Management.html'
+            )
+        )
+
+        self.db.session.add(
+            Article(
+                title='מודלים',
+                description='במאמר זה נציג הסבר על המודלים השונים בהם אנו משתמשים באתר זה',
+                file='Models.html'
+            )
+        )
+
+        self.db.session.add(
+            Article(
+                title='יועצים רובוטים',
+                description='במאמר זה נדון בתחום של יועצים רובוטיים, השירות העיקרי אותו האתר מספק',
+                file='robo_advisor_general.html'
+            )
+        )
+        self.db.session.commit()
 
     # def new_algorithm(self, name):
     #     cl = self.headers.copy()
