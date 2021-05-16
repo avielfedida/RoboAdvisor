@@ -56,7 +56,7 @@ const ForgotPasswordScreen = () => {
           {errorPassReset && <Message variant="danger" text={errorPassReset} />}
           {(loading || loadingPassReset) && <Loader />}
           <Form onSubmit={submitHandler}>
-            <Form.Group controlId="email">
+            <Form.Group>
               <Form.Label>מייל</Form.Label>
               <Form.Control
                 autoFocus

@@ -41,17 +41,18 @@ class Test_ModelCases:
 
     # Repeat the test X times.
     # @pytest.mark.parametrize('execution_number', range(5))
-    # def test_guest_model_execution(self):
-    #     self.model_execution()
+    def test_guest_model_execution(self):
+        self.model_execution()
 
-    # @pytest.mark.usefixtures("login_home_logout")
-    # def test_logged_in_model_execution(self):
-    #     link = self.model_execution()
-    #     if link is not None:
-    #         page = HomePage(self.driver)
-    #         page.click_latest_results()
-    #         assert page.is_first_table_link_is(link)
-    #
+
+    @pytest.mark.usefixtures("login_home_logout")
+    def test_logged_in_model_execution(self):
+        link = self.model_execution()
+        if link is not None:
+            page = HomePage(self.driver)
+            page.click_latest_results()
+            assert page.is_first_table_link_is(link)
+
 
     @pytest.mark.usefixtures("login_home_logout")
     def test_logged_in_model_execution_and_rebalance(self):
@@ -62,11 +63,10 @@ class Test_ModelCases:
             # Should redirect me to the latest results.
             page = UserLatestResultsPage(self.driver)
             assert page.is_first_table_link_is(link)
-            for _ in range(TestData.TIMEOUT*5):
+            for _ in range(TestData.N_REBALANCE_REFRESH):
                 page.click_refresh_btn()
                 try:
                     assert page.is_second_table_link_is(link)
-                    time.sleep(300000)
                     break
                 except TimeoutException as _:
                     pass

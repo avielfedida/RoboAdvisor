@@ -1,5 +1,7 @@
 import uuid
 
+from sqlalchemy.exc import IntegrityError
+
 from api.utils import get_next_answer_set_pk
 from .clr import configure_celery
 from celery.schedules import crontab
@@ -19,8 +21,26 @@ app = create_app()
 celery = configure_celery(app)
 
 
+@celery.task(name='execute_rebalance', bind=True)
+def execute_rebalance(self, link, user_id):
+    with app.app_context():
+        from models.portfolio import Portfolio
+        from models.port_user_answers_set import PortUserAnswersSet
+        from algorithms.create_model import create_model
+        portfolio_by_algorithm = db.session.query(Portfolio).filter_by(link=link).first()
+        algo = create_model(portfolio_by_algorithm.algorithm, portfolio_by_algorithm.risk)
+        portfolio = algo.rebalance(link)
+        db.session.add(portfolio)
+        db.session.flush()
+        for pk_of_risk in get_next_answer_set_pk(portfolio_by_algorithm.risk):
+            pua = PortUserAnswersSet(user_id=user_id, ans_set_val=pk_of_risk, portfolios_id=portfolio.id,
+                                        portfolios_date_time=portfolio.date_time)
+            db.session.add(pua)
+        db.session.commit()
+
+
 @periodic_task(
-    run_every=(crontab(minute=16, hour=10)),# Israel time = UTC + 3
+    run_every=(crontab(minute=25, hour=15)),# Israel time = UTC + 3
     name="execute_models",
     ignore_result=True)
 def execute_models():
@@ -52,7 +72,7 @@ def execute_models():
 
 
 @periodic_task(
-    run_every=(crontab(minute=43, hour=6)),# Israel time = UTC + 3
+    run_every=(crontab(minute=59, hour=14)),# Israel time = UTC + 3
     name="insert_price_data",
     ignore_result=True)
 def insert_price_data():

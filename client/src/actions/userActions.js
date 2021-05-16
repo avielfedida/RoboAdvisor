@@ -27,7 +27,7 @@ import { API_PREFIX } from "../constants/apiConstants";
 import axios from "axios";
 
 export const logout = () => (dispatch) => {
-  localStorage.removeItem("userInfo");
+  localStorage.clear();
   dispatch({
     type: USER_LOGOUT,
   });

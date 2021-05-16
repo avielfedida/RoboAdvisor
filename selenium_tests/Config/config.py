@@ -7,3 +7,4 @@ class TestData:
     BASE_URL = "http://localhost:3000"
     TIMEOUT = 10
     REDUCED_TIMEOUT = 3
+    N_REBALANCE_REFRESH = 10

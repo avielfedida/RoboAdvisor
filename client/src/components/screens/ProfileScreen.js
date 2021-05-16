@@ -57,7 +57,7 @@ const ProfileScreen = () => {
           {error && <Message variant="danger" text={error} />}
           {loading && <Loader />}
           <Form onSubmit={submitHandler}>
-            <Form.Group size="lg" controlId="name">
+            <Form.Group size="lg">
               <Form.Label>שם</Form.Label>
               <Form.Control
                 type="text"
@@ -66,7 +66,7 @@ const ProfileScreen = () => {
                 onChange={(e) => setName(e.target.value)}
               />
             </Form.Group>
-            <Form.Group size="lg" controlId="surname">
+            <Form.Group size="lg">
               <Form.Label>שם משפחה</Form.Label>
               <Form.Control
                 type="text"

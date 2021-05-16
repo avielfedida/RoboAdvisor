@@ -61,8 +61,6 @@ class Test_UserCases:
         first_cluster_title = page.get_first_cluster_title()
         page.click_first_cluster()
         page = ClusterPage(self.driver, first_cluster_title)
-        number_of_posts = page.get_number_of_posts()
-        assert number_of_posts > 0
         page.click_new_post_btn()
         page = NewPostPage(self.driver, get_cluster_title_url(first_cluster_title, page=None, new_post=True))
         assert page.is_new_post_title_field_exists()

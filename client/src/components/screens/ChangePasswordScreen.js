@@ -56,7 +56,7 @@ const ChangePasswordScreen = () => {
           {error && <Message variant="danger" text={error} />}
           {loading && <Loader />}
           <Form onSubmit={submitHandler}>
-            <Form.Group size="lg" controlId="old_password">
+            <Form.Group size="lg">
               <Form.Label>סיסמה נוכחית</Form.Label>
               <Form.Control
                 type="password"
@@ -65,7 +65,7 @@ const ChangePasswordScreen = () => {
                 onChange={(e) => setOldPassword(e.target.value)}
               />
             </Form.Group>
-            <Form.Group size="lg" controlId="password">
+            <Form.Group size="lg">
               <Form.Label>סיסמה חדשה</Form.Label>
               <Form.Control
                 type="password"
@@ -74,7 +74,7 @@ const ChangePasswordScreen = () => {
                 onChange={(e) => setPassword(e.target.value)}
               />
             </Form.Group>
-            <Form.Group size="lg" controlId="password_confirm">
+            <Form.Group size="lg">
               <Form.Label>סיסמה חדשה שנית</Form.Label>
               <Form.Control
                 type="password"
