@@ -60,6 +60,7 @@ const ChangePasswordScreen = () => {
               <Form.Label>סיסמה נוכחית</Form.Label>
               <Form.Control
                 type="password"
+                id={"old_password_field"}
                 value={oldPassword}
                 onChange={(e) => setOldPassword(e.target.value)}
               />
@@ -68,6 +69,7 @@ const ChangePasswordScreen = () => {
               <Form.Label>סיסמה חדשה</Form.Label>
               <Form.Control
                 type="password"
+                id={"new_password_field"}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
@@ -76,11 +78,12 @@ const ChangePasswordScreen = () => {
               <Form.Label>סיסמה חדשה שנית</Form.Label>
               <Form.Control
                 type="password"
+                id={"new_password_repeat_field"}
                 value={passwordConfirm}
                 onChange={(e) => setPasswordConfirm(e.target.value)}
               />
             </Form.Group>
-            <Button block size="lg" type="submit">
+            <Button block id={"change_password_submit_btn"} size="lg" type="submit">
               עדכון סיסמה
             </Button>
             <Link to="/profile">חזרה לפרופיל</Link>

@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {Button, Col, Container, Form, Row} from "react-bootstrap";
 import {Link} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
@@ -36,6 +36,8 @@ const RegisterScreen = () => {
             setMessage("הסיסמה לא יכולה להיות ריקה");
         } else if (password !== passwordConfirm) {
             setMessage("הסיסמאות אינן תואמות");
+        } else if (dateOfBirth.length === 0) {
+            setMessage("אנא בחר/י תאריך לידה");
         } else {
             setMessage("");
             dispatch(register(name, surname, email, password, dateOfBirth));

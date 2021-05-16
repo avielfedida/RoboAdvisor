@@ -58,12 +58,13 @@ const Questionnaire = ({
               </Col>
             </Row>
             <hr />
-            <Form.Group as={Row} style={{ position: "relative" }}>
+            <Form.Group id={"answers_radio_options"} as={Row} style={{ position: "relative" }}>
               <ButtonGroup
                 style={{ position: "absolute", top: "-35px", right: 0 }}
               >
                 <Button
                   disabled={disabledBtns}
+                  id={"next_question_btn"}
                   variant="primary"
                   onClick={() => {
                     if (q_number === max_q_n) {
@@ -75,6 +76,7 @@ const Questionnaire = ({
                   {q_number === max_q_n ? "הרכבת תיק" : "שאלה הבאה"}
                 </Button>
                 <Button
+                    id={"previous_question_btn"}
                   disabled={disabledBtns}
                   onClick={() => update_question(q_number - 1)}
                   // disabled={q_number === 1}
@@ -110,7 +112,7 @@ const Questionnaire = ({
             <br />
             <hr />
             <br />
-            <Form.Group>
+            <Form.Group id={"models_radio_options"}>
               <h1>מודל להריץ</h1>
               {model_names.map((name, i) => (
                 <Form.Check key={i}>
