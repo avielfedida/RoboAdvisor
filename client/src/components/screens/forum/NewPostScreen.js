@@ -57,6 +57,7 @@ const NewPostScreen = () => {
                     <Form.Label>כותרת הפוסט</Form.Label>
                     <Form.Control
                       autoFocus
+                      id={"new_post_title"}
                       type="text"
                       value={subjectTitle}
                       onChange={(e) => setSubjectTitle(e.target.value)}
@@ -70,6 +71,7 @@ const NewPostScreen = () => {
                     size="lg"
                     type="submit"
                     variant="primary"
+                    id={"new_post_submit_btn"}
                     onClick={() => getData && submitData(getData())}
                   >
                     הוספת פוסט

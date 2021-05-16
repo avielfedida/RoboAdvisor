@@ -56,31 +56,34 @@ const ChangePasswordScreen = () => {
           {error && <Message variant="danger" text={error} />}
           {loading && <Loader />}
           <Form onSubmit={submitHandler}>
-            <Form.Group size="lg" controlId="old_password">
+            <Form.Group size="lg">
               <Form.Label>סיסמה נוכחית</Form.Label>
               <Form.Control
                 type="password"
+                id={"old_password_field"}
                 value={oldPassword}
                 onChange={(e) => setOldPassword(e.target.value)}
               />
             </Form.Group>
-            <Form.Group size="lg" controlId="password">
+            <Form.Group size="lg">
               <Form.Label>סיסמה חדשה</Form.Label>
               <Form.Control
                 type="password"
+                id={"new_password_field"}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
             </Form.Group>
-            <Form.Group size="lg" controlId="password_confirm">
+            <Form.Group size="lg">
               <Form.Label>סיסמה חדשה שנית</Form.Label>
               <Form.Control
                 type="password"
+                id={"new_password_repeat_field"}
                 value={passwordConfirm}
                 onChange={(e) => setPasswordConfirm(e.target.value)}
               />
             </Form.Group>
-            <Button block size="lg" type="submit">
+            <Button block id={"change_password_submit_btn"} size="lg" type="submit">
               עדכון סיסמה
             </Button>
             <Link to="/profile">חזרה לפרופיל</Link>

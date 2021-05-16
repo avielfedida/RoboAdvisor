@@ -28,6 +28,7 @@ const ForumSubjectsScreen = () => {
           <div className="d-flex justify-content-between">
             <h1>{title}</h1>
             <Button
+                id={"new_post_btn"}
               variant="primary"
               onClick={() =>
                 userInfo
@@ -46,7 +47,7 @@ const ForumSubjectsScreen = () => {
         <Message variante="danger" text={error} />
       ) : (
         subjects.map((subject) => (
-          <Row className="forum_subject_card" key={subject.id}>
+          <Row className="forum_subject_card forum_subject_container" key={subject.id}>
             <Col xs={12}>
               <Card>
                 <Card.Body>

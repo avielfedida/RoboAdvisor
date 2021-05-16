@@ -24,6 +24,7 @@ const Home = () => {
               <p>
                 <Button
                   variant="primary"
+                  id={"start_questionnaire"}
                   onClick={() => navigate("questionnaire/explanation")}
                 >
                   בניית תיק השקעות

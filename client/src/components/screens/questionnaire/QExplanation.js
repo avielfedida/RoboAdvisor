@@ -13,7 +13,7 @@ const QExplanation = ({ update_question }) => {
             ויתקבל תיק השקעות מומלץ ע"פ האלגוריתם
           </p>
           <p>
-            <Button variant="primary" onClick={() => update_question(1)}>
+            <Button id={"qt_explanation_start_btn"} variant="primary" onClick={() => update_question(1)}>
               התחלה!
             </Button>
           </p>

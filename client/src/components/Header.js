@@ -45,15 +45,15 @@ const Header = () => {
                   title={userInfo.first_name + " " + userInfo.last_name}
                   id="username"
                 >
-                  <NavDropdown.Item onClick={() => navigate("profile")}>
+                  <NavDropdown.Item id={"user_profile_nav"} onClick={() => navigate("profile")}>
                     פרופיל משתמש
                   </NavDropdown.Item>
-                  <NavDropdown.Item
+                  <NavDropdown.Item id={"user_latest_results_nav"}
                     onClick={() => navigate("user_latest_results")}
                   >
                     הרצות אחרונות שלי
                   </NavDropdown.Item>
-                  <NavDropdown.Item onClick={logoutHandler}>
+                  <NavDropdown.Item id={"user_logout"} onClick={logoutHandler}>
                     התנתק/י
                   </NavDropdown.Item>
                 </NavDropdown>
@@ -90,7 +90,7 @@ const Header = () => {
             <Nav.Link
               onClick={() => navigate("info_center")}
               className="nav_link_custom"
-              id="nav_link_forum"
+              id="nav_link_info_center"
             >
               <span className="lnr lnr-book"></span>
               <span>מרכז ידע</span>

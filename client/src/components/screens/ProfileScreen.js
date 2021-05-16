@@ -57,27 +57,29 @@ const ProfileScreen = () => {
           {error && <Message variant="danger" text={error} />}
           {loading && <Loader />}
           <Form onSubmit={submitHandler}>
-            <Form.Group size="lg" controlId="name">
+            <Form.Group size="lg">
               <Form.Label>שם</Form.Label>
               <Form.Control
                 type="text"
+                id={"first_name_field"}
                 value={name}
                 onChange={(e) => setName(e.target.value)}
               />
             </Form.Group>
-            <Form.Group size="lg" controlId="surname">
+            <Form.Group size="lg">
               <Form.Label>שם משפחה</Form.Label>
               <Form.Control
                 type="text"
+                id={"last_name_field"}
                 value={surname}
                 onChange={(e) => setSurname(e.target.value)}
               />
             </Form.Group>
-            <Button block size="lg" type="submit">
+            <Button id={"edit_profile_submit_btn"} block size="lg" type="submit">
               עדכון פרופיל
             </Button>
             <p className="mt-4">
-              <Link to="/change_password">שינוי סיסמה</Link>
+              <Link id={"change_password_page_nav"} to="/change_password">שינוי סיסמה</Link>
             </p>
           </Form>
         </Col>
