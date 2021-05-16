@@ -6,6 +6,7 @@ from models.articles import Article
 from api.utils import json_abort
 import os
 
+from run import ROOT_DIR
 
 class GetAllArticles(MethodView):
     def get(self):
@@ -20,7 +21,8 @@ class GetSingleArticle(MethodView):
         article = Article.query.get(article_id)
         if not article:
             json_abort(404, "המאמר לא נמצא")
-        return send_from_directory(filename=article.file, directory=os.path.join(os.path.join(os.getcwd(), 'api'), 'articles'))
+#         return send_from_directory(filename=article.file, directory=os.path.join(os.path.join(os.getcwd(), 'api'), 'articles'))
+        return send_from_directory(filename=article.file, directory=os.path.join(os.path.join(ROOT_DIR, 'api'), 'articles'))
 
 
 api = Blueprint('articles_api', __name__, url_prefix=Config.API_PREFIX + '/articles')
