@@ -21,8 +21,8 @@ class GetSingleArticle(MethodView):
         article = Article.query.get(article_id)
         if not article:
             json_abort(404, "המאמר לא נמצא")
-        return send_from_directory(filename=article.file, directory=os.path.join(os.path.join(os.getcwd(), 'api'), 'articles'))
-        # return send_from_directory(filename=article.file, directory=os.path.join(os.path.join(ROOT_DIR, 'api'), 'articles'))
+#         return send_from_directory(filename=article.file, directory=os.path.join(os.path.join(os.getcwd(), 'api'), 'articles'))
+        return send_from_directory(filename=article.file, directory=os.path.join(os.path.join(ROOT_DIR, 'api'), 'articles'))
 
 
 api = Blueprint('articles_api', __name__, url_prefix=Config.API_PREFIX + '/articles')
