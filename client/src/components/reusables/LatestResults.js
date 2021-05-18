@@ -35,6 +35,7 @@ const LatestResults = ({ byUser = null }) => {
               </p>
               <Button
                 block
+                id={"refresh_latest_results"}
                 size="sm"
                 onClick={() => dispatch(listPortfolioLatest(byUser))}
               >
@@ -44,7 +45,7 @@ const LatestResults = ({ byUser = null }) => {
           )}
           <Row>
             <Col xs={12}>
-              <Table striped bordered hover>
+              <Table striped bordered hover id={"latest_results_table"}>
                 <thead>
                   <tr>
                     <th>שם המודל</th>

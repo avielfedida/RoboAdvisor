@@ -167,6 +167,7 @@ const SubjectMessagesScreen = () => {
                     getCallback={getCallback}
                   />
                   <Button
+                      id={"new_message_btn"}
                     variant="primary"
                     onClick={() => getData && submitData(getData())}
                   >

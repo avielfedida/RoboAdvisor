@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {Button, Col, Container, Form, Row} from "react-bootstrap";
 import {Link} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
@@ -6,6 +6,7 @@ import Loader from "../reusables/Loader";
 import Message from "../reusables/Message";
 import {register} from "../../actions/userActions";
 import {validateEmail} from "../reusables/utils";
+import { USER_REGISTER_RESET } from "../../constants/userConstants"
 
 const RegisterScreen = () => {
     const [email, setEmail] = useState("");
@@ -22,6 +23,10 @@ const RegisterScreen = () => {
     const userRegister = useSelector((state) => state.userRegister);
     const {success, error, loading} = userRegister;
 
+    useEffect(() => {
+        dispatch({type: USER_REGISTER_RESET});
+    }, [dispatch]);
+
     const submitHandler = (e) => {
         e.preventDefault();
         if (email.length === 0) {
@@ -36,6 +41,8 @@ const RegisterScreen = () => {
             setMessage("הסיסמה לא יכולה להיות ריקה");
         } else if (password !== passwordConfirm) {
             setMessage("הסיסמאות אינן תואמות");
+        } else if (dateOfBirth.length === 0) {
+            setMessage("אנא בחר/י תאריך לידה");
         } else {
             setMessage("");
             dispatch(register(name, surname, email, password, dateOfBirth));
@@ -52,7 +59,7 @@ const RegisterScreen = () => {
                     {error && <Message variant="danger" text={error}/>}
                     {loading && <Loader/>}
                     <Form onSubmit={submitHandler}>
-                        <Form.Group controlId="email">
+                        <Form.Group>
                             <Form.Label>
                                 מייל<span className="red">*</span>
                             </Form.Label>
@@ -64,7 +71,7 @@ const RegisterScreen = () => {
                                 onChange={(e) => setEmail(e.target.value)}
                             />
                         </Form.Group>
-                        <Form.Group size="lg" controlId="name">
+                        <Form.Group size="lg">
                             <Form.Label>
                                 שם<span className="red">*</span>
                             </Form.Label>
@@ -75,7 +82,7 @@ const RegisterScreen = () => {
                                 onChange={(e) => setName(e.target.value)}
                             />
                         </Form.Group>
-                        <Form.Group size="lg" controlId="surname">
+                        <Form.Group size="lg">
                             <Form.Label>
                                 שם משפחה<span className="red">*</span>
                             </Form.Label>
@@ -86,7 +93,7 @@ const RegisterScreen = () => {
                                 onChange={(e) => setSurname(e.target.value)}
                             />
                         </Form.Group>
-                        <Form.Group size="lg" controlId="password">
+                        <Form.Group size="lg">
                             <Form.Label>
                                 סיסמה<span className="red">*</span>
                             </Form.Label>
@@ -97,7 +104,7 @@ const RegisterScreen = () => {
                                 onChange={(e) => setPassword(e.target.value)}
                             />
                         </Form.Group>
-                        <Form.Group size="lg" controlId="password_confirm">
+                        <Form.Group size="lg">
                             <Form.Label>
                                 סיסמה שנית<span className="red">*</span>
                             </Form.Label>

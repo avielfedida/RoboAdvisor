@@ -6,6 +6,7 @@ import Loader from "../reusables/Loader";
 import Message from "../reusables/Message";
 import { login } from "../../actions/userActions";
 import { validateEmail } from "../reusables/utils";
+import {USER_LOGIN_RESET} from "../../constants/userConstants";
 const LoginScreen = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -47,7 +48,7 @@ const LoginScreen = () => {
           {error && <Message variant="danger" text={error} />}
           {loading && <Loader />}
           <Form onSubmit={submitHandler}>
-            <Form.Group controlId="email">
+            <Form.Group>
               <Form.Label>מייל</Form.Label>
               <Form.Control
                 autoFocus
@@ -57,7 +58,7 @@ const LoginScreen = () => {
                 onChange={(e) => setEmail(e.target.value)}
               />
             </Form.Group>
-            <Form.Group size="lg" controlId="password">
+            <Form.Group size="lg">
               <Form.Label>סיסמה</Form.Label>
               <Form.Control
                   id={"password_field"}

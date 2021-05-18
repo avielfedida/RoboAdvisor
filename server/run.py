@@ -2,6 +2,8 @@ from celery_tasks.clr import configure_celery
 from app.factory import create_app
 import os
 
+ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
+
 def run():
     # from celery_tasks.worker_tasks import insert_price_data
     # insert_price_data()

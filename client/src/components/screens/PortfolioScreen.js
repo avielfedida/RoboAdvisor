@@ -113,13 +113,13 @@ const PortfolioScreen = () => {
           <Row style={{ marginBottom: "2rem" }}>
             {userInfo && (
               <Col xs={2}>
-                <Button block size="sm" onClick={rebalance}>
+                <Button block size="sm" id={"rebalance_btn"} onClick={rebalance}>
                   איזון מחדש
                 </Button>
               </Col>
             )}
             <Col xs={10} style={{ textAlign: "right" }}>
-              <Link to={`/portfolio/${link}`}>{link}</Link>
+              <Link id={"portfolio_link"} to={`/portfolio/${link}`}>{link}</Link>
               <strong> - לינק לשיתוף התיק</strong>
             </Col>
           </Row>

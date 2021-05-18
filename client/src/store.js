@@ -29,6 +29,8 @@ import {
   subjectAddReducer,
 } from "./reducers/forumReducers";
 
+import {outdatedTokenMiddleware} from "./middlewares";
+
 const reducer = combineReducers({
   // Articles
   articlesList: articlesListReducer,
@@ -63,7 +65,8 @@ const initialState = {
   userLogin: { userInfo: userInfoFromStorage },
 };
 
-const middlewares = [thunk];
+
+const middlewares = [outdatedTokenMiddleware, thunk];
 const store = createStore(
   reducer,
   initialState,
