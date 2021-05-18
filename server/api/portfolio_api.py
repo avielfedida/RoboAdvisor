@@ -23,5 +23,4 @@ class PortfolioApi(MethodView):
 
 api = Blueprint('portfolio_api', __name__, url_prefix=Config.API_PREFIX + '/portfolios')
 portfolios = PortfolioApi.as_view('api_portfolio')
-api.add_url_rule('/add_portfolio/', methods=['POST'], view_func=portfolios)
 api.add_url_rule('/get_portfolio_by_algorithm/<string:link>/', methods=['GET'], view_func=portfolios)

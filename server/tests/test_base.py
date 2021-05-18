@@ -7,7 +7,7 @@ from app.configurations import Config
 from app.extensions import db
 from app.factory import create_app
 from tests.old_for_ref.utils import get_alg_report_file, get_study_in_sample_oos_files
-
+from models.clusters import Cluster
 '''
 Regarding push/pop of contexts:
 https://stackoverflow.com/questions/17375340/testing-code-that-requires-a-flask-app-or-request-context
@@ -68,8 +68,8 @@ class TestBase(TestCase):
     #     })
 
     def register(self):
-        username = 'patkennedy79@gmail.com'
-        password = 'FlaskIsAwesome'
+        username = 'noa@gmail.com'
+        password = 'nao'
         first_name = 'first'
         last_name = 'last'
         birth_date = '2021/05/13'
@@ -85,6 +85,23 @@ class TestBase(TestCase):
         self.headers.update({'Authorization': f'Bearer {self.access_token}',
                              'Accept': "application/json"})
 
+    def add_clusters(self):
+        self.db.session.add(
+            Cluster(
+                title='title1',
+                description='במאמר זה נדון בעמלות השונות אותם גובים בנקים וברוקרים פרטיים',
+                image_path='fees_in_the_banks_and_private_brokers.html'
+            )
+        )
+
+        self.db.session.add(
+            Cluster(
+                title='title2',
+                description='בעמוד זה תוכלו למצוא מילון מונחים בסיסי עבור עולם הפיננסים',
+                image_path='Glossary_of_Terms.html'
+            )
+        )
+        self.db.session.commit()
     # def new_algorithm(self, name):
     #     cl = self.headers.copy()
     #     cl.update({
