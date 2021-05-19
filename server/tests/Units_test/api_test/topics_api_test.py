@@ -57,11 +57,8 @@ class TopicsTest(TestBase):
     #     self.assertEqual(500, res.status_code)
 
     def test_get_single_topic_all_valid(self):
-        json = {
-            "title": "test",
-            "cluster_title": "title1",
-        }
-        res = self.client().get(self.base + '/get_single_topic', headers=self.headers, json=json)
+        cluster_title = "title1"
+        res = self.client().get(self.base + f'/get_single_topic/{cluster_title}', headers=self.headers)
         self.assertEqual(200, res.status_code)
 
 

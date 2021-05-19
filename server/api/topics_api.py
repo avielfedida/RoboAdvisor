@@ -65,6 +65,6 @@ api = Blueprint('topics_api', __name__, url_prefix=Config.API_PREFIX + '/topics'
 single_topic_api = SingleTopic.as_view('single_topic_api')
 api.add_url_rule('/single_topic', methods=['POST'], view_func=single_topic_api)
 single_topic_get_api = SingleTopic.as_view('single_topic_get_api')
-api.add_url_rule('/get_single_topic', methods=['GET'], view_func=single_topic_get_api)
+api.add_url_rule('/get_single_topic/<string:cluster_title>', methods=['GET'], view_func=single_topic_get_api)
 topic_get_all_api = AllTopics.as_view('topic_get_all_api')
 api.add_url_rule('/all/<int:page>/<string:cluster_title>', methods=['GET'], view_func=topic_get_all_api)
