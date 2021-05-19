@@ -70,8 +70,8 @@ class TestBase(TestCase):
     #     })
 
     def register(self):
-        username = 'patkennedy79@gmail.com'
-        password = 'FlaskIsAwesome'
+        username = 'loa4@gmail.com'
+        password = 'pass4'
         first_name = 'first'
         last_name = 'last'
         birth_date = '2021/05/13'
