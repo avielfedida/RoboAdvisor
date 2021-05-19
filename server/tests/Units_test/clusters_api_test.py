@@ -7,7 +7,7 @@ class ClustersTest(TestBase):
     def setUp(self):
         super(ClustersTest, self).setUp()
         self.base += '/cluster'
-        self.add_clusters()
+        # self.add_clusters()
 
     def tearDown(self):
         super(ClustersTest, self).tearDown()
