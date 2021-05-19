@@ -32,16 +32,6 @@ class SingleTopic(MethodView):
         response = make_response(jsonify(message='הפוסט הוסף בהצלחה'), 200)
         return response
 
-    def get(self, cluster_title):
-        try:
-            topic = db.session.query(Topic).filter_by(cluster_title=cluster_title).first()
-            if not topic:
-                json_abort(404, "לא נמצא הנושא המבוקש במערכת")
-            response = make_response(jsonify(topic.as_dict()), 200)
-            return response
-        except Exception as e:
-            json_abort(500, e)
-
 
 class AllTopics(MethodView):
     def get(self, page, cluster_title):
@@ -64,7 +54,5 @@ class AllTopics(MethodView):
 api = Blueprint('topics_api', __name__, url_prefix=Config.API_PREFIX + '/topics')
 single_topic_api = SingleTopic.as_view('single_topic_api')
 api.add_url_rule('/single_topic', methods=['POST'], view_func=single_topic_api)
-single_topic_get_api = SingleTopic.as_view('single_topic_get_api')
-api.add_url_rule('/get_single_topic/<string:cluster_title>', methods=['GET'], view_func=single_topic_get_api)
 topic_get_all_api = AllTopics.as_view('topic_get_all_api')
 api.add_url_rule('/all/<int:page>/<string:cluster_title>', methods=['GET'], view_func=topic_get_all_api)

@@ -69,9 +69,7 @@ class TestBase(TestCase):
     #         'token': token
     #     })
 
-    def register(self):
-        username = 'loa4@gmail.com'
-        password = 'pass4'
+    def register(self, username, password):
         first_name = 'first'
         last_name = 'last'
         birth_date = '2021/05/13'
