@@ -21,6 +21,9 @@ class RebalanceApi(MethodView):
         try:
             data = request.get_json()
             link = data.get("link")
+            if not db.session.query(Portfolio).filter_by(link=link).first():
+                json_abort(400, "לינק לא תקין")
+
             execute_rebalance.apply_async(args=[link, curr_user.id])
             response = make_response(jsonify(message="חישוב התיק מחדש הסתיים בהצלחה"), 200)
         except Exception as e:
