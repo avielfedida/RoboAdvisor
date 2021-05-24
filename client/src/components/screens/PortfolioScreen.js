@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useMemo} from "react";
-import {Container, Row, Col, Button, Table} from "react-bootstrap";
+import {Container, Row, Col, Button, Table, Form, ButtonGroup} from "react-bootstrap";
 import queryString from "query-string";
 import {
     Tooltip,
@@ -40,9 +40,23 @@ const PortfolioScreen = () => {
     const userLogin = useSelector((state) => state.userLogin);
     const {userInfo} = userLogin;
 
+    const copyToClipboard = () => {
+        let copyTextarea = document.getElementById('location_field');
+        copyTextarea.focus();
+        copyTextarea.select();
+
+        try {
+            var successful = document.execCommand('copy');
+            var msg = successful ? 'successful' : 'unsuccessful';
+            console.log('Copying text command was ' + msg);
+        } catch (err) {
+            console.log('Oops, unable to copy');
+        }
+    }
+
     if (error && error.length > 0) {
         return (<div className="rtl offset_nav" id="portfolio_wrapper"><Container>
-                        <Message variant="danger" text={error}/>
+            <Message variant="danger" text={error}/>
         </Container>
         </div>);
     }
@@ -119,8 +133,17 @@ const PortfolioScreen = () => {
                             </Col>
                         )}
                         <Col xs={10} style={{textAlign: "right"}}>
-                            <Link id={"portfolio_link"} to={`/portfolio/${link}`}>{link}</Link>
-                            <strong> - לינק לשיתוף התיק</strong>
+                            <div>העתקת לינק שיתוף</div>
+                            <ButtonGroup>
+                                <Form.Control
+                                    id={"location_field"}
+                                    type="text"
+                                    value={window.location.href}
+                                />
+                                <Button onClick={() => copyToClipboard()}>
+                                    <span className={'lnr lnr-paperclip'}></span>
+                                </Button>
+                            </ButtonGroup>
                         </Col>
                     </Row>
                     <Row>

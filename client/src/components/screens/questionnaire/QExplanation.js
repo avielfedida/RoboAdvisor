@@ -13,6 +13,13 @@ const QExplanation = ({ update_question }) => {
             ויתקבל תיק השקעות מומלץ ע"פ האלגוריתם
           </p>
           <p>
+            ישנן 8 שאלות ו - 4 מודלים.
+            בכל עמוד תוצג שאלה אחת, ובכל עמוד יוצג בתחתית את המודל הנבחר.
+            בכל שלב המהלך השאלון ניתן לשנות את בחירת המודל.
+            <br/>
+            <a href={'/info_center/מודלים/5'}>למידע נוסף בנוגע למודלים יש ללחוץ על הלינק זה</a>
+          </p>
+          <p>
             <Button id={"qt_explanation_start_btn"} variant="primary" onClick={() => update_question(1)}>
               התחלה!
             </Button>
