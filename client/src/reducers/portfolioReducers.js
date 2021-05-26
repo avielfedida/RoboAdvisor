@@ -19,7 +19,7 @@ export const portfolioFetchReducer = (state = { portfolio: null }, action) => {
       };
 
     case PORTFOLIO_FETCH_FAIL:
-      return { loading: false, error: action.payload };
+      return { loading: false, portfolio: null, error: action.payload };
 
     default:
       return state;

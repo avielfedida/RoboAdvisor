@@ -1,5 +1,7 @@
 from flask import Blueprint, request, make_response, jsonify
 from flask.views import MethodView
+
+from api.utils import json_abort
 from app.configurations import Config
 from app.extensions import db
 from models.port_user_answers_set import PortUserAnswersSet
@@ -13,6 +15,8 @@ class PortfolioApi(MethodView):
     def get(self, link):
         try:
             portfolio_by_algorithm = db.session.query(Portfolio).filter_by(link=link).first()
+            if not portfolio_by_algorithm:
+                return make_response(jsonify(message="לינק לא תקין"), 400)
             res = [ps.as_dict() for ps in portfolio_by_algorithm.portfolio_stocks]
             return make_response(jsonify(message="Porfolio", data=res), 200)
         except Exception as e:
