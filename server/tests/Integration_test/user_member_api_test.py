@@ -12,35 +12,33 @@ class UserMembersCase(TestBase):
         self.username1 = 'moran4@gmail.com'
         self.password1 = 'moran4'
 
-    # def test_register_login(self):
-    #     first_name = 'first'
-    #     last_name = 'last'
-    #     birth_date = '2021/05/13'
-    #     res_register= self.client().post(f'{self.prefix}/users/register', json=dict(email=self.username1, password=self.password1,
-    #                                                                   first_name=first_name, last_name=last_name,
-    #                                                                   date_of_birth=birth_date))
-    #     self.assertEqual(200, res_register.status_code)
-    #
-    #     login_res = self.client().post(f'{self.prefix}/members/login', json=dict(email=self.username1, password=self.password1))
-    #     self.access_token = json.loads(login_res.data)['access_token']
-    #     token = jwt.decode(self.access_token, self.app.config['SECRET_KEY'], algorithms=["HS256"])
-    #     self.user_id = token['uid']
-    #     self.headers.update({'Authorization': f'Bearer {self.access_token}',
-    #                          'Accept': "application/json"})
-    #
-    #     self.assertEqual(200, login_res.status_code)
+    def test_register_login(self):
+        first_name = 'first'
+        last_name = 'last'
+        birth_date = '2021/05/13'
+        res_register= self.client().post(f'{self.prefix}/users/register', json=dict(email=self.username1, password=self.password1,
+                                                                      first_name=first_name, last_name=last_name,
+                                                                      date_of_birth=birth_date))
+        self.assertEqual(200, res_register.status_code)
+
+        login_res = self.client().post(f'{self.prefix}/members/login', json=dict(email=self.username1, password=self.password1))
+        self.access_token = json.loads(login_res.data)['access_token']
+        token = jwt.decode(self.access_token, self.app.config['SECRET_KEY'], algorithms=["HS256"])
+        self.user_id = token['uid']
+        self.headers.update({'Authorization': f'Bearer {self.access_token}',
+                             'Accept': "application/json"})
+
+        self.assertEqual(200, login_res.status_code)
 
 
+    def test_login_reset_password_by_email(self):
+        password2 = 'm1234'
+        login_res = self.client().post(f'{self.prefix}/members/login', json=dict(email=self.username1, password=password2))
+        self.assertEqual(401, login_res.status_code)
 
-
-    # def test_login_reset_password_by_email(self):
-    #     password2 = 'm1234'
-    #     login_res = self.client().post(f'{self.prefix}/members/login', json=dict(email=self.username1, password=password2))
-    #     self.assertEqual(401, login_res.status_code)
-    #
-    #     json = {'email': self.username1}
-    #     res = self.client().post(f'{self.prefix}/reset_password/request', headers=self.headers, json=json)
-    #     self.assertEqual(res.status_code, 200)
+        json = {'email': self.username1}
+        res = self.client().post(f'{self.prefix}/reset_password/request', headers=self.headers, json=json)
+        self.assertEqual(res.status_code, 200)
 
     def test_login_form_submit(self):
         login_res = self.client().post(f'{self.prefix}/members/login', json=dict(email=self.username1, password=self.password1))
