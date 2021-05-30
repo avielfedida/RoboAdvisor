@@ -1,6 +1,6 @@
 import unittest
 
-from ..test_base import TestBase
+from tests.test_base import TestBase
 
 
 class ClustersTest(TestBase):

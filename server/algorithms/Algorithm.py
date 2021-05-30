@@ -101,6 +101,8 @@ class Algorithm:
     def rebalance(self, link):
         algorithm_name = self.model_name
         portfolio = self.create_portfolio(algorithm_name)
+        db.session.add(portfolio)
+        db.session.flush()
         portfolio_by_algorithm = db.session.query(Portfolio).filter_by(link=link).first()
         self.selected_assets = [ps.stock_price_ticker for ps in portfolio_by_algorithm.portfolio_stocks]
         sharpe_portfolio = self.get_optimal_portfolio()
