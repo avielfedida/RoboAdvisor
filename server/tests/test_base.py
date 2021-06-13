@@ -8,7 +8,6 @@ from app.extensions import db
 from app.factory import create_app
 from models.articles import Article
 
-from tests.old_for_ref.utils import get_alg_report_file, get_study_in_sample_oos_files
 from models.clusters import Cluster
 '''
 Regarding push/pop of contexts:
